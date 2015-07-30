@@ -1,0 +1,33 @@
+$script = <<SCRIPT
+set -x
+echo "admin\nadmin" | sudo passwd
+wget http://download.opensuse.org/repositories/isv:/ownCloud:/community/xUbuntu_14.04/Release.key
+sudo apt-key add - < Release.key 
+rm Release.key
+sudo sh -c "echo 'deb http://download.opensuse.org/repositories/isv:/ownCloud:/community/xUbuntu_14.04/ /' >> /etc/apt/sources.list.d/owncloud.list"
+sudo apt-get update -y
+sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password admin'
+sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password admin'
+sudo apt-get install -y owncloud
+cd /var/www/owncloud/apps
+# temporary bugfix already fixed in :testing
+sudo chown -c www-data .
+SCRIPT
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+ # Every Vagrant virtual environment requires a box to build off of.
+  config.vm.box = "ubuntu/trusty64"
+
+  # The url from where the 'config.vm.box' box will be fetched if it
+  # doesn't already exist on the user's system.
+  config.vm.box_url = "https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/14.04/providers/virtualbox.box"
+
+  config.vm.network :forwarded_port, guest: 80, host: 8888
+  config.vm.provider :virtualbox do |vb|
+      vb.name = "xUbuntu14.04+ownCloud8.1.0-6"
+  end
+	config.vm.provision "shell",
+	inline: $script
+end
