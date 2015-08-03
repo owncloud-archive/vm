@@ -42,7 +42,15 @@ Download or clone vm github repository then:
 cd vagrant
 vagrant up
 </pre>
-The Ubuntu Console appears.
+
+
+The VM runs now in VirtualBox.
+Go to Network settings and change from NAT to Bridged.
+Reboot.
+Have Fun
+
+
+The Ubuntu Console appears in the Virtualbox Monitor.
 Your login credentials are
 <pre>
   login: root
