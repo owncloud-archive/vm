@@ -31,6 +31,7 @@ A plain Ubuntu console appears. Your login credentials are
 </pre>
 
 
+!!!This does not yet work yet with Windows10!!!
 
 On a Windows system make sure you have virtualbox and vagrant installed.:
 Open Virtualbox
