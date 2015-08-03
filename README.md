@@ -1,7 +1,10 @@
 # vm
 Scripts to build an ownCloud community production VM
 
-On a development system
+On a Linux system:
+Make sure you have Virtualbox and vagrant installed.
+Download or clone vm github repository then:
+ 
 <pre>
 cd vagrant
 sh startup.sh
@@ -26,3 +29,22 @@ A plain Ubuntu console appears. Your login credentials are
   login: root
   password: admin
 </pre>
+
+
+
+On a Windows system make sure you have virtualbox and vagrant installed.:
+Open Virtualbox
+
+Download or clone vm github repository then:
+<pre>
+#in the vm folder
+cd vagrant
+vagrant up
+</pre>
+The Ubuntu Console appears.
+Your login credentials are
+<pre>
+  login: root
+  password: admin
+</pre>
+
