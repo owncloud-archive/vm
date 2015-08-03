@@ -15,7 +15,8 @@ VirtualBox
  -> New
    -> Enter name [ubuntu14.04+oc8.1.0]
      -> Next -> Next -> Next
-     (*) use existing disk image
+     (X) use existing disk image
        box-disk1.vmdk
-> Network
+ -> Network
   -> Bridged Network
+</pre>
