@@ -20,3 +20,9 @@ VirtualBox
  -> Network
   -> Bridged Network
 </pre>
+
+A plain Ubuntu console appears. Your login credentials are
+<pre>
+  login: root
+  password: admin
+</pre>
