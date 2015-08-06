@@ -1,0 +1,7 @@
+[obs://isv:ownCloud:community]
+name=obs://isv:ownCloud:community
+enabled=1
+autorefresh=0
+baseurl=http://download.opensuse.org/repositories/isv:/ownCloud:/community/openSUSE_13.2
+type=rpm-md
+

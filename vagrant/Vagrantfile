@@ -12,6 +12,9 @@ sudo apt-get install -y owncloud
 cd /var/www/owncloud/apps
 # temporary bugfix already fixed in :testing
 sudo chown -c www-data .
+# “zero out” the drive...
+sudo dd if=/dev/zero of=/EMPTY bs=1M
+sudo rm -f /EMPTY
 SCRIPT
 
 VAGRANTFILE_API_VERSION = "2"

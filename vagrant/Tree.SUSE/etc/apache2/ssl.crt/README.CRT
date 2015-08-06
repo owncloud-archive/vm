@@ -1,0 +1,9 @@
+
+ This is the ssl.crt/ directory of Apache/mod_ssl
+ where PEM-encoded X.509 Certificates for SSL are stored.
+
+ You can view the ingredients of a particular certificate file in plain text
+ by running the command:
+
+   $ openssl x509 -noout -text -in <name>.crt
+

@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# copy /root/bin/auto-updates to cron.daily if it does not exist already
+
+if [ ! -f /etc/cron.daily/auto-updates ] ; then
+  echo ""
+  echo ""
+  echo ""
+  echo "This process may take up to several minutes."
+  echo "Please ignore gpg key errors."
+  echo ""
+  echo ""
+  echo "You can already use your ownCloud via your web browser."
+  echo ""
+  echo ""
+  zypper -n -q --gpg-auto-import-keys ref
+  cp -f /root/bin/auto-updates /etc/cron.daily
+else
+  echo "It seems automatic updates are already enabled."
+fi

@@ -1,0 +1,35 @@
+ownCloud preconfigured appliance
+--------------------------------
+
+Limited OS with sole focus of running ownCloud. Automated updates are NOT 
+enabled by default (internet might not be available). Even after activation
+upgrade (e.g. ownCloud 8.0 to ownCloud 8.1) is NOT automatically performed.
+
+Features:
+- automated configuration using autoconfig.php, requiring only creation of
+  an admin account in ownCloud
+- on first boot user is guided to change root password and is shown his IP
+- a script to enable automated updates is suggested
+- logrotate watches for ownCloud log files
+- cron is enabled and preconfigured for ownCloud cron job
+- mysql is installed with an empty database and a user for ownCloud -
+  ownCloud's autoconfiguration then installs all database tables etc.
+- PHP is configured to use APC for optimization
+- PHP / ownCloud maximum upload size is set to 513MB
+- webserver listening on http and https ports
+
+
+Custom commands:
+- /root/bin/start:
+  Initial script user is guided to. Prompts to change root password and
+  displays IP address.
+- /root/bin/my_ip:
+  Displays IP address.
+- /root/bin/enable-updates:
+  Imports repo keys for ownCloud repo and PHP server repo and creates
+  cronjob run by cron.daily to download and install updates.
+- /root/bin/auto-updates:
+  Small scripts updating the repos (zypper ref) and then the packages 
+  (zypper up). Copied in /etc/cron.daily by 'enable-updates'
+
+

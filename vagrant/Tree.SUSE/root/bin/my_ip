@@ -1,0 +1,16 @@
+#!/bin/sh
+
+#
+# simple script to get the IP address 
+#
+
+export LANG=C
+
+DEV=`netstat -rn | grep '^0.0.0.0' | awk '{ print $8 }'`
+IP=`ifconfig $DEV | grep 'inet addr' | cut -d ':' -f 2 | cut -d ' ' -f 1`
+echo "Please point your web browser to your IP address"
+echo ""
+echo "     $IP"
+echo ""
+echo "to start using ownCloud. Enjoy!"
+

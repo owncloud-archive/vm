@@ -34,7 +34,7 @@ zypper --non-interactive --gpg-auto-import-keys removerepo "ownCloud Enterprise 
 #zypper --non-interactive --gpg-auto-import-keys refresh 
 rm /etc/motd 
 touch /etc/motd
-cp /vagrant/Tree/* / -r
+cp /vagrant/Tree.SUSE/* / -r
 displayname=$displayname
 version=$version
 . /vagrant/config.sh
@@ -106,17 +106,18 @@ VBoxManage export $buildPlatform+$ocVersion -o $buildPlatform+$ocVersion.ovf
 
 #==============================Not destroying right now because of debug reasons
 
-imagePath=$(VBoxManage list hdds | grep /$buildPlatform+$ocVersion/)
+VBoxImagePath=$(VBoxManage list hdds | grep /$buildPlatform+$ocVersion/)
 #Example:Location:       /home/stefan/VirtualBox VMs/xUbuntu14.04/box-disk1.vmdk
-#imagePath=${imagePath#*/}
-#imageName=${imagePath##*/}
-#imagePath=/$imagePath
+VBoxImagePath=${VBoxImagePath#*/}
+VBoxImageName=${VBoxImagePath##*/}
+VBoxImagePath=/$VBoxImagePath
 #/home/stefan/VirtualBox VMs/xUbuntu14.04/box-disk1.vmdk
-#cp "$imagePath" .
-#zip $buildPlatform+$ocVersion.vmdk.zip $imageName
-#rm $imageName
+imageName=$buildPlatform+$ocVersion
+cp "$VBoxImagePath" $imageName.vmdk
+zip $imageName.vmdk.zip $imageName.vmdk
+rm $imageName.vmdk
 
-if [ "$imagePath" != "" ]
+if [ "$VBoxImagePath" != "" ]
 then vagrant destroy -f
 fi
 #only destroy if it could get hold of it with VBoxManage

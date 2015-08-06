@@ -1,0 +1,13 @@
+
+ This is the ssl.csr/ directory of Apache/mod_ssl
+ where PEM-encoded X.509 Certificate Signing Requests for SSL are stored.
+
+ You can also use this directory for temporarily storing CSRs from within your
+ (CGI-) scripts when you want to perform client authentication with your own
+ CA instance.
+
+ You can view the ingredients of a particular CSR file in plain text
+ by running the command:
+
+   $ openssl req -noout -text -in <name>.csr
+
