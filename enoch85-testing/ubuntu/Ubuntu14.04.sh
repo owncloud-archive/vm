@@ -7,6 +7,16 @@ ocVersion=Owncloud8.0.0-6
 imageVersion=xUbuntu14.04
 vmBoxName=ubuntu/trusty64
 vmBoxUrl=https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/14.04/providers/virtualbox.box
+# Passwords
+ocpassw=admin
+ocpassw=admin
+rootpassw=root
+# Get current adress
+IFACE="eth0"
+IFCONFIG="/sbin/ifconfig"
+ADRESS=$($IFCONFIG $IFACE | awk -F'[: ]+' '/\<inet\>/ {print $4; exit}')
+# The Welcome message
+welcome="/var/scripts/welcome.sh"
 
 cat > Vagrantfile << EOF
 \$script = <<SCRIPT
@@ -22,6 +32,32 @@ sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again p
 sudo apt-get install -y owncloud
 cd /var/www/owncloud/apps
 sudo chown -c www-data .
+
+# Make DIR /scripts/
+mkdir /var/scripts/
+
+# Create welcome.sh and put that in ~/.profile
+cat > WELCOME << welcome
+#!/bin/bash
+#
+clear &&
+echo "-------------------------------------------------------------------------"
+echo "|    Welcome to ownCloud, your server is now ready!			|"
+echo "|										|"
+echo "|    Please go to $ADRESS/owncloud to access your ownCloud		|"
+echo "|    Your ownCloud admin account is: login:$ocuser passwd:$ocpassw	|"
+echo "|	   You Linux root password is: $rootpassw				|"
+echo "|										|"
+echo "|    More information in the documentation at: http://doc.owncloud.org/	|"
+echo "|    									|"
+echo "-------------------------------------------------------------------------"
+exit 0
+
+WELCOME
+
+# Put welcome.sh in ~./profile
+sed -i '$a bash /var/scripts/welcome.sh' /home/owncloud/.profile
+
 SCRIPT
 
 VAGRANTFILE_API_VERSION = "2"
