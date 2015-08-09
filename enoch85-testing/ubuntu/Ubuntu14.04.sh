@@ -16,7 +16,7 @@ IFACE="eth0"
 IFCONFIG="/sbin/ifconfig"
 ADRESS=$($IFCONFIG $IFACE | awk -F'[: ]+' '/\<inet\>/ {print $4; exit}')
 # The Welcome message
-welcome="/var/scripts/welcome.sh"
+welcome_sh="/var/scripts/welcome.sh"
 
 cat > Vagrantfile << EOF
 \$script = <<SCRIPT
@@ -37,7 +37,7 @@ sudo chown -c www-data .
 mkdir /var/scripts/
 
 # Create welcome.sh and put that in ~/.profile
-cat > WELCOME << welcome
+cat <<- WELCOME > welcome_sh
 #!/bin/bash
 #
 clear 
