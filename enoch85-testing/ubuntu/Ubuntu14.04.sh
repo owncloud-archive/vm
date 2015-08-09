@@ -7,16 +7,7 @@ ocVersion=Owncloud8.0.0-6
 imageVersion=xUbuntu14.04
 vmBoxName=ubuntu/trusty64
 vmBoxUrl=https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/14.04/providers/virtualbox.box
-# Passwords
-ocpassw=admin
-ocpassw=admin
-rootpassw=root
-# Get current adress
-IFACE="eth0"
-IFCONFIG="/sbin/ifconfig"
-ADRESS=$($IFCONFIG $IFACE | awk -F'[: ]+' '/\<inet\>/ {print $4; exit}')
-# The Welcome message
-welcome_sh="/var/scripts/welcome.sh"
+
 
 cat > Vagrantfile << EOF
 \$script = <<SCRIPT
