@@ -30,34 +30,9 @@ sudo apt-get update -y
 sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password admin'
 sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password admin'
 sudo apt-get install -y owncloud
+sudo mkdir /var/scripts
 cd /var/www/owncloud/apps
 sudo chown -c www-data .
-
-# Make DIR /scripts/
-mkdir /var/scripts/
-
-# Create welcome.sh and put that in ~/.profile
-cat <<- WELCOME > welcome_sh
-#!/bin/bash
-#
-clear 
-echo "-------------------------------------------------------------------------"
-echo "|    Welcome to ownCloud, your server is now ready!			|"
-echo "|									|"
-echo "|    Please go to $ADRESS/owncloud to access your ownCloud	|"
-echo "|    Your ownCloud admin account is: login: $ocuser passwd: $ocpassw		|"
-echo "|	   Your Linux root password is: $rootpassw			|"
-echo "|									|"
-echo "|    More information in the documentation at: http://doc.owncloud.org/	|"
-echo "|    									|"
-echo "-------------------------------------------------------------------------"
-exit 0
-
-WELCOME
-
-# Put welcome.sh in ~./profile
-sed -i '$a bash /var/scripts/welcome.sh' /home/vagrant/.profile
-
 SCRIPT
 
 VAGRANTFILE_API_VERSION = "2"
@@ -76,6 +51,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 	config.vm.provision "shell",
 	inline: \$script
+	config.vm.provision "shell", path: https://raw.githubusercontent.com/owncloud/vm/master/enoch85-testing/welcome.sh
 end
 EOF
 vagrant up
