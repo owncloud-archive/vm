@@ -1,5 +1,3 @@
-#!/bin/bash/
-
 # Passwords
 ocpassw=admin
 ocpassw=admin
