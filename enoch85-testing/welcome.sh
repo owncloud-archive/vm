@@ -14,7 +14,7 @@ welcome_sh="/var/scripts/welcome.sh"
 # Create welcome.sh and put that in ~/.profile
 set -x
 cat <<- WELCOME > "$welcome_sh"
-#!/bin/bash
+
 clear 
 echo "-------------------------------------------------------------------------"
 echo "|    Welcome to ownCloud, your server is now ready!                       |"
@@ -32,5 +32,5 @@ WELCOME
 # Put welcome.sh in ~./profile
 sed -i '$a bash /var/scripts/welcome.sh' /home/vagrant/.profile
 
-fi
+exit 0
 
