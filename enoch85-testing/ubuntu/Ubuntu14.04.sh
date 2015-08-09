@@ -40,7 +40,7 @@ mkdir /var/scripts/
 cat > WELCOME << welcome
 #!/bin/bash
 #
-clear &&
+clear 
 echo "-------------------------------------------------------------------------"
 echo "|    Welcome to ownCloud, your server is now ready!			|"
 echo "|										|"
@@ -56,7 +56,7 @@ exit 0
 WELCOME
 
 # Put welcome.sh in ~./profile
-sed -i '$a bash /var/scripts/welcome.sh' /home/owncloud/.profile
+sed -i '$a bash /var/scripts/welcome.sh' /home/vagrant/.profile
 
 SCRIPT
 
