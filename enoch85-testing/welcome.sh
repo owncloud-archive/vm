@@ -1,5 +1,7 @@
+#!bin/bash
+
 # Passwords
-ocpassw=admin
+ocuser=admin
 ocpassw=admin
 rootpassw=root
 # Get current adress
@@ -12,7 +14,7 @@ welcome_sh="/var/scripts/welcome.sh"
 # Create welcome.sh and put that in ~/.profile
 set -x
 cat <<- WELCOME > "$welcome_sh"
-
+#!bin/bash
 clear 
 echo "-------------------------------------------------------------------------"
 echo "|    Welcome to ownCloud, your server is now ready!                       |"
