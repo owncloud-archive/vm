@@ -1,10 +1,10 @@
 $script = <<SCRIPT
 set -x
 echo "admin\nadmin" | sudo passwd
-wget http://download.opensuse.org/repositories/isv:/ownCloud:/community/xUbuntu_14.04/Release.key
+wget http://download.opensuse.org/repositories/isv:ownCloud:community:testing/xUbuntu_14.04/Release.key
 sudo apt-key add - < Release.key 
 rm Release.key
-sudo sh -c "echo 'deb http://download.opensuse.org/repositories/isv:/ownCloud:/community/xUbuntu_14.04/ /' >> /etc/apt/sources.list.d/owncloud.list"
+sudo sh -c "echo 'deb http://download.opensuse.org/repositories/isv:/ownCloud:community:testing/xUbuntu_14.04 /' >> /etc/apt/sources.list.d/owncloud.list"
 sudo apt-get update -y
 sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password admin'
 sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password admin'
@@ -29,8 +29,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.network :forwarded_port, guest: 80, host: 8888
   config.vm.provider :virtualbox do |vb|
-      vb.name = "xUbuntu14.04+ownCloud8.1.0-6"
+      vb.name = "xUbuntu14.04+owncloud-8.1.0-1"
   end
-	config.vm.provision "shell",
-	inline: $script
+	config.vm.provision "shell", path: "welcome.sh"
+  #	inline: $script
 end
