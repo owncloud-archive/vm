@@ -1,2 +1,0 @@
-# run cron.php for owncloud as wwwrun
-*/15 * * * * /usr/bin/php -f /srv/www/htdocs/owncloud/cron.php
