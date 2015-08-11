@@ -1,15 +1,30 @@
 #! /bin/sh
 
-ocObsRepo=http://download.opensuse.org/repositories/isv:ownCloud:community:testing/xUbuntu_14.04
+OBS_PROJECT=isv:ownCloud:community
+
+if [ "$1" == "-h" ]; then
+  echo "Usage: $0 [OBS_PROJECT]"
+  echo "default OBS_PROJECT is '$OBS_PROJECT'"
+  exit 1
+fi
+test -n "$1" && OBS_PROJECT=$1
+
+cd $(dirname $0)
+
+buildPlatform=xUbuntu_14.04	# matches an OBS target.
+ocObsRepo=http://download.opensuse.org/repositories/$OBS_PROJECT/$buildPlatform
+
 ocPackage=$(echo $ocObsRepo | sed -e 's@:\([^/]\)@:/\1@')
 releaseKey=$ocObsRepo/Release.key
-ocVersion=$(curl -s -L http://download.opensuse.org/repositories/isv:ownCloud:community:testing/xUbuntu_14.04/Packages | grep -a1 'Package: owncloud$' | grep Version: | head -n 1 | sed -e 's/Version: /owncloud-/')
+ocVersion=$(curl -s -L $ocObsRepo/Packages | grep -a1 'Package: owncloud$' | grep Version: | head -n 1 | sed -e 's/Version: /owncloud-/')
 # ocVersion=ownCloud-8.1.0-6
-buildPlatform=xUbuntu14.04
 vmBoxName=ubuntu/trusty64
 vmBoxUrl=https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/14.04/providers/virtualbox.box
 
 cat > Vagrantfile << EOF
+# CAUTION: Do not edit. This Vagrantfile is created by $0
+#
+
 \$script = <<SCRIPT
 set -x
 echo "admin\nadmin" | sudo passwd
@@ -47,6 +62,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #	inline: \$script
 end
 EOF
+
+exit 0
+
 vagrant up
 vagrant halt
 VBoxImagePath=$(VBoxManage list hdds | grep /$buildPlatform+$ocVersion/)
