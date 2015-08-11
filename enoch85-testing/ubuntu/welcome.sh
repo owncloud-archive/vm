@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-clear &&
+clear 
 echo "-------------------------------------------------------------------------"
 echo "|    Thank you for downloading this ownCloud VM made by Tech and Me!	|"
 echo "|									|"
