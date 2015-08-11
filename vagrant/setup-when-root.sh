@@ -64,7 +64,7 @@ echo "The current password is [vagrant]"
 echo -e "\e[32m"
 read -p "Press any key to change password for Linux... " -n1 -s
 echo -e "\e[0m"
-sudo passwd ocadmin
+sudo passwd admin
 echo
 clear 
 echo -e "\e[0m"
