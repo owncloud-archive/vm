@@ -4,6 +4,7 @@ OBS_PROJECT=isv:ownCloud:community
 OBS_MIRRORS=http://download.opensuse.org/repositories
 
 QUICK=true		# true: skip update and disk sanitation. false: do everything
+mysql_pass=admin	# KEEP in sync with check-init.sh
 
 if [ "$1" == "-h" ]; then
   echo "Usage: $0 [OBS_PROJECT]"
@@ -34,7 +35,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "$vmBoxName"
 
   # avoids 'stdin: is not a tty' error.
-  config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile LC_ALL=C exec bash'" 
+  config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'" 
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
@@ -47,26 +48,36 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	config.vm.provision "shell", inline: <<-SCRIPT
 		set -x
 		sudo useradd owncloud -m -p owncloud
+		sudo useradd admin -m -p admin
 		echo "admin\nadmin" | sudo passwd
-		wget $OBS_REPO/Release.key -O Release.key
-		sudo apt-key add - < Release.key 
-		rm Release.key
-		ls -la
+
+		# prepare repositories
+		wget -q $OBS_REPO/Release.key -O - | sudo apt-key add -
 		sudo sh -c "echo 'deb $OBS_REPO /' >> /etc/apt/sources.list.d/owncloud.list"
+
+		# attention: apt-get update is horribly slow when not connected to a tty.
 		sudo apt-get update -y
 		$QUICK || sudo apt-get upgrade -y
-		# sudo apt-get install -y language-pack-de 	# if LC_ALL=C does not help
 
-		sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password admin'
-		sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password admin'
-		sudo apt-get install -y owncloud
+		# install packages.
+		sudo apt-get install -y language-pack-de
+
+		sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password $mysql_pass'
+		sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $mysql_pass'
+		sudo apt-get install -y owncloud php5-libsmbclient
 		cd /var/www/owncloud/apps
-		curl -s localhost/owncloud/ | grep login
+		curl -sL localhost/owncloud/ | grep login || { curl -sL localhost/owncloud; exit 1; } # did not start at all??
 
-		sudo mkdir -p /var/scripts
-		sudp cp /vagrant/*.sh /var/scripts
+		# prepare https
 		sudo a2enmod ssl headers
 		sudo a2dissite default-ssl
+
+
+		# hook our scripts. Specifically the check-init.sh upon boot.
+		sudo mkdir -p /var/scripts
+		sudo cp /vagrant/*.sh /var/scripts
+		chmod a+x /var/scripts/*.sh
+		sudo sed -i -e 's@exit@/var/scripts/check-init.sh; exit@' /etc/rc.local
 
 		# “zero out” the drive...
 		$QUICK || sudo dd if=/dev/zero of=/EMPTY bs=1M
@@ -77,7 +88,6 @@ EOF
 
 
 vagrant up
-exit 0
 vagrant halt
 imageName=$buildPlatform+$ocVersion
 VBoxImagePath=$(VBoxManage list hdds | grep '/$imageName/')
