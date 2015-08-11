@@ -28,12 +28,12 @@ The script will begin in 10 seconds...
 EOMSTART
 sleep 10
 
-# Activate self-signed SSL
-a2enmod ssl
-a2enmod headers
-a2dissite default-ssl
+# # Activate self-signed SSL
+# a2enmod ssl			# moved into build-ubuntu-vm.sh
+a2enmod headers			# moved into build-ubuntu-vm.sh
+a2dissite default-ssl		# moved into build-ubuntu-vm.sh
 # We have to create this during the build and put it in /etc/apache2/sites-available/
-a2ensite owncloud-self-signed-SSL.conf
+a2ensite owncloud-self-signed-SS2dissite default-sslL.conf
 service apache2 reload
 
 # Set keyboard layout
@@ -100,10 +100,17 @@ reboot
 SETUP
 
 # Put welcome.sh in /root/.profile 
-# (is the if arguments even possible to put in like this?)
-sed -i '$a bash if [ -x /var/scripts/setup-when-root.sh ]; then' /root/.profile
-sed -i '$a /var/scripts/setup-when-root.sh' /root/.profile
-sed -i '$a fi' /root/.profile
+## (is the if arguments even possible to put in like this?)
+## looks complicated to me. Can't we simplify that?
+#sed -i '$a bash if [ -x /var/scripts/setup-when-root.sh ]; then' /root/.profile
+#sed -i '$a /var/scripts/setup-when-root.sh' /root/.profile
+#sed -i '$a fi' /root/.profile
+cat >> /root/.profile <<'INIT'
+ if [ -x /var/scripts/welcome.sh]; then
+   bash /var/scripts/welcome.sh
+ fi
+INIT
 
-# RM the script so that it's not run every time the user becomes root.
-rm /var/scripts/setup-when-root.sh
+## RM the script so that it's not run every time the user becomes root.
+# rm /var/scripts/setup-when-root.sh
+rm $0
