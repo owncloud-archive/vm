@@ -4,12 +4,12 @@
 #
 
 # Cleanup unused packages
-apt-get autoremove -y &&
-apt-get autoclean &&
+apt-get autoremove -y 
+apt-get autoclean 
 
 # System Upgrade
-apt-get update &&
-aptitude full-upgrade -y &&
+apt-get update 
+aptitude full-upgrade -y 
 sudo -u www-data php /var/www/owncloud/occ upgrade
 
 # Enable Apps
