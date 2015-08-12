@@ -68,10 +68,6 @@ sudo -u www-data php /var/www/owncloud/occ user:resetpassword admin
 sleep 2
 clear
 
-# Set secure permissions
-# We have to create this during the build:
-bash /var/scripts/secure-permissions.sh
-
 cat << EOMFINISH
 
 ---------------------------------------------------
@@ -92,10 +88,6 @@ SETUP
 
 # Put welcome.sh in /root/.profile 
 ## (is the if arguments even possible to put in like this?)
-## looks complicated to me. Can't we simplify that?
-#sed -i '$a bash if [ -x /var/scripts/setup-when-root.sh ]; then' /root/.profile
-#sed -i '$a /var/scripts/setup-when-root.sh' /root/.profile
-#sed -i '$a fi' /root/.profile
 cat >> /root/.profile <<'INIT'
  if [ -x /var/scripts/welcome.sh]; then
    bash /var/scripts/welcome.sh
