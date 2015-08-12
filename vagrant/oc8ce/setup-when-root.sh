@@ -21,7 +21,7 @@
 -echo -e "\e[32m"
 -read -p "Press any key to change keyboard layout... " -n1 -s
 -echo -e "\e[0m"
--dpkg-reconfigure keyboard-configuration 
+-sudo dpkg-reconfigure keyboard-configuration 
 -echo
 -clear
 -
@@ -31,19 +31,19 @@
 -echo -e "\e[32m"
 -read -p "Press any key to change timezone... " -n1 -s
 -echo -e "\e[0m"
--dpkg-reconfigure tzdata
+-sudo dpkg-reconfigure tzdata
 -echo
 -sleep 3
 -clear
 -
 -# Change password
 -echo -e "\e[0m"
--echo "For better security, change the Ubuntu password for [admin]"
+-echo "For better security, change the Ubuntu password for [$user]"
 -echo "The current password is [$password]"
 -echo -e "\e[32m"
--read -p "Press any key to change password for Linux... " -n1 -s
+-read -p "Press any key to change password for Ubuntu... " -n1 -s
 -echo -e "\e[0m"
--sudo passwd admin
+-sudo passwd $user
 -echo
 -clear 
 
@@ -66,12 +66,12 @@ echo
 -EOMFINISH
 -sleep 4
 -# Remove the script so that it won't run every time the user becomes root
--rm /var/scripts/setup-when-root.sh
+-sudo rm /var/scripts/setup-when-root.sh
 -
 -# Reboot
 -read -p "Press any key to reboot..." -n1 -s
 -echo -e "\e[0m"
 -echo
--reboot
--
--SETUP
+-sudo reboot
+
+exit 0
