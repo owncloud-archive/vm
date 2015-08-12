@@ -49,7 +49,7 @@ Ubuntu 14.04.2 LTS \n \l
 |  Initial admin password: $password                     |
 +---------------------------------------------------------+
 
-Please log in here at the shell prompt as 'admin' 
+Please log in here at the prompt as 'admin' 
 and follow the instructions to change the defaults.
 
 ISSUE
