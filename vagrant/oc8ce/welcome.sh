@@ -1,17 +1,18 @@
 #!/bin/bash
 
-echo scripts in /vagrant:
-ls -la /vagrant
-echo --------------------
+. /var/scripts/init-credentials
 
 # Passwords
-ocuser=admin
-ocpassw=admin
-rootpassw=root
-# Get current address
-IFACE="eth0"
-IFCONFIG="/sbin/ifconfig"
-ADDRESS=$($IFCONFIG $IFACE | awk -F'[: ]+' '/\<inet\>/ {print $4; exit}')
+ocuser=$user
+ocpassw=$password
+rootpassw=$password
+## Get current address
+### How do we know it is called eth0?
+# IFACE="eth0"
+# IFCONFIG="/sbin/ifconfig"
+# ADDRESS=$($IFCONFIG $IFACE | awk -F'[: ]+' '/\<inet\>/ {print $4; exit}')
+ADDRESS=$(ip r | grep src | cut -d' ' -f12)
+
 # The Welcome message
 welcome_sh="/var/scripts/welcome.sh"
 mkdir -p /var/scripts

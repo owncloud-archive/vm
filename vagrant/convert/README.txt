@@ -70,3 +70,6 @@ kiwi --convert image-file.raw --format ova
 # ls -l /var/tmp/build-root/images-x86_64/usr/src/packages/KIWI-vmx
 qemu-img convert -f vmdk /usr/src/packages/KIWI-vmx/vmx/*.vmdk -O qcow2 /space/libvirt-images/oc/eval-appliance-oc7ee.qcow2
 
+# /usr/sbin/fdisk -l IMAGE.raw shows Start 2048.
+# sudo mount -o loop,ro,offset=$(expr 512 \* 2048) IMAGE.raw /mnt
+

@@ -1,6 +1,6 @@
 
 #### use this for testing:
-sh -x oc8ce/build-ubuntu-vm.sh isv:ownCloud:community:8.1:testing:merged
+time sh -x oc8ce/build-ubuntu-vm.sh isv:ownCloud:community:8.1:testing:merged
 
 #### use this for production:
 #sh oc8ce/build-ubuntu-vm.sh isv:ownCloud:community
