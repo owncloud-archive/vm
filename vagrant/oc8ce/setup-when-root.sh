@@ -1,15 +1,10 @@
 #!/bin/bash
 
-setup-when-root_sh="/var/scripts/setup-when-root.sh"
-
-echo scripts in /vagrant:
-ls -la /vagrant
-echo --------------------
-
+setup_when_root_sh="/var/scripts/setup-when-root.sh"
 
 # Create setup-when-root.sh and put that in /root/.profile
 set -x
-cat << SETUP > "$setup-when-root_sh"
+cat << SETUP > "$setup_when_root_sh"
 #!/bin/bash
 clear 
 cat << EOMSTART
@@ -26,6 +21,7 @@ cat << EOMSTART
 The script will begin in 10 seconds...
 EOMSTART
 sleep 10
+clear
 
 # Set keyboard layout
 echo "Current keyboard layout is US"
@@ -38,7 +34,7 @@ echo
 clear
 
 # Change Timezone
-echo "Current Timezone is US"
+echo "Current Timezone is UTC"
 echo "You must change timezone to your timezone"
 echo -e "\e[32m"
 read -p "Press any key to change timezone... " -n1 -s
@@ -55,18 +51,9 @@ echo "The current password is [vagrant]"
 echo -e "\e[32m"
 read -p "Press any key to change password for Linux... " -n1 -s
 echo -e "\e[0m"
-sudo passwd admin
+sudo passwd vagrant
 echo
 clear 
-echo -e "\e[0m"
-echo "For better security, change the ownCloud password for [admin]"
-echo "The current password is [admin]"
-echo -e "\e[32m"
-read -p "Press any key to change password for ownCloud... " -n1 -s
-echo -e "\e[0m"
-sudo -u www-data php /var/www/owncloud/occ user:resetpassword admin
-sleep 2
-clear
 
 cat << EOMFINISH
 
@@ -77,6 +64,8 @@ cat << EOMFINISH
 
 EOMFINISH
 sleep 4
+# Remove the script so that it won't run every time the user becomes root
+rm /var/scripts/setup-when-root.sh
 
 # Reboot
 read -p "Press any key to reboot..." -n1 -s
@@ -86,14 +75,13 @@ reboot
 
 SETUP
 
-# Put welcome.sh in /root/.profile 
-## (is the if arguments even possible to put in like this?)
+# Put setup-when-root in /root/.profile 
 cat >> /root/.profile <<'INIT'
- if [ -x /var/scripts/welcome.sh]; then
-   bash /var/scripts/welcome.sh
+ if [ -x /var/scripts/setup-when-root.sh ]; then
+    bash /var/scripts/setup-when-root.sh
  fi
 INIT
 
-## RM the script so that it's not run every time the user becomes root.
+# This deletes the file from the vagrant folder. Not intended. Moved it --^
 # rm /var/scripts/setup-when-root.sh
-rm $0
+# rm $0
