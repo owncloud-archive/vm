@@ -21,20 +21,12 @@ cat << EOMSTART
 |   - Set new passwords to xUbuntu (Vagrant user) and ownCloud  |                                                                 
 |   - Set secure permissions to ownCloud                        |                                                                 
 |   - Activate a Virtual Host for your ownCloud install         |                                                                 
-|   - Activate Self-signed SSL                                  |
+|   - Activate Self-signed SSL (self-signed-ssl.conf)           |
 -----------------------------------------------------------------
 
 The script will begin in 10 seconds...
 EOMSTART
 sleep 10
-
-# # Activate self-signed SSL
-# a2enmod ssl			# moved into build-ubuntu-vm.sh
-a2enmod headers			# moved into build-ubuntu-vm.sh
-a2dissite default-ssl		# moved into build-ubuntu-vm.sh
-# We have to create this during the build and put it in /etc/apache2/sites-available/
-a2ensite owncloud-self-signed-SS2dissite default-sslL.conf
-service apache2 reload
 
 # Set keyboard layout
 echo "Current keyboard layout is US"
