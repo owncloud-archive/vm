@@ -45,8 +45,8 @@ Ubuntu 14.04.2 LTS \n \l
 | Welcome to ownCloud!                 $ocVersion   |
 |                                                         |
 |  This server is reachable at https://$ADDRESS/owncloud |
-|  Admin login:    $user                                  |
-|  Admin password: $password                             |
+|  Initial admin login:    $user                          |
+|  Initial admin password: $password                     |
 +---------------------------------------------------------+
 
 Please log in here at the shell prompt as 'admin' 

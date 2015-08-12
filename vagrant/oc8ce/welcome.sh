@@ -13,6 +13,7 @@ rootpassw=$password
 # ADDRESS=$($IFCONFIG $IFACE | awk -F'[: ]+' '/\<inet\>/ {print $4; exit}')
 ADDRESS=$(ip r | grep src | cut -d' ' -f12)
 
+
 # The Welcome message
 welcome_sh="/var/scripts/welcome.sh"
 mkdir -p /var/scripts

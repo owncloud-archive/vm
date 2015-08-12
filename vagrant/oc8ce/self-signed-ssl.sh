@@ -7,8 +7,6 @@ set -x
 touch $ssl_conf
 cat << SSL_CREATE > "$ssl_conf"
 
-cat << SSLCONF
-
     <VirtualHost *:443>
     Header add Strict-Transport-Security: "max-age=15768000;includeSubdomains" 
     SSLEngine on
@@ -65,9 +63,7 @@ cat << SSLCONF
   
     </VirtualHost>
 
-SSLCONF
-
 SSL_CREATE
 
 a2ensite self-signed-ssl.conf
-service apache2 reload
+service apache2 restart

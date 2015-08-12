@@ -86,6 +86,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		# prepare https
 		sudo a2enmod ssl headers
 		sudo a2dissite default-ssl
+                sudo bash /vagrant/self-signed-ssl.sh
 
 
 		# hook our scripts. Specifically the check-init.sh upon boot.
@@ -94,6 +95,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		chmod a+x /var/scripts/*.sh
 		sudo sed -i -e 's@exit@/var/scripts/check-init.sh; exit@' /etc/rc.local
 		echo >> /home/admin/.profile 'test -f /var/scripts/setup-when-root.sh && sudo bash /var/scripts/setup-when-root.sh'
+
+		## FIXME: welcome.sh should definitly not be called here. 
+		##  It will get most credentials wrong.
+		##  Not sure about setup-when-root.sh, though.
+		## NOTE: vagrant user is deprecated. This account will not exist in production.
+		# run the setup scripts (based on that user logs in with vagrant user and then becomes root)
+		# sudo bash /vagrant/welcome.sh
+		# sudo bash /vagrant/setup-when-root.sh
 
 		# "zero out" the drive...
 		$DEBUG || sudo dd if=/dev/zero of=/EMPTY bs=1M
