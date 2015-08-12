@@ -29,6 +29,9 @@ if (sudo -u www-data php /var/www/owncloud/occ status 2>&1 | grep -q ' is not in
   sudo -u www-data php /var/www/owncloud/occ status
 fi
 
+# set secure permissions
+sudo bash /var/scripts/secure-permissions.sh
+
 # Prepare /etc/issue and /etc/motd with hints.
 # Hint: Disable this by erasing $cred_file after changing the password.
 if [ -f $cred_file ]; then 
