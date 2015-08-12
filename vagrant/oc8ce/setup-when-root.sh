@@ -42,4 +42,5 @@ EOM
 WELCOME
 
 # Put welcome.sh in ~/.profile
-sed -i '$a bash /var/scripts/welcome.sh' /home/vagrant/.profile
+# REALLY?
+# sed -i '$a bash /var/scripts/welcome.sh' /home/vagrant/.profile
