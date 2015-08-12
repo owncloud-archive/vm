@@ -7,7 +7,7 @@ echo --------------------
 # Passwords
 ocuser=admin
 ocpassw=admin
-rootpassw=root
+rootpassw=admin
 # Get current address
 IFACE="eth0"
 IFCONFIG="/sbin/ifconfig"
