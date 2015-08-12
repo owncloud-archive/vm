@@ -70,3 +70,4 @@ SSLCONF
 SSL_CREATE
 
 a2ensite self-signed-ssl.conf
+service apache2 reload
