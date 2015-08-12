@@ -13,7 +13,7 @@ cat << EOMSTART
 |                                                               |                                                                    
 |   - Change keyboard setup                                     |                                                                 
 |   - Change timezone                                           |                                                                 
-|   - Set new passwords to xUbuntu (Vagrant user) and ownCloud  |                                                                 
+|   - Set new passwords to xUbuntu (Vagrant user)               |                                                                 
 |   - Activate a Virtual Host for your ownCloud install         |                                                                 
 |   - Activate Self-signed SSL (self-signed-ssl.conf)           |
 -----------------------------------------------------------------
