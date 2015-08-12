@@ -75,6 +75,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		# prepare https
 		sudo a2enmod ssl headers
 		sudo a2dissite default-ssl
+                sudo bash /vagrant/self-signed-ssl.sh
 
 
 		# hook our scripts. Specifically the check-init.sh upon boot.
@@ -82,7 +83,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		sudo cp /vagrant/*.sh /var/scripts
 		chmod a+x /var/scripts/*.sh
 		sudo sed -i -e 's@exit@/var/scripts/check-init.sh; exit@' /etc/rc.local
-
+		
+		# run the setup scripts (based on that user logs in with vagrant user and then becomes root)
+		sudo bash /vagrant/welcome.sh
+                sudo bash /vagrant/setup-when-root.sh
+		
 		# “zero out” the drive...
 		$QUICK || sudo dd if=/dev/zero of=/EMPTY bs=1M
 		$QUICK || sudo rm -f /EMPTY
