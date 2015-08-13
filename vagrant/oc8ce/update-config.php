@@ -18,6 +18,8 @@ if (!is_file($argv[1]))
   {
     # do not create the file, if missing. 
     # Wrong permissions are deadly for owncloud.
+    ## FIXME: get some proper errno or strerror() please?
+    print($argv[1] . ": \$CONFIG cannot be loaded?\n");
     return;
   }
 
@@ -42,5 +44,7 @@ else
   }
 
 $text = var_export($CONFIG, true);
+## A warning is printed, if argv[1] is not writable.
+## PHP does not issue proper errno or strerror() does it?
 file_put_contents($argv[1], "<?php\n\$CONFIG = $text;\n");
 ?>
