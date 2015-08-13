@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # check-init.sh
 # 
@@ -19,11 +19,11 @@ oc=/var/www/owncloud
 if (sudo -u www-data php $oc/occ status 2>&1 | grep -q ' is not installed '); then
 
   # not a strong password, but easy to learn, than makepasswd output. bashism!
-  password=$(bash -c 'shuf -e {a..z}{0..9}' | head -n 5 | tr -d '\n')
+  password=$(shuf -e {a..z}{0..9} | head -n 5 | tr -d '\n')
 
   echo Your new admin password will be $password | tee /dev/fd/3
-  /bin/echo -e "root:$password\nadmin:$password\nowncloud:$password" | chpasswd
-  /bin/echo -e "user=admin\npassword=$password" > $cred_file
+  echo -e "root:$password\nadmin:$password\nowncloud:$password" | chpasswd
+  echo -e "user=admin\npassword=$password" > $cred_file
 
   # poor man's occ install. Use occ install instead, if no 8.0 or before compatibility needed.
   curl --data "install=true&adminpass=$password&adminlogin=admin&dbuser=root&dbtype=mysql&dbpass=admin&dbname=oc&dbhost=localhost" localhost:80/owncloud/index.php/settings/index.php

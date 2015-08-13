@@ -1,5 +1,5 @@
- #!/bin/bash
- clear 
+#!/bin/bash
+clear 
 cat << EOMSTART
 +---------------------------------------------------------------+
 |   This script will do the final setup for you                 |
@@ -7,7 +7,6 @@ cat << EOMSTART
 |   - Change keyboard setup (current is US)                     |                                                                 
 |   - Change timezone                                           |                                                                 
 |   - Set new passwords to xUbuntu and ownCloud (user: $user)   |                                                                 
-|   - Activate Self-signed SSL (self-signed-ssl.conf)           |
 +---------------------------------------------------------------+
 
 The script will begin in 10 seconds...
@@ -40,16 +39,19 @@ clear
 echo -e "\e[0m"
 echo "For better security, change the Ubuntu password for [admin]"
 echo -e "\e[32m"
-read -p "Press any key to change password for Ubuntu... " -n1 -s
+read -p "Press any key to change system password ... " -n1 -s
 echo -e "\e[0m"
 sudo passwd admin
 echo
 clear 
+# stop advertising the initial credentials.
+rm -f /var/scripts/init-credentials
+test -f /etc/issue.orig && mv /etc/issue.orig /etc/issue
 
 echo -e "\e[0m"
 echo "For better security, change the ownCloud password for [admin]"
 echo -e "\e[32m"
-read -p "Press any key to change password for ownCloud... " -n1 -s
+read -p "Press any key to change ownCloud password ... " -n1 -s
 echo -e "\e[0m"
 sudo -u www-data php /var/www/owncloud/occ user:resetpassword admin
 echo
@@ -63,8 +65,9 @@ cat << EOMFINISH
 
 EOMFINISH
 sleep 4
-# Remove the script so that it won't run every time the user becomes root
-sudo rm /var/scripts/setup-when-root.sh
+## Remove the script so that it won't run every time the user becomes root
+## FIXME: should not run every time user becomes root. should run, every time user logs in as admin.
+# sudo rm /var/scripts/setup-when-root.sh
 
 # Reboot
 read -p "Press any key to reboot..." -n1 -s
