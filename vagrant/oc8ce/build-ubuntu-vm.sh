@@ -56,7 +56,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # forward https
   config.vm.network :forwarded_port, guest: 443, host: 4443
   # forward ssh
-  config.vm.network :forwarded_port, guest: 22, host: 2222
+  config.vm.network :forwarded_port, id: 'ssh', guest: 22, host: 2222
 
   config.vm.provider :virtualbox do |vb|
       vb.name = "$buildPlatform+$ocVersion"
