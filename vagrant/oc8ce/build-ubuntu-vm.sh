@@ -51,7 +51,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # doesn't already exist on the user's system.
   config.vm.box_url = "$vmBoxUrl"
 
+  # forward http
   config.vm.network :forwarded_port, guest: 80, host: 8888
+  # forward https
+  config.vm.network :forwarded_port, guest: 443, host: 4443
+  # forward ssh
+  config.vm.network :forwarded_port, guest: 22, host: 2222
+
   config.vm.provider :virtualbox do |vb|
       vb.name = "$buildPlatform+$ocVersion"
   end
