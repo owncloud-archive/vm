@@ -79,7 +79,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 		sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password $mysql_pass'
 		sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $mysql_pass'
-		sudo apt-get install -q -y owncloud php5-libsmbclient
+		sudo apt-get install -q -y owncloud php5-libsmbclient php5-apcu
 		cd /var/www/owncloud/apps
 		curl -sL localhost/owncloud/ | grep login || { curl -sL localhost/owncloud; exit 1; } # did not start at all??
 
