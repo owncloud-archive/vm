@@ -38,10 +38,14 @@ bash /var/scripts/secure-permissions.sh
 # we want clean logs
 rm $oc/data/owncloud.log
 
-## install memcahed
-# check if apt-get install php5-apcu was done at build time!
-# FIXME: fails with 8.1.1 https://github.com/owncloud/core/issues/18285
-# php -m | grep -q apcu && php /var/scripts/update-config.php $oc/config/config.php 'memcache.local' '\OC\Memcache\APCu'
+## install memcached
+# check if a decent apt-get install php5-apcu was done at build time!
+if [ 0$(php -r 'print(version_compare("4.0.6",phpversion("apc"),"<="));'
+) -eq 1 ]; then
+  php /var/scripts/update-config.php $oc/config/config.php 'memcache.local' '\OC\Memcache\APCu'
+  # keep occ happy.
+  echo 'apc.enable_cli = 1' >> /etc/php5/cli/php.ini
+fi
 
 ## list of all addresses in case it is a multihomed host.
 declare -a ADDRESSES=($(ip r | grep src | cut -d' ' -f12))
