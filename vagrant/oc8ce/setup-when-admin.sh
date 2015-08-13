@@ -44,6 +44,7 @@ read -p "Press any key to change system password ... " -n1 -s
 echo -e "\e[0m"
 sudo passwd admin
 echo
+sleep 2
 clear 
 # stop advertising the initial credentials.
 rm -f /var/scripts/init-credentials
@@ -56,6 +57,7 @@ read -p "Press any key to change ownCloud password ... " -n1 -s
 echo -e "\e[0m"
 sudo -u www-data php /var/www/owncloud/occ user:resetpassword admin
 echo
+sleep 2
 clear
 
 # Do a full upgrade
