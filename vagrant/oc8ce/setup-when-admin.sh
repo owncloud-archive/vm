@@ -65,8 +65,8 @@ cat << EOMFINISH
 
 EOMFINISH
 sleep 4
-# Remove the script so that it won't run every time the user becomes admin.
-sudo rm /var/scripts/setup-when-admin.sh
+## Remove the script so that it won't run every time the user becomes admin.
+# sudo rm /var/scripts/setup-when-admin.sh
 
 # Reboot
 read -p "Press any key to reboot..." -n1 -s
