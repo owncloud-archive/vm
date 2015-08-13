@@ -8,10 +8,10 @@ OBS_MIRRORS=http://download.opensuse.org/repositories
 
 #formats_via_qemu_img_convert="raw qcow2 vhdx"	# raw qcow2 vhdx supported.
 
-DEBUG=true		# true: skip system update, disk sanitation, ... for speedy development.
-                        # false: do everything for production, also disable vagrant user.
+test -z "$DEBUG" && DEBUG=true	# true: skip system update, disk sanitation, ... for speedy development.
+                        	# false: do everything for production, also disable vagrant user.
 
-mysql_pass=admin	# KEEP in sync with check-init.sh
+mysql_pass=admin		# KEEP in sync with check-init.sh
 
 if [ "$1" == "-h" ]; then
   echo "Usage: $0 [OBS_PROJECT]"
@@ -55,8 +55,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network :forwarded_port, guest: 80, host: 8888
   # forward https
   config.vm.network :forwarded_port, guest: 443, host: 4443
-  # forward ssh
-  config.vm.network :forwarded_port, guest: 22, host: 2222
+  # forward ssh (needs the id attribute to not conflict with a default forwarding at build time)
+  config.vm.network :forwarded_port, id: 'ssh', guest: 22, host: 2222
 
   config.vm.provider :virtualbox do |vb|
       vb.name = "$buildPlatform+$ocVersion"
