@@ -6,7 +6,8 @@ cat << EOMSTART
 |                                                               |                                                                    
 |   - Change keyboard setup (current is US)                     |                                                                 
 |   - Change timezone                                           |                                                                 
-|   - Set new passwords to Ubuntu and ownCloud (user: admin)    |                                                                 
+|   - Set new passwords to Ubuntu and ownCloud (user: admin)    |
+|   - Do a full upgrade of the system                           |
 +---------------------------------------------------------------+
 
 The script will begin in 10 seconds...
@@ -55,6 +56,13 @@ read -p "Press any key to change ownCloud password ... " -n1 -s
 echo -e "\e[0m"
 sudo -u www-data php /var/www/owncloud/occ user:resetpassword admin
 echo
+clear
+
+# Do a full upgrade
+echo The system will now preform a full upgrade...
+sleep 3 
+sudo apt-get update --force-yes -y
+sudo aptitude full-upgrade --force-yes -y
 
 cat << EOMFINISH
 
