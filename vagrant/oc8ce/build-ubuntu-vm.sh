@@ -63,10 +63,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 	config.vm.provision "shell", inline: <<-SCRIPT
 		set -x
+		sudo userdel --force ubuntu		# backdoor?
 		sudo useradd owncloud -m		# group owncloud not yet exists
 		sudo useradd admin -m -g admin		# group admin already exists
 		/bin/echo -e "root:admin\nadmin:admin\nowncloud:owncloud" | sudo chpasswd
-		$DEBUG || userdel --force vagrant	# not for production
 		$DEBUG || rm -f /etc/sudoers.d/vagrant
 		echo 'admin ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/admin
 		echo 'owncloud ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/owncloud
@@ -97,6 +97,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		sudo mkdir -p /var/scripts
 		sudo cp /vagrant/*.{php,sh} /var/scripts
 		chmod a+x /var/scripts/*.{php,sh}
+		$DEBUG || echo 'userdel --force vagrant' >> /var/scripts/check-init.sh
 		sudo sed -i -e 's@exit@bash -x /var/scripts/check-init.sh; exit@' /etc/rc.local
 		echo >> /home/admin/.profile 'test -f /var/scripts/setup-when-admin.sh && sudo bash /var/scripts/setup-when-admin.sh'
 
