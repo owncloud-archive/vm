@@ -40,7 +40,8 @@ rm $oc/data/owncloud.log
 
 ## install memcahed
 # check if apt-get install php5-apcu was done at build time!
-php -m | grep -q apcu && php /var/scripts/update-config.php $oc/config/config.php 'memcache.local' '\\OC\\Memcache\\APCu'
+# FIXME: fails with 8.1.1 https://github.com/owncloud/core/issues/18285
+# php -m | grep -q apcu && php /var/scripts/update-config.php $oc/config/config.php 'memcache.local' '\OC\Memcache\APCu'
 
 ## list of all addresses in case it is a multihomed host.
 declare -a ADDRESSES=($(ip r | grep src | cut -d' ' -f12))
