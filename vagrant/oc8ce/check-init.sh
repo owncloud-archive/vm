@@ -26,7 +26,7 @@ if (sudo -u www-data php $oc/occ status 2>&1 | grep -q ' is not installed '); th
   echo -e "user=admin\npassword=$password" > $cred_file
 
   # poor man's occ install. Use occ install instead, if no 8.0 or before compatibility needed.
-  curl --data "install=true&adminpass=$password&adminlogin=admin&dbuser=root&dbtype=mysql&dbpass=admin&dbname=oc&dbhost=localhost" localhost:80/owncloud/index.php/settings/index.php
+  curl -s --data "install=true&adminpass=$password&adminlogin=admin&dbuser=root&dbtype=mysql&dbpass=admin&dbname=oc&dbhost=localhost" localhost:80/owncloud/index.php/settings/index.php
 
   # check now.
   sudo -u www-data php $oc/occ status
