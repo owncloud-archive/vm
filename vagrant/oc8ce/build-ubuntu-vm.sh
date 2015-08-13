@@ -90,7 +90,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		sudo cp /vagrant/*.{php,sh} /var/scripts
 		chmod a+x /var/scripts/*.{php,sh}
 		sudo sed -i -e 's@exit@bash -x /var/scripts/check-init.sh; exit@' /etc/rc.local
-		echo >> /home/admin/.profile 'test -f /var/scripts/setup-when-root.sh && sudo bash /var/scripts/setup-when-root.sh'
+		echo >> /home/admin/.profile 'test -f /var/scripts/setup-when-admin.sh && sudo bash /var/scripts/setup-when-admin.sh'
 
 		# prepare https
 		sudo a2enmod ssl headers
