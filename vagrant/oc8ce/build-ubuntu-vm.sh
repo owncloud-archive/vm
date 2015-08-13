@@ -93,9 +93,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 		sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password $mysql_pass'
 		sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $mysql_pass'
-		sudo apt-get install -q -y owncloud php5-libsmbclient php5-apcu
+		sudo apt-get install -q -y owncloud php5-libsmbclient
 		cd /var/www/owncloud/apps
 		curl -sL localhost/owncloud/ | grep login || { curl -sL localhost/owncloud; exit 1; } # did not start at all??
+		
+		## Install APCU 4.0.6
+		wget http://de.archive.ubuntu.com/ubuntu/pool/universe/p/php-apcu/php5-apcu_4.0.6-1_amd64.deb
+		sudo dpkg -i php5-apcu_4.0.6-1_amd64.deb
+		rm php5-apcu_4.0.6-1_amd64.deb
+		sudo service apache2 restart
 
 
 		# hook our scripts. Specifically the check-init.sh upon boot.
