@@ -37,24 +37,17 @@ sudo bash /var/scripts/secure-permissions.sh
 # we want clean logs
 sudo rm /var/www/owncloud/data/owncloud.log
 
-## SUGGESTION (please improve this)
+## SUGGESTION (please improve this, this doesen't work properly)
 # install memcahed
 # sudo apt-get install php5-apcu
 # cat <<MEMCACHED >> /var/www/owncloud/config/config.php
 # 'memcache.local' => '\\OC\\Memcache\\APCu', 
 # MEMCACHED
 
-## SUGGESTION (please improve this)
 # set trusted domian
-# ADDRESS=$(ip r | grep src | cut -d' ' -f12)
-# cat <<TRUSTED >> /var/www/owncloud/config/config.php
-# 'trusted_domains' =>
-#  array (
-#    0 => '$ADDRESS',
-#  ),
-#'overwrite.cli.url' => 'https://$ADDRESS/owncloud',
-#); 
-# TRUSTED
+ADDRESS=$(ip r | grep src | cut -d' ' -f12)
+ORIGINAL="localhost"
+sed -i "s/$ORIGINAL/$ADDRESS/g" /var/www/owncloud/config/config.php
 
 # Prepare /etc/issue and /etc/motd with hints.
 # Hint: Disable this by erasing $cred_file after changing the password.
