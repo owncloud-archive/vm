@@ -79,8 +79,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		export DEBIAN_FRONTEND=noninteractive TERM=ansi LC_ALL=C
 		sudo apt-get -q -y update
 
-		$DEBUG || sudo apt-get -q -y upgrade			# FIXME: only one of them needed?
-		$DEBUG || sudo aptitude full-upgrade -y		 	# FIXME: only one of them needed?
+		$DEBUG || sudo aptitude full-upgrade -y
 		$DEBUG || sudo apt-get -q -y autoremove
 
 		# install packages.
