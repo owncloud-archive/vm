@@ -75,6 +75,8 @@ Ubuntu 14.04.2 LTS \n \l
 
 Please log in here at the prompt as 'admin' 
 and follow the instructions to change the defaults.
+If something goes wrong, just log in as admin again
+and the script will be executed again.
 
 ISSUE
 fi
