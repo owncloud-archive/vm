@@ -6,7 +6,7 @@ cat << EOMSTART
 |                                                               |                                                                    
 |   - Change keyboard setup (current is US)                     |                                                                 
 |   - Change timezone                                           |                                                                 
-|   - Set new passwords to xUbuntu and ownCloud (user: $user)   |                                                                 
+|   - Set new passwords to Ubuntu and ownCloud (user: admin)    |                                                                 
 +---------------------------------------------------------------+
 
 The script will begin in 10 seconds...
@@ -65,9 +65,8 @@ cat << EOMFINISH
 
 EOMFINISH
 sleep 4
-## Remove the script so that it won't run every time the user becomes root
-## FIXME: should not run every time user becomes root. should run, every time user logs in as admin.
-# sudo rm /var/scripts/setup-when-root.sh
+# Remove the script so that it won't run every time the user becomes admin.
+sudo rm /var/scripts/setup-when-admin.sh
 
 # Reboot
 read -p "Press any key to reboot..." -n1 -s
