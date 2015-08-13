@@ -60,18 +60,13 @@ cat << EOMFINISH
 
 +-------------------------------------------------+
 |   Success! You have now done the final setup.   |
-|   The system will now reboot...                 |
+|   The system is ready now ...                   |
 +-------------------------------------------------+
 
 EOMFINISH
 sleep 4
-## Remove the script so that it won't run every time the user becomes admin.
-# sudo rm /var/scripts/setup-when-admin.sh
 
-# Reboot
-read -p "Press any key to reboot..." -n1 -s
+read -p "Press any key to return to the shell prompt.\nType 'exit' there, to go back to the login prompt...." -n1 -s
 echo -e "\e[0m"
 echo
-sudo reboot
-
 exit 0

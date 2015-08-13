@@ -74,6 +74,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		sudo apt-get -q -y update
 		$DEBUG || sudo apt-get -q -y upgrade	# FIXME: only one of them needed?
 		$DEBUG || sudo aptitude full-upgrade	# FIXME: only one of them needed?
+		$DEBUG || sudo apt-get -q -y autoremove
 
 		# install packages.
 		sudo apt-get install -q -y language-pack-de figlet
