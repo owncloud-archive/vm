@@ -91,8 +91,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 		# hook our scripts. Specifically the check-init.sh upon boot.
 		sudo mkdir -p /var/scripts
-		sudo cp /vagrant/*.sh /var/scripts
-		chmod a+x /var/scripts/*.sh
+		sudo cp /vagrant/*.{php,sh} /var/scripts
+		chmod a+x /var/scripts/*.{php,sh}
 		sudo sed -i -e 's@exit@/var/scripts/check-init.sh; exit@' /etc/rc.local
 		echo >> /home/admin/.profile 'test -f /var/scripts/setup-when-root.sh && sudo bash /var/scripts/setup-when-root.sh'
 
