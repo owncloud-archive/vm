@@ -63,13 +63,13 @@ cat << EOMFINISH
 
 +-------------------------------------------------+
 |   Success! You have now done the final setup.   |
-|   The system is ready now ...                   |
+|   The system is now ready ...                   |
 +-------------------------------------------------+
 
 EOMFINISH
 sleep 4
 
-read -p "Press any key to return to the shell prompt.\nType 'exit' there, to go back to the login prompt...." -n1 -s
+read -p "Press any key to return to the shell prompt.\nType 'exit' there, to go back to the login prompt ..." -n1 -s
 echo -e "\e[0m"
 echo
 exit 0
