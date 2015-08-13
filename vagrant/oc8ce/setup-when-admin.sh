@@ -69,8 +69,8 @@ cat << EOMFINISH
 EOMFINISH
 sleep 4
 
-read -p $'\x0aPress any key to return to the shell prompt.\x0aType "exit" there, to go back to the login prompt. \x0aIf you want to become root, type "sudo -i"...\x0a' -n1 -s
+echo -e "\e[32m"
+read -p $'\x0aPress any key to return to the shell prompt.\x0aType "exit" there, to go back to the login prompt. \x0aIf you want to become root, type "sudo -i" ...\x0a' -n1 -s
 echo -e "\e[0m"
-echo
 clear
 exit 0
