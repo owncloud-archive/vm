@@ -72,8 +72,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		# attention: apt-get update is horribly slow when not connected to a tty.
 		export DEBIAN_FRONTEND=noninteractive TERM=ansi LC_ALL=C
 		sudo apt-get -q -y update
-		$DEBUG || sudo aptitude full-upgrade	# FIXME: This is done during setup-when-admin.sh as well.
-							#	 As it seems like this is not working.
+		$DEBUG || sudo aptitude full-upgrade
 
 		# install packages.
 		sudo apt-get install -q -y language-pack-de figlet
