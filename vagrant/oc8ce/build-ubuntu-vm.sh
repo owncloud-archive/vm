@@ -80,7 +80,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		sudo apt-get -q -y update
 
 		$DEBUG || sudo apt-get -q -y upgrade			# FIXME: only one of them needed?
-		$DEBUG || sudo aptitude full-upgrade --force-yes -y 	# FIXME: only one of them needed?
+		$DEBUG || sudo aptitude full-upgrade -y		 	# FIXME: only one of them needed?
 		$DEBUG || sudo apt-get -q -y autoremove
 
 		# install packages.
