@@ -60,8 +60,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provider :virtualbox do |vb|
       vb.name = "$buildPlatform+$ocVersion"
+      # speed up: Force the VM to use NAT'd DNS:
+      vb.customize [ "modifyvm", :id, "--natdnshostresolver1", "on" ]
+      vb.customize [ "modifyvm", :id, "--natdnsproxy1", "on" ]
+      vb.customize [ "modifyvm", :id, "--memory", 2048 ]
+      vb.customize [ "modifyvm", :id, "--cpus", 1 ]
   end
-	config.vm.provision "shell", inline: <<-SCRIPT
+
+  config.vm.provision "shell", inline: <<-SCRIPT
 		set -x
 		sudo userdel --force ubuntu		# backdoor?
 		sudo useradd owncloud -m		# group owncloud not yet exists
@@ -108,7 +114,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		# "zero out" the drive...
 		$DEBUG || sudo dd if=/dev/zero of=/EMPTY bs=1M
 		$DEBUG || sudo rm -f /EMPTY
-	SCRIPT
+  SCRIPT
 end
 EOF
 
@@ -118,18 +124,27 @@ vagrant up
 
 vagrant halt
 
-VBoxImagePath=$(VBoxManage list hdds | grep "/$imageName/")
-#-->Location:       /home/$USER/VirtualBox VMs/ownCloud-8.1.1+xUbuntu_14.04/box-disk1.vmdk
-VBoxImagePath=/${VBoxImagePath#*/}	# delete Location: prefix
-cp "$VBoxImagePath" $imageName.vmdk
+## prepare for bridged network
+# VBoxManage modifyvm $imageName --nic1 bridged
+# VBoxManage modifyvm $imageName --bridgeadapter1 wlan0
+# VBoxManage modifyvm $imageName --macaddress1 auto
+#
+## VBoxManage modifyvm $imageName --resize 40000	# also needs: resize2fs -p -F /dev/DEVICE
+
+## export is much better than copying the disk manually.
+VBoxManage export $imageName -o $imageName.ovf
+# VBoxImagePath=$(VBoxManage list hdds | grep "/$imageName/")
+# #-->Location:       /home/$USER/VirtualBox VMs/ownCloud-8.1.1+xUbuntu_14.04/box-disk1.vmdk
+# VBoxImagePath=/${VBoxImagePath#*/}	# delete Location: prefix
+# cp "$VBoxImagePath" $imageName.vmdk
 vagrant destroy -f
 
 
 
-## convert to other formats...
 
+## convert to other formats...
 for fmt in $formats_via_qemu_img_convert; do
- qemu-img convert -p -f vmdk oc8ce/$imageName.vmdk -O $fmt oc8ce/$imageName.$fmt
+ qemu-img convert -p -f vmdk oc8ce/$imageName-disk1.vmdk -O $fmt oc8ce/$imageName.$fmt
  $DEBUG || zip $imageName.$fmt.zip $imageName.$fmt
  $DEBUG || rm $imageName.$fmt
 done
