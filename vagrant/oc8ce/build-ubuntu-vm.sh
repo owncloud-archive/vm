@@ -100,14 +100,38 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		# install packages.
 		apt-get install -q -y language-pack-de figlet
 
-		## Install APCU 4.0.6, the traditional (somewhat ugly) way for 14.04
-		# wget http://de.archive.ubuntu.com/ubuntu/pool/universe/p/php-apcu/php5-apcu_4.0.6-1_amd64.deb
-		# sudo dpkg -i php5-apcu_4.0.6-1_amd64.deb
-		# rm php5-apcu_4.0.6-1_amd64.deb
-		# sudo service apache2 restart
 		## Install APCU 4.0.6, using the 14.04 package from isv:ownCloud:community:...
 		apt-get install -q -y php5-apcu
-
+		
+		# Install apps we want
+		# We need unzip to perform this	
+		apt-get install unzip -y
+		
+		# Download and install GalleryPlus
+		wget https://github.com/owncloud/gallery/archive/master.zip
+		unzip master.zip
+		mv gallery-master /var/www/owncloud/apps/galleryplus
+		rm master.zip
+		
+		# Download and install Documents
+		wget https://github.com/owncloud/documents/archive/master.zip		
+		unzip master.zip		
+		mv documents-master /var/www/owncloud/apps/documents		
+		rm master.zip		
+		apt-get install --no-install-recommends libreoffice -q -y
+		sudo apt-add-repository ppa:libreoffice/libreoffice-4-4 -y
+		
+		# Download and install GalleryPlus
+		wget https://github.com/owncloud/mail/archive/master.zip
+		unzip master.zip
+		mv mail-master /var/www/owncloud/apps/mail
+		rm master.zip
+		cd /var/www/owncloud/apps/mail
+		curl -sS https://getcomposer.org/installer | php
+		php composer.phar install
+		rm composer.phar
+		cd /root/
+		
 		debconf-set-selections <<< 'mysql-server mysql-server/root_password password $mysql_pass'
 		debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $mysql_pass'
 		apt-get install -q -y owncloud php5-libsmbclient
