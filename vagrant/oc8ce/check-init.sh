@@ -33,10 +33,24 @@ if (sudo -u www-data php $oc/occ status 2>&1 | grep -q ' is not installed '); th
 fi
 
 # set secure permissions
-bash /var/scripts/secure-permissions.sh
+  bash /var/scripts/secure-permissions.sh
 
 # we want clean logs
-rm $oc/data/owncloud.log
+  rm $oc/data/owncloud.log
+
+## enable the apps we want the user to have
+  # disable gallery, and enable galleryplus by @oparoz
+    sudo -u www-data php /var/www/owncloud/occ app:enable galleryplus
+    sudo -u www-data php /var/www/owncloud/occ app:disable gallery
+  # enable documents
+  ## FIXME: Install Libreoffice to be able to handle MS docouments
+  ## FIXME: apt-get install --no-install-recommends libreoffice in build-ubuntu.sh
+  ## FIXME: sudo apt-add-repository ppa:libreoffice/libreoffice-4-4 -y
+  ## FIXME: Add 'preview_libreoffice_path' => '/usr/bin/libreoffice' >> $oc/config/config.php
+    # sudo -u www-data php /var/www/owncloud/occ app:enable documents
+  
+  ## Should mail be activated from start? https://apps.owncloud.com/content/show.php/Mail?content=169914
+
 
 ## install memcache
 # check if a decent apt-get install php5-apcu was done at build time!
