@@ -110,21 +110,23 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		# Download and install GalleryPlus
 		wget https://github.com/owncloud/gallery/archive/master.zip
 		unzip master.zip
-		mv gallery-master /var/www/owncloud/apps/galleryplus
+		mv gallery-master/ /var/www/owncloud/apps/galleryplus
 		rm master.zip
 		
 		# Download and install Documents
 		wget https://github.com/owncloud/documents/archive/master.zip		
 		unzip master.zip		
-		mv documents-master /var/www/owncloud/apps/documents		
-		rm master.zip		
-		apt-get install --no-install-recommends libreoffice -q -y
-		sudo apt-add-repository ppa:libreoffice/libreoffice-4-4 -y
+		mv documents-master/ /var/www/owncloud/apps/documents		
+		rm master.zip
+		## Needed to support MS-documents
+		$DEBUG || apt-get install --no-install-recommends libreoffice -q -y
+		## Add Libreoffice PPA 
+		$DEBUG || sudo apt-add-repository ppa:libreoffice/libreoffice-5-0 -y
 		
 		# Download and install GalleryPlus
 		wget https://github.com/owncloud/mail/archive/master.zip
 		unzip master.zip
-		mv mail-master /var/www/owncloud/apps/mail
+		mv mail-master/ /var/www/owncloud/apps/mail
 		rm master.zip
 		cd /var/www/owncloud/apps/mail
 		curl -sS https://getcomposer.org/installer | php
