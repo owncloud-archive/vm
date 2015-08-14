@@ -107,32 +107,37 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		# We need unzip to perform this	
 		apt-get install unzip -y
 		
-		# Download and install GalleryPlus
-		wget https://github.com/owncloud/gallery/archive/master.zip
-		unzip master.zip
-		mv gallery-master/ /var/www/owncloud/apps/galleryplus
-		rm master.zip
-		
-		# Download and install Documents
-		wget https://github.com/owncloud/documents/archive/master.zip		
-		unzip master.zip		
-		mv documents-master/ /var/www/owncloud/apps/documents		
-		rm master.zip
-		## Needed to support MS-documents
+	  	# Download and install GalleryPlus
+                wget https://github.com/owncloud/gallery/archive/master.zip
+                unzip master.zip
+                rm master.zip
+                mkdir -p /var/www/owncloud/apps/galleryplus
+                mv gallery-master/ galleryplus/
+                mv galleryplus /var/www/owncloud/apps
+
+                # Download and install Documents
+                wget https://github.com/owncloud/documents/archive/master.zip
+                unzip master.zip
+                rm master.zip
+                mkdir -p /var/www/owncloud/apps/documents
+                mv /documents-master/ documents/
+                mv documents/ /var/www/owncloud/apps
 		$DEBUG || apt-get install --no-install-recommends libreoffice -q -y
 		## Add Libreoffice PPA 
 		$DEBUG || sudo apt-add-repository ppa:libreoffice/libreoffice-5-0 -y
 		
-		# Download and install GalleryPlus
-		wget https://github.com/owncloud/mail/archive/master.zip
-		unzip master.zip
-		mv mail-master/ /var/www/owncloud/apps/mail
-		rm master.zip
-		cd /var/www/owncloud/apps/mail
-		curl -sS https://getcomposer.org/installer | php
-		php composer.phar install
-		rm composer.phar
-		cd /root/
+	 	# Download and install Mail
+                wget https://github.com/owncloud/mail/archive/master.zip
+                unzip master.zip
+                rm master.zip
+                mkdir -p /var/www/owncloud/apps/mail
+                mv /mail-master mail/
+                mv mail/ /var/www/owncloud/apps
+                cd /var/www/owncloud/apps/mail
+                curl -sS https://getcomposer.org/installer | php
+                php composer.phar install
+                # rm composer.phar
+                cd /root/
 		
 		debconf-set-selections <<< 'mysql-server mysql-server/root_password password $mysql_pass'
 		debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $mysql_pass'
