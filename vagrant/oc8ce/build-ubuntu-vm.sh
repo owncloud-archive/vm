@@ -113,15 +113,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                 rm master.zip
                 mkdir -p /var/www/owncloud/apps/galleryplus
                 mv gallery-master/ galleryplus/
-                mv galleryplus /var/www/owncloud/apps
+                mv galleryplus/ /var/www/owncloud/apps
 
                 # Download and install Documents
                 wget https://github.com/owncloud/documents/archive/master.zip
                 unzip master.zip
                 rm master.zip
                 mkdir -p /var/www/owncloud/apps/documents
-                mv /documents-master/ documents/
+                mv documents-master/ documents/
                 mv documents/ /var/www/owncloud/apps
+                ## Make it possible to enable MS-document support
 		$DEBUG || apt-get install --no-install-recommends libreoffice -q -y
 		## Add Libreoffice PPA 
 		$DEBUG || sudo apt-add-repository ppa:libreoffice/libreoffice-5-0 -y
@@ -131,7 +132,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                 unzip master.zip
                 rm master.zip
                 mkdir -p /var/www/owncloud/apps/mail
-                mv /mail-master mail/
+                mv mail-master/ mail/
                 mv mail/ /var/www/owncloud/apps
                 cd /var/www/owncloud/apps/mail
                 curl -sS https://getcomposer.org/installer | php
