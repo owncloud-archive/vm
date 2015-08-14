@@ -97,18 +97,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		# install packages.
 		sudo apt-get install -q -y language-pack-de figlet
 
+		## Install APCU 4.0.6, the traditional (somewhat ugly) way for 14.04
+		# wget http://de.archive.ubuntu.com/ubuntu/pool/universe/p/php-apcu/php5-apcu_4.0.6-1_amd64.deb
+		# sudo dpkg -i php5-apcu_4.0.6-1_amd64.deb
+		# rm php5-apcu_4.0.6-1_amd64.deb
+		# sudo service apache2 restart
+		## Install APCU 4.0.6, using the 14.04 package from isv:ownCloud:community:...
+		sudo apt-get install -q -y php5-apcu
+
 		sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password $mysql_pass'
 		sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $mysql_pass'
 		sudo apt-get install -q -y owncloud php5-libsmbclient
 		cd /var/www/owncloud/apps
 		curl -sL localhost/owncloud/ | grep login || { curl -sL localhost/owncloud; exit 1; } # did not start at all??
-		
-		## Install APCU 4.0.6
-		wget http://de.archive.ubuntu.com/ubuntu/pool/universe/p/php-apcu/php5-apcu_4.0.6-1_amd64.deb
-		sudo dpkg -i php5-apcu_4.0.6-1_amd64.deb
-		rm php5-apcu_4.0.6-1_amd64.deb
-		sudo service apache2 restart
-
 
 		# hook our scripts. Specifically the check-init.sh upon boot.
 		sudo mkdir -p /var/scripts
@@ -147,6 +148,7 @@ vagrant halt
 ## VBoxManage modifyvm $imageName --resize 40000	# also needs: resize2fs -p -F /dev/DEVICE
 
 ## export is much better than copying the disk manually.
+rm -f $imageName.ovf	# or VBoxManage export fails with 'already exists'
 VBoxManage export $imageName -o $imageName.ovf
 # VBoxImagePath=$(VBoxManage list hdds | grep "/$imageName/")
 # #-->Location:       /home/$USER/VirtualBox VMs/ownCloud-8.1.1+xUbuntu_14.04/box-disk1.vmdk
