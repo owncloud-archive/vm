@@ -40,6 +40,7 @@ fi
     
     # Enable Mail
     sudo -u www-data php /var/www/owncloud/occ app:enable mail
+    php /var/scripts/update-config.php $oc/config/config.php 'app.mail.server-side-cache.enabled' 'true'
     
     # Enable Documents
     sudo -u www-data php /var/www/owncloud/occ app:enable documents
