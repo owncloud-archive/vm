@@ -8,6 +8,7 @@
 # * initialize owncloud.
 # * set secure permissions
 # * rm owncloud.log for clean logs
+# * Install Documents, Mail, and GalleryPlus
 
 exec 3>&1 1>>/var/log/check-init.log 2>&1
 
@@ -32,25 +33,46 @@ if (sudo -u www-data php $oc/occ status 2>&1 | grep -q ' is not installed '); th
   sudo -u www-data php $oc/occ status
 fi
 
+## Enable the apps we want the user to have
+# We need unzip to perform this
+apt-get install unzip -y
+
+  # Download and install GalleryPlus
+    wget https://github.com/owncloud/gallery/archive/master.zip
+    unzip master.zip
+    mv gallery-master /var/www/owncloud/apps/galleryplus
+    rm master.zip
+    # Disable gallery, and enable GalleryPlus
+    sudo -u www-data php /var/www/owncloud/occ app:disable gallery
+    sudo -u www-data php /var/www/owncloud/occ app:enable galleryplus
+    
+  # Download and install Mail
+    wget https://github.com/owncloud/mail/archive/master.zip
+    unzip master.zip
+    mv mail-master /var/www/owncloud/apps/mail
+    rm master.zip
+    cd /var/www/owncloud/apps/mail
+    curl -sS https://getcomposer.org/installer | php
+    php composer.phar install
+    rm composer.phar
+    sudo -u www-data php /var/www/owncloud/occ app:enable mail
+    
+  # Download and install Documents
+    wget https://github.com/owncloud/documents/archive/master.zip
+    unzip master.zip
+    mv documents-master /var/www/owncloud/apps/documents
+    rm master.zip
+    sudo -u www-data php /var/www/owncloud/occ app:enable documents
+  # FIXME: Install Libreoffice to be able to handle MS docouments
+  # FIXME: apt-get install --no-install-recommends libreoffice in build-ubuntu.sh
+  # FIXME: sudo apt-add-repository ppa:libreoffice/libreoffice-4-4 -y
+  # FIXME: Add 'preview_libreoffice_path' => '/usr/bin/libreoffice' >> $oc/config/config.php
+  
 # set secure permissions
-  bash /var/scripts/secure-permissions.sh
+bash /var/scripts/secure-permissions.sh
 
 # we want clean logs
-  rm $oc/data/owncloud.log
-
-## enable the apps we want the user to have
-  # disable gallery, and enable galleryplus by @oparoz
-    sudo -u www-data php /var/www/owncloud/occ app:enable galleryplus
-    sudo -u www-data php /var/www/owncloud/occ app:disable gallery
-  # enable documents
-  ## FIXME: Install Libreoffice to be able to handle MS docouments
-  ## FIXME: apt-get install --no-install-recommends libreoffice in build-ubuntu.sh
-  ## FIXME: sudo apt-add-repository ppa:libreoffice/libreoffice-4-4 -y
-  ## FIXME: Add 'preview_libreoffice_path' => '/usr/bin/libreoffice' >> $oc/config/config.php
-    # sudo -u www-data php /var/www/owncloud/occ app:enable documents
-  
-  ## Should mail be activated from start? https://apps.owncloud.com/content/show.php/Mail?content=169914
-
+rm $oc/data/owncloud.log
 
 ## install memcache
 # check if a decent apt-get install php5-apcu was done at build time!
