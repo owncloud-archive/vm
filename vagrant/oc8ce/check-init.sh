@@ -38,13 +38,17 @@ bash /var/scripts/secure-permissions.sh
 # we want clean logs
 rm $oc/data/owncloud.log
 
-## install memcached
+## install memcache
 # check if a decent apt-get install php5-apcu was done at build time!
 if [ 0$(php -r 'print(version_compare("4.0.6",phpversion("apc"),"<="));'
 ) -eq 1 ]; then
   php /var/scripts/update-config.php $oc/config/config.php 'memcache.local' '\OC\Memcache\APCu'
   # keep occ happy.
   echo 'apc.enable_cli = 1' >> /etc/php5/cli/php.ini
+
+  # statistics tool.
+  test -f /usr/share/php5/apcu/apc.php && cp /usr/share/php5/apcu/apc.php /var/www/owncloud
+  test -f /var/www/owncloud/apc.php && chmod a+x /var/www/owncloud/apc.php
 fi
 
 ## list of all addresses in case it is a multihomed host.

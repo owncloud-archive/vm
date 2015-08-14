@@ -73,29 +73,30 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.customize [ "modifyvm", :id, "--cpus", 1 ]
   end
 
+  ## this is run as user root, apparently. I'd expected user vagrant ...
   config.vm.provision "shell", inline: <<-SCRIPT
 		set -x
-		sudo userdel --force ubuntu		# backdoor?
-		sudo useradd owncloud -m		# group owncloud not yet exists
-		sudo useradd admin -m -g admin		# group admin already exists
-		/bin/echo -e "root:admin\nadmin:admin\nowncloud:owncloud" | sudo chpasswd
+		userdel --force ubuntu		# backdoor?
+		useradd owncloud -m		# group owncloud not yet exists
+		useradd admin -m -g admin	# group admin already exists
+		/bin/echo -e "root:admin\nadmin:admin\nowncloud:owncloud" | chpasswd
 		$DEBUG || rm -f /etc/sudoers.d/vagrant
 		echo 'admin ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/admin
 		echo 'owncloud ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/owncloud
 
 		# prepare repositories
-		wget -q $OBS_REPO/Release.key -O - | sudo apt-key add -
-		sudo sh -c "echo 'deb $OBS_REPO /' >> /etc/apt/sources.list.d/owncloud.list"
+		wget -q $OBS_REPO/Release.key -O - | apt-key add -
+		sh -c "echo 'deb $OBS_REPO /' >> /etc/apt/sources.list.d/owncloud.list"
 
 		# attention: apt-get update is horribly slow when not connected to a tty.
 		export DEBIAN_FRONTEND=noninteractive TERM=ansi LC_ALL=C
-		sudo apt-get -q -y update
+		apt-get -q -y update
 
-		$DEBUG || sudo aptitude full-upgrade -y
-		$DEBUG || sudo apt-get -q -y autoremove
+		$DEBUG || aptitude full-upgrade -y
+		$DEBUG || apt-get -q -y autoremove
 
 		# install packages.
-		sudo apt-get install -q -y language-pack-de figlet
+		apt-get install -q -y language-pack-de figlet
 
 		## Install APCU 4.0.6, the traditional (somewhat ugly) way for 14.04
 		# wget http://de.archive.ubuntu.com/ubuntu/pool/universe/p/php-apcu/php5-apcu_4.0.6-1_amd64.deb
@@ -103,33 +104,41 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		# rm php5-apcu_4.0.6-1_amd64.deb
 		# sudo service apache2 restart
 		## Install APCU 4.0.6, using the 14.04 package from isv:ownCloud:community:...
-		sudo apt-get install -q -y php5-apcu
+		apt-get install -q -y php5-apcu
 
-		sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password $mysql_pass'
-		sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $mysql_pass'
-		sudo apt-get install -q -y owncloud php5-libsmbclient
-		cd /var/www/owncloud/apps
+		debconf-set-selections <<< 'mysql-server mysql-server/root_password password $mysql_pass'
+		debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $mysql_pass'
+		apt-get install -q -y owncloud php5-libsmbclient
 		curl -sL localhost/owncloud/ | grep login || { curl -sL localhost/owncloud; exit 1; } # did not start at all??
 
+		## FIXME: the lines below assume we are root. While most other parts of the
+		## script assume, we are a regular user and need sudo.
+
 		# hook our scripts. Specifically the check-init.sh upon boot.
-		sudo mkdir -p /var/scripts
-		sudo cp /vagrant/*.{php,sh} /var/scripts
+		mkdir -p /var/scripts
+		cp /vagrant/*.{php,sh} /var/scripts
 		chmod a+x /var/scripts/*.{php,sh}
 		$DEBUG || echo 'userdel --force vagrant' >> /var/scripts/check-init.sh
 		sudo sed -i -e 's@exit@bash -x /var/scripts/check-init.sh; exit@' /etc/rc.local
 		echo >> /home/admin/.profile 'test -f /var/scripts/setup-when-admin.sh && sudo bash /var/scripts/setup-when-admin.sh'
 
+		# make things nice.
+                mv /var/scripts/index.php /var/www/html/index.php && rm -f /var/www/html/index.html
+
+		echo '<?php phpinfo(); ' > /var/www/owncloud/phpinfo.php
+		chmod a+x /var/www/owncloud/phpinfo.php
+
 		# prepare https
-		sudo a2enmod ssl headers
-		sudo a2dissite default-ssl
-                sudo bash /var/scripts/self-signed-ssl.sh
+		a2enmod ssl headers
+		a2dissite default-ssl
+                bash /var/scripts/self-signed-ssl.sh
                 
                 # Set RAMDISK for better performance
                 echo 'none /tmp tmpfs,size=6g defaults' >> /etc/fstab
 
 		# "zero out" the drive...
-		$DEBUG || sudo dd if=/dev/zero of=/EMPTY bs=1M
-		$DEBUG || sudo rm -f /EMPTY
+		$DEBUG || dd if=/dev/zero of=/EMPTY bs=1M
+		$DEBUG || rm -f /EMPTY
   SCRIPT
 end
 EOF
@@ -148,7 +157,7 @@ vagrant halt
 ## VBoxManage modifyvm $imageName --resize 40000	# also needs: resize2fs -p -F /dev/DEVICE
 
 ## export is much better than copying the disk manually.
-rm -f $imageName.ovf	# or VBoxManage export fails with 'already exists'
+rm -f $imageName.* $imageName-*	# or VBoxManage export fails with 'already exists'
 VBoxManage export $imageName -o $imageName.ovf
 # VBoxImagePath=$(VBoxManage list hdds | grep "/$imageName/")
 # #-->Location:       /home/$USER/VirtualBox VMs/ownCloud-8.1.1+xUbuntu_14.04/box-disk1.vmdk
