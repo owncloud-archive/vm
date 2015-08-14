@@ -8,7 +8,7 @@
 # * initialize owncloud.
 # * set secure permissions
 # * rm owncloud.log for clean logs
-# * Install Documents, Mail, and GalleryPlus
+# * Enable GalleryPlus, Documents, and Mail
 
 exec 3>&1 1>>/var/log/check-init.log 2>&1
 
@@ -34,45 +34,16 @@ if (sudo -u www-data php $oc/occ status 2>&1 | grep -q ' is not installed '); th
 fi
 
 ## Enable the apps we want the user to have
-# We need unzip to perform this
-apt-get install unzip -y
-
-  # Download and install GalleryPlus
-    wget https://github.com/owncloud/gallery/archive/master.zip
-    unzip master.zip
-    mv gallery-master /var/www/owncloud/apps/galleryplus
-    rm master.zip
     # Disable gallery, and enable GalleryPlus
     sudo -u www-data php /var/www/owncloud/occ app:disable gallery
     sudo -u www-data php /var/www/owncloud/occ app:enable galleryplus
     
-  # Download and install Mail
-    wget https://github.com/owncloud/mail/archive/master.zip
-    unzip master.zip
-    mv mail-master /var/www/owncloud/apps/mail
-    rm master.zip
-    cd /var/www/owncloud/apps/mail
-    curl -sS https://getcomposer.org/installer | php
-    php composer.phar install
-    rm composer.phar
+    # Enable Mail
     sudo -u www-data php /var/www/owncloud/occ app:enable mail
     
-  # Download and install Documents
-    wget https://github.com/owncloud/documents/archive/master.zip
-    unzip master.zip
-    mv documents-master /var/www/owncloud/apps/documents
-    rm master.zip
+    # Enable Documents
     sudo -u www-data php /var/www/owncloud/occ app:enable documents
-  # FIXME: Install Libreoffice to be able to handle MS docouments
-  # FIXME: apt-get install --no-install-recommends libreoffice in build-ubuntu.sh
-  # FIXME: sudo apt-add-repository ppa:libreoffice/libreoffice-4-4 -y
-  # FIXME: Add 'preview_libreoffice_path' => '/usr/bin/libreoffice' >> $oc/config/config.php
-  
-# set secure permissions
-bash /var/scripts/secure-permissions.sh
-
-# we want clean logs
-rm $oc/data/owncloud.log
+## FIXME: Add 'preview_libreoffice_path' => '/usr/bin/libreoffice' >> $oc/config/config.php
 
 ## install memcache
 # check if a decent apt-get install php5-apcu was done at build time!
@@ -97,6 +68,12 @@ ADDRESS=$(ip r | grep ${GATEWAY:-src} | grep src | head -n 1 | cut -d' ' -f12)
 ## set trusted domain
 php /var/scripts/update-config.php $oc/config/config.php 'trusted_domains[]' localhost ${ADDRESSES[@]} $(hostname) $(hostname --fqdn)
 php /var/scripts/update-config.php $oc/config/config.php overwrite.cli.url https://$ADDRESS/owncloud
+
+# set secure permissions once again
+bash /var/scripts/secure-permissions.sh
+
+# we want clean logs
+rm $oc/data/owncloud.log
 
 # Prepare /etc/issue and /etc/motd with hints.
 # Hint: Disable this by erasing $cred_file after changing the password.
