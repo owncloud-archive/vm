@@ -116,6 +116,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		sudo a2enmod ssl headers
 		sudo a2dissite default-ssl
                 sudo bash /var/scripts/self-signed-ssl.sh
+                
+                # Set RAMDISK for better performance
+                echo 'none /tmp tmpfs,size=6g defaults' >> /etc/fstab
 
 		# "zero out" the drive...
 		$DEBUG || sudo dd if=/dev/zero of=/EMPTY bs=1M
