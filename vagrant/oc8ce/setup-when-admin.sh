@@ -12,7 +12,7 @@ cat << EOMSTART
 EOMSTART
 echo
 echo -e "\e[32m"
-The script will begin in 10 seconds...
+echo The script will begin in 10 seconds...
 echo -e "\e[0m"
 sleep 10
 clear
