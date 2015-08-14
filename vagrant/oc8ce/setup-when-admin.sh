@@ -9,8 +9,11 @@ cat << EOMSTART
 |   - Set new passwords to Ubuntu and ownCloud (user: admin)    |
 +---------------------------------------------------------------+
 
-The script will begin in 10 seconds...
 EOMSTART
+echo
+echo -e "\e[32m"
+The script will begin in 10 seconds...
+echo -e "\e[0m"
 sleep 10
 clear
 
