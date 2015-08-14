@@ -43,7 +43,7 @@ fi
     
     # Enable Documents
     sudo -u www-data php /var/www/owncloud/occ app:enable documents
-## FIXME: Add 'preview_libreoffice_path' => '/usr/bin/libreoffice' >> $oc/config/config.php
+    php /var/scripts/update-config.php $oc/config/config.php 'preview_libreoffice_path' '/usr/bin/libreoffice'
 
 ## install memcache
 # check if a decent apt-get install php5-apcu was done at build time!
