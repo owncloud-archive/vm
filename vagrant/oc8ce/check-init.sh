@@ -39,8 +39,8 @@ fi
 
 # Enable the apps we want the user to have
     # Disable gallery, and enable GalleryPlus
-    # sudo -u www-data php /var/www/owncloud/occ app:disable gallery
-    # sudo -u www-data php /var/www/owncloud/occ app:enable galleryplus
+    sudo -u www-data php /var/www/owncloud/occ app:disable gallery
+    sudo -u www-data php /var/www/owncloud/occ app:enable galleryplus
     
     # Enable Mail
     sudo -u www-data php /var/www/owncloud/occ app:enable mail
