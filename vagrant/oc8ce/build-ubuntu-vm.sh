@@ -138,11 +138,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		apt-get install unzip -y
 		
 	  	# Download and install GalleryPlus
-                # wget https://github.com/owncloud/gallery/archive/master.zip
-                # unzip master.zip
-                # rm master.zip
-                # mv gallery-master/ galleryplus/
-                # mv galleryplus/ /var/www/owncloud/apps
+                wget https://github.com/interfasys/galleryplus/archive/master.zip
+                unzip master.zip
+                rm master.zip
+                mv galleryplus-master/ galleryplus/
+                mv galleryplus/ /var/www/owncloud/apps
 
                 # Download and install Documents
                 wget https://github.com/owncloud/documents/archive/master.zip
