@@ -33,10 +33,14 @@ if (sudo -u www-data php $oc/occ status 2>&1 | grep -q ' is not installed '); th
   sudo -u www-data php $oc/occ status
 fi
 
-## Enable the apps we want the user to have
+# set servername directive to avoid warning about fully qualified domain name when apache restarts
+# working fix, but https://github.com/owncloud/vm/issues/6#issuecomment-131079431
+    # sed -i 's/127.0.0.1 localhost/127.0.0.1 localhost.localdomain vagrant-ubuntu-trusty-64/g' /etc/hosts
+
+# Enable the apps we want the user to have
     # Disable gallery, and enable GalleryPlus
-    sudo -u www-data php /var/www/owncloud/occ app:disable gallery
-    sudo -u www-data php /var/www/owncloud/occ app:enable galleryplus
+    # sudo -u www-data php /var/www/owncloud/occ app:disable gallery
+    # sudo -u www-data php /var/www/owncloud/occ app:enable galleryplus
     
     # Enable Mail
     sudo -u www-data php /var/www/owncloud/occ app:enable mail
@@ -70,7 +74,7 @@ ADDRESS=$(ip r | grep ${GATEWAY:-src} | grep src | head -n 1 | cut -d' ' -f12)
 php /var/scripts/update-config.php $oc/config/config.php 'trusted_domains[]' localhost ${ADDRESSES[@]} $(hostname) $(hostname --fqdn)
 php /var/scripts/update-config.php $oc/config/config.php overwrite.cli.url https://$ADDRESS/owncloud
 
-# set secure permissions once again
+# set secure permissions
 bash /var/scripts/secure-permissions.sh
 
 # we want clean logs
