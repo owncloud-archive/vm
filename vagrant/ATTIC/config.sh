@@ -2,7 +2,7 @@
 #================
 # FILE          : config.sh
 #----------------
-# PROJECT       : ownCloud Enterprise
+# PROJECT       : ownCloud Appliance
 # COPYRIGHT     : (c) 2014,2015 ownCloud.com - GPLv2 - All rights reserved
 #               :
 # AUTHOR        : Jürgen Weigert <jw@owncloud.com>

@@ -1,0 +1,24 @@
+Index: eval-appliance-oc8ee-vmdk.kiwi
+===================================================================
+--- eval-appliance-oc8ee-vmdk.kiwi	(revision 16)
++++ eval-appliance-oc8ee-vmdk.kiwi	(working copy)
+@@ -1,5 +1,5 @@
+ <?xml version='1.0' encoding='UTF-8'?>
+-<image name='eval-appliance-oc8ee' displayname='eval-appliance-oc8ee' schemaversion='5.2'>
++<image name='eval-appliance-oc8ee-vmdk' displayname='eval-appliance-oc8ee-vmdk' schemaversion='5.2'>
+   <description type='system'>
+     <!-- converted by: /home/juewei/bin/studio2obs.pl /tmp/msrex20140825_oC6_community_http.x86_64-0.0.1.vmx-kiwi_src.tar.gz msrex20140825_oC6_community_http # (V0.3), Sat Aug 30 00:33:08 2014 -->
+     <author>Jürgen Weigert</author>
+@@ -9,7 +9,11 @@
+   <preferences>
+ 
+     <type checkprebuilt='true' boot='vmxboot/suse-13.1' fsnocheck='true' filesystem='ext3' bootloader='grub2' kernelcmdline='quiet' 
+-    	format='qcow2' image='vmx'>
++        primary='true' format='vmdk' image='vmx'>
++      <machine memory='3072' arch='x86_64' guestOS='suse-64'>
++        <vmdisk controller='scsi' id='0'/>
++        <vmnic driver='e1000' interface='0' mode='bridged'/>
++      </machine>
+       <size unit='G' additive='false'>10</size>
+     </type>
+ 

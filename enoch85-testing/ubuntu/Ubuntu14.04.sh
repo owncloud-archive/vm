@@ -1,12 +1,13 @@
 #! /bin/sh
 
-ocObsRepo=http://download.opensuse.org/repositories/isv:ownCloud:community/xUbuntu_14.04
+ocObsRepo=http://download.opensuse.org/repositories/isv:ownCloud:community:testing/xUbuntu_14.04
 ocPackage=$(echo $ocObsRepo | sed -e 's@:\([^/]\)@:/\1@')
 releaseKey=$ocObsRepo/Release.key
 ocVersion=Owncloud8.0.0-6
 imageVersion=xUbuntu14.04
 vmBoxName=ubuntu/trusty64
 vmBoxUrl=https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/14.04/providers/virtualbox.box
+
 
 cat > Vagrantfile << EOF
 \$script = <<SCRIPT
@@ -20,8 +21,8 @@ sudo apt-get update -y
 sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password admin'
 sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password admin'
 sudo apt-get install -y owncloud
+sudo mkdir /var/scripts
 cd /var/www/owncloud/apps
-# temporary bugfix already fixed in :testing
 sudo chown -c www-data .
 SCRIPT
 
@@ -41,6 +42,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 	config.vm.provision "shell",
 	inline: \$script
+	config.vm.provision "shell", path: https://raw.githubusercontent.com/owncloud/vm/master/enoch85-testing/welcome.sh
 end
 EOF
 vagrant up

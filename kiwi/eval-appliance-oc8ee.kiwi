@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<image name='eval-appliance-oc8ee' displayname='eval-appliance-oc8ee' schemaversion='5.2'>
+  <description type='system'>
+    <!-- converted by: /home/juewei/bin/studio2obs.pl /tmp/msrex20140825_oC6_community_http.x86_64-0.0.1.vmx-kiwi_src.tar.gz msrex20140825_oC6_community_http # (V0.3), Sat Aug 30 00:33:08 2014 -->
+    <author>Jürgen Weigert</author>
+    <contact>jw@owncloud.com</contact>
+    <specification>A text-only base</specification>
+  </description>
+  <preferences>
+
+    <type checkprebuilt='true' boot='vmxboot/suse-13.1' fsnocheck='true' filesystem='ext3' bootloader='grub2' kernelcmdline='quiet' 
+    	format='qcow2' image='vmx'>
+      <size unit='G' additive='false'>10</size>
+    </type>
+
+    <version>20150622.810.1</version><!-- YYYYMMDD, VERS, checkin counter (only two dots allowed)-->
+    <packagemanager>zypper</packagemanager>
+    <rpm-check-signatures>false</rpm-check-signatures>
+    <rpm-force>false</rpm-force>
+    <boot-theme>studio</boot-theme>
+    <timezone>America/New_York</timezone>
+    <hwclock>localtime</hwclock>
+    <locale>en_US</locale>
+  </preferences>
+  <users group='root'>
+    <user name='root' pwd='$1$vekqgrz0$hBPNDPHc2UKT6uE6hBXW/.' home='/root' shell='/bin/bash'/>
+  </users>
+  <packages type='image' patternType='onlyRequired'>
+    <package name='patterns-openSUSE-base'/>
+    <!-- have choice for product_flavor(openSUSE) needed by openSUSE-release: ... -->
+    <package name="openSUSE-release-mini"/>
+    <package name="ncurses-utils"/><!-- provides /usr/bin/tput needed by aaa_base -->
+    <package name="pkg-config"/><!-- provides /usr/bin/pkg-config needed by shared-mime-info -->
+    <package name="yast2-installation"/>
+
+    <package name='php5-soap'/>
+    <package name='php5-ldap'/>
+    <package name='php5-ftp'/>
+    <package name='php5-gmp'/>
+    <package name='clamav'/>
+    <package name='samba-client'/>
+    <package name='php5-libsmbclient'/>
+    <package name='php5-APCu'/>
+    <package name='psmisc'/>
+    <package name='php5-mysql'/>
+    <package name='php5-fileinfo'/>
+    <package name='postfix'/>
+    <package name='mariadb'/>
+    <package name='yast2-update'/>
+    <package name='zypper'/>
+    <package name='yast2'/>
+    <!-- have choice for libyui_pkg needed by yast2-packager: libyui-ncurses-pkg5 libyui-qt-pkg5 libyui-gtk-pkg5 -->
+    <package name="libyui-ncurses-pkg5"/>
+    
+    <package name='dhcp-client'/><!-- hyper-v does not get an address injected -->
+    <package name='figlet'/>
+    <package name='mailx'/><!-- support request 00Di0L0AX._500i0DaLSA -->
+    <package name='landscape-sysinfo-mini'/>
+    <package name='telnet'/>
+    <package name='traceroute'/>
+    <package name='lsof'/>
+    <package name='strace'/>
+    <package name='kbd-wrapper'/>
+    <package name='vim'/>
+    <package name='syslog-ng'/>
+    <package name='plymouth'/>
+    <!-- have choice for plymouth-branding needed by plymouth: plymouth-branding-basedonopensuse plymouth-branding-openSUSE, -->
+    <package name='plymouth-branding-basedonopensuse'/>
+    
+    <package name='less'/>
+    <package name='kernel-default'/>
+    <package name='iputils'/>
+    <package name='grub2'/>
+    <package name='grub2-i386-efi' arch='i586'/>
+    <package name='SuSEfirewall2'/>
+    <package name='owncloud-enterprise'/>
+    <package name='oc-eval-license'/>
+    <package name='apache2'/>
+    <archive name='apache2_config.tar.gz'/>
+    <archive name='obfuscated_apps.tar.gz'/>
+    <archive name='clamav-database.tar.gz'/>
+    <archive name='changelog.tar.gz'/>
+    
+    <package name='yast2-firstboot'/>
+    <package name='yast2-online-update'/>
+    <package name='yast2-online-update-frontend'/>
+    <package name='yast2-online-update-configuration'/>
+    <package name='zypper-log'/>
+    <package name='glibc-locale'/>
+    <package name='yast2-trans-en_US'/>
+    <package name='open-vm-tools'/>
+    <archive name='plymouth.tar' bootinclude='true'/>
+    <package name='gfxboot-devel' bootinclude='true'/>
+  </packages>
+  <packages type='bootstrap'>
+    <package name='filesystem'/>
+    <package name='glibc-locale'/>
+    <package name='module-init-tools'/>
+    <!-- Problem: nothing provides /usr/bin/eu-nm needed by module-init-tools -->
+    <package name='elfutils'/>
+    <!-- Problem: nothing provides /usr/bin/sg_inq needed by udev-208-23.3.x86_64 -->
+    <package name='sg3_utils'/>
+    <!-- have choice for sbin_init needed by mkinitrd: systemd-sysvinit systemd-mini-sysvinit -->
+    <!-- avoid using systemd-mini (seen in openSUSE:Factory:ARM/JeOS-beagle) -->
+    <package name="systemd-sysvinit"/>
+    <package name='systemd-presets-branding-basedonopensuse'/>
+  </packages>
+
+  <repository type='rpm-md'> <source path='obs://openSUSE.org:Virtualization:Appliances/openSUSE_13.1'/> </repository>
+  <repository type='rpm-md'> <source path='obs://openSUSE.org:openSUSE:13.1:Update/standard'/> </repository>
+  <repository type='rpm-md'> <source path='obs://openSUSE.org:openSUSE:13.1/standard'/> </repository>
+  <repository type='rpm-md'> <source path='obs://openSUSE.org:server:php:extensions/openSUSE_13.1'/> </repository>
+  <repository type='rpm-md'> <source path='obs://openSUSE.org:isv:ownCloud:community:8.0/openSUSE_13.1'/> </repository>
+  <repository type='rpm-md'> <source path='obs://openSUSE.org:isv:ownCloud:devel/openSUSE_13.1'/> </repository>
+</image>
