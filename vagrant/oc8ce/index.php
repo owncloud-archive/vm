@@ -29,11 +29,11 @@ else
 <p>The ownCloud web interface is available via HTTP or HTTPS (preferred). Depending on the network configuration of your virtual machine manager, one of the following URLs (or similar) should work to access ownCloud:
 <font size='+1'>
 <ul>
- <li><a href="https://<?=$_SERVER['SERVER_NAME'];?>:4443/"        >https://<?=$_SERVER['SERVER_NAME'];?>:4443</a>
- <li><a href="https://<?=$_SERVER['SERVER_NAME'];?>/"             >https://<?=$_SERVER['SERVER_NAME'];?></a>
+ <li><a href="https://<?=$_SERVER['SERVER_NAME'];?>:4443/"        >https://<?=$_SERVER['SERVER_NAME'];?>:4443</a> (NAT'ed)
+ <li><a href="https://<?=$_SERVER['SERVER_NAME'];?>/"             >https://<?=$_SERVER['SERVER_NAME'];?></a> (bridged)
  <p>
- <li><a href="http://<?=$_SERVER['SERVER_NAME'];?>:8888/owncloud/">http://<?=$_SERVER['SERVER_NAME'];?>:8888/owncloud</a>
- <li><a href="http://<?=$_SERVER['SERVER_NAME'];?>/"              >http://<?=$_SERVER['SERVER_NAME'];?></a>
+ <li><a href="http://<?=$_SERVER['SERVER_NAME'];?>:8888/owncloud/">http://<?=$_SERVER['SERVER_NAME'];?>:8888/owncloud</a> (NAT'ed)
+ <li><a href="http://<?=$_SERVER['SERVER_NAME'];?>/"              >http://<?=$_SERVER['SERVER_NAME'];?></a> (bridged)
 </ul>
 </font>
 <p>
