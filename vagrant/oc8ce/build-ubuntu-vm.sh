@@ -33,6 +33,7 @@ vmBoxUrl=https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/14.04/providers
 # vmBoxUrl=https://vagrantcloud.com/ubuntu/boxes/vivid64/versions/20150722.0.0/providers/virtualbox.box
 
 OBS_REPO=$OBS_MIRRORS/$(echo $OBS_PROJECT | sed -e 's@:@:/@g')/$buildPlatform
+OBS_REPO_APCU=$OBS_MIRRORS/isv:ownCloud:devel/$buildPlatform
 ocVersion=$(curl -s -L $OBS_REPO/Packages | grep -a1 'Package: owncloud$' | grep Version: | head -n 1 | sed -e 's/Version: /owncloud-/')
 # ocVersion=ownCloud-8.1.0-6
 test -z "$ocVersion" && { echo "ERROR: Cannot find owncloud version in $OBS_REPO/Packages -- Try again later"; exit 1; }
@@ -89,6 +90,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		# prepare repositories
 		wget -q $OBS_REPO/Release.key -O - | apt-key add -
 		sh -c "echo 'deb $OBS_REPO /' >> /etc/apt/sources.list.d/owncloud.list"
+		wget -q $OBS_REPO_APCU/Release.key -O - | apt-key add -
+		sh -c "echo 'deb $OBS_REPO_APCU /' >> /etc/apt/sources.list.d/owncloud.list"
 
 		# attention: apt-get update is horribly slow when not connected to a tty.
 		export DEBIAN_FRONTEND=noninteractive TERM=ansi LC_ALL=C
@@ -100,9 +103,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		# install packages.
 		apt-get install -q -y language-pack-de figlet
 
-		## Install APCU 4.0.6, using the 14.04 package from isv:ownCloud:community:...
+		## Install APCU 4.0.6, using the 14.04 package from isv:ownCloud:devel
 		apt-get install -q -y php5-apcu
-		
+
 		debconf-set-selections <<< 'mysql-server mysql-server/root_password password $mysql_pass'
 		debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $mysql_pass'
 		apt-get install -q -y owncloud php5-libsmbclient
@@ -120,7 +123,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		echo >> /home/admin/.profile 'test -f /var/scripts/setup-when-admin.sh && sudo bash /var/scripts/setup-when-admin.sh'
 
 		# make things nice.
-                mv /var/scripts/index.php /var/www/html/index.php && rm -f /var/www/html/index.html
+		mv /var/scripts/index.php /var/www/html/index.php && rm -f /var/www/html/index.html
 
 		echo '<?php phpinfo(); ' > /var/www/owncloud/phpinfo.php
 		chmod a+x /var/www/owncloud/phpinfo.php
@@ -128,44 +131,44 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		# prepare https
 		a2enmod ssl headers
 		a2dissite default-ssl
-                bash /var/scripts/self-signed-ssl.sh
-                
-                # Set RAMDISK for better performance
-                echo 'none /tmp tmpfs,size=6g defaults' >> /etc/fstab
-                
-                # Install apps we want
+		bash /var/scripts/self-signed-ssl.sh
+
+		# Set RAMDISK for better performance
+		echo 'none /tmp tmpfs,size=6g defaults' >> /etc/fstab
+
+		# Install apps we want
 		# We need unzip to perform this	
 		apt-get install unzip -y
 		
-	  	# Download and install GalleryPlus
-                wget https://github.com/interfasys/galleryplus/archive/master.zip
-                unzip master.zip
-                rm master.zip
-                mv galleryplus-master/ galleryplus/
-                mv galleryplus/ /var/www/owncloud/apps
+		# Download and install GalleryPlus
+		wget https://github.com/interfasys/galleryplus/archive/master.zip
+		unzip master.zip
+		rm master.zip
+		mv galleryplus-master/ galleryplus/
+		mv galleryplus/ /var/www/owncloud/apps
 
-                # Download and install Documents
-                wget https://github.com/owncloud/documents/archive/master.zip
-                unzip master.zip
-                rm master.zip
-                mv documents-master/ documents/
-                mv documents/ /var/www/owncloud/apps
-                ## Make it possible to enable MS-document support
+		# Download and install Documents
+		wget https://github.com/owncloud/documents/archive/master.zip
+		unzip master.zip
+		rm master.zip
+		mv documents-master/ documents/
+		mv documents/ /var/www/owncloud/apps
+		## Make it possible to enable MS-document support
 		$DEBUG || apt-get install --no-install-recommends libreoffice -q -y
 		## Add Libreoffice PPA 
 		$DEBUG || sudo apt-add-repository ppa:libreoffice/libreoffice-5-0 -y
-		
-	 	# Download and install Mail
-                wget https://github.com/owncloud/mail/archive/master.zip
-                unzip master.zip
-                rm master.zip
-                mv mail-master/ mail/
-                mv mail/ /var/www/owncloud/apps
-                # According to READEME.md https://github.com/owncloud/mail#developer-setup-info
-                cd /var/www/owncloud/apps/mail
-                curl -sS https://getcomposer.org/installer | php
-                php composer.phar install
-                rm composer.phar
+
+		# Download and install Mail
+		wget https://github.com/owncloud/mail/archive/master.zip
+		unzip master.zip
+		rm master.zip
+		mv mail-master/ mail/
+		mv mail/ /var/www/owncloud/apps
+		# According to README.md https://github.com/owncloud/mail#developer-setup-info
+		cd /var/www/owncloud/apps/mail
+		curl -sS https://getcomposer.org/installer | php
+		php composer.phar install
+		rm composer.phar
 
 		# "zero out" the drive...
 		$DEBUG || dd if=/dev/zero of=/EMPTY bs=1M
