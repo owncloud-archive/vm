@@ -138,9 +138,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 		# Install apps we want
 		# We need unzip to perform this	
-		# FIXME: We apparently need hg from mercurial for *something*. 
-		# FIXME: Please document this.
 		apt-get install unzip hg -y
+
+		# FIXME: We also need hg from mercurial for *something*. It costs 95 MB!
+		# FIXME: Please document this.
+		# apt-get install mercurial -y
 		
 		# Download and install GalleryPlus
 		wget -q https://github.com/interfasys/galleryplus/archive/master.zip
