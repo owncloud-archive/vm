@@ -68,7 +68,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network :forwarded_port, id: 'ssh', guest: 22, host: 2222
 
   config.vm.provider :virtualbox do |vb|
-      vb.name = "$buildPlatform+$ocVersion"
+      vb.name = "$imageName"
       # speed up: Force the VM to use NAT'd DNS:
       vb.customize [ "modifyvm", :id, "--natdnshostresolver1", "on" ]
       vb.customize [ "modifyvm", :id, "--natdnsproxy1", "on" ]
@@ -141,14 +141,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		apt-get install unzip -y
 		
 		# Download and install GalleryPlus
-		wget https://github.com/interfasys/galleryplus/archive/master.zip
+		wget -q https://github.com/interfasys/galleryplus/archive/master.zip
 		unzip master.zip
 		rm master.zip
 		mv galleryplus-master/ galleryplus/
 		mv galleryplus/ /var/www/owncloud/apps
 
 		# Download and install Documents
-		wget https://github.com/owncloud/documents/archive/master.zip
+		wget -q https://github.com/owncloud/documents/archive/master.zip
 		unzip master.zip
 		rm master.zip
 		mv documents-master/ documents/
@@ -159,7 +159,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		$DEBUG || sudo apt-add-repository ppa:libreoffice/libreoffice-5-0 -y
 
 		# Download and install Mail
-		wget https://github.com/owncloud/mail/archive/master.zip
+		wget -q https://github.com/owncloud/mail/archive/master.zip
 		unzip master.zip
 		rm master.zip
 		mv mail-master/ mail/

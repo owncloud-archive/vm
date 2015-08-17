@@ -19,8 +19,10 @@ oc=/var/www/owncloud
 # initialize owncloud and populate $cred_file (only on firstboot...)
 if (sudo -u www-data php $oc/occ status 2>&1 | grep -q ' is not installed '); then
 
-  # not a strong password, but easy to learn, than makepasswd output. bashism!
-  password=$(shuf -e {a..z}{0..9} | head -n 5 | tr -d '\n')
+  # Not a strong password, but easy to learn, than makepasswd output. bashism!
+  # Do not use y or z, to help with keyboard mismatch.
+  # Do not use l, to avoid confusion with 1.
+  password=$(shuf -e {a..x}{0..9} | tr l e | head -n 5 | tr -d '\n')
 
   echo Your new admin password will be $password | tee /dev/fd/3
   echo -e "root:$password\nadmin:$password\nowncloud:$password" | chpasswd
