@@ -1,0 +1,28 @@
+make a new cert for the appliance
+---------------------------------
+
+sudo /usr/bin/gensslcert -o 'ownCloud.com' -e 'jw@owncloud.com' -c DE -l Nuremberg -s Bavaria -n HOSTNAME.DOMAIN
+cd ...Tree/etc/apache2
+sudo cp /etc/apache2/ssl.key/{ca.key,README.KEY,server.key} ssl.key/
+sudo cp /etc/apache2/ssl.csr/* ssl.csr/
+sudo cp /etc/apache2/ssl.crt/* ssl.crt/
+sudo chown testy ssl.*/*
+cp ssl.crt/ca.crt ../../srv/www/htdocs/CA.crt
+
+
+add a self sign cert
+--------------------
+# Works with apache, but only if we use a fixed hostname.
+sudo /usr/bin/gensslcert -o 'ownCloud.com' -e 'jw@owncloud.com' -c DE -l Nuremberg -s Bavaria -n HOSTNAME.DOMAIN
+openssl x509 -noout -text -in /etc/apache2/ssl.crt/server.crt
+
+firefox
+ -> Bearbeiten -> Einstellungen -> Erweitert -> Zertifikat Manager -> Server
+   Zertifikatname -> owncloud.com
+     delete all ...
+
+
+openssl s_client -connect localhost:443 -showcerts
+...
+ Verify return code: 21 (unable to verify the first certificate)
+...
