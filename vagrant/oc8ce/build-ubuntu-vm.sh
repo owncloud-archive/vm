@@ -138,18 +138,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 		# Install apps we want
 		# We need unzip to perform this	
-		apt-get install unzip -y
+		# FIXME: We apparently need hg from mercurial for *something*. 
+		# FIXME: Please document this.
+		apt-get install unzip hg -y
 		
 		# Download and install GalleryPlus
 		wget -q https://github.com/interfasys/galleryplus/archive/master.zip
-		unzip master.zip
+		unzip -q master.zip
 		rm master.zip
 		mv galleryplus-master/ galleryplus/
 		mv galleryplus/ /var/www/owncloud/apps
 
 		# Download and install Documents
 		wget -q https://github.com/owncloud/documents/archive/master.zip
-		unzip master.zip
+		unzip -q master.zip
 		rm master.zip
 		mv documents-master/ documents/
 		mv documents/ /var/www/owncloud/apps
@@ -160,12 +162,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 		# Download and install Mail
 		wget -q https://github.com/owncloud/mail/archive/master.zip
-		unzip master.zip
+		unzip -q master.zip
 		rm master.zip
 		mv mail-master/ mail/
 		mv mail/ /var/www/owncloud/apps
 		# According to README.md https://github.com/owncloud/mail#developer-setup-info
 		cd /var/www/owncloud/apps/mail
+		
+		# FIXME: Please document this. Looks like a rootkit to me.
 		curl -sS https://getcomposer.org/installer | php
 		php composer.phar install
 		rm composer.phar
