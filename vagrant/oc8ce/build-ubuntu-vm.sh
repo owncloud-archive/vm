@@ -138,7 +138,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 		# Install apps we want
 		# We need unzip to perform this	
-		apt-get install unzip hg -y
+		apt-get install unzip -y
 
 		# FIXME: We also need hg from mercurial for *something*. It costs 95 MB!
 		# FIXME: Please document this.
