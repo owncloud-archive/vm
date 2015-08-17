@@ -7,11 +7,13 @@ Download or clone vm github repository then:
  
 <pre>
 cd vagrant
-sh startup.sh
-ls -l *.zip
+sh run.sh                    # default DEBUG versions, optimized build time (ca 10 Min, no zip)
+DEBUG=false sh run.sh        # production version, optimized compression (ca 20 Min build time)
+ls -l oc8ce/*owncloud-8*
 </pre>
 
 Copy or download the *.zip file to a deplyoment system.
+
 Unzip there, then start VirtualBox.
 <pre>
 VirtualBox
@@ -24,11 +26,9 @@ VirtualBox
   -> Bridged Network
 </pre>
 
-A plain Ubuntu console appears. Your login credentials are
-<pre>
-  login: root
-  password: admin
-</pre>
+A plain Ubuntu console appears, showing you the IP-Address and initial credentials.
+* Follow the instructions on screen, or 
+* direct your web browser to the IP-Address. There is also basic web-page there with instructions.
 
 
 !!!This does not yet work yet with Windows10!!!
