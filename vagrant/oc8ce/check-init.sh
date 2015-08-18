@@ -40,17 +40,7 @@ fi
     # sed -i 's/127.0.0.1 localhost/127.0.0.1 localhost.localdomain vagrant-ubuntu-trusty-64/g' /etc/hosts
 
 # Enable the apps we want the user to have
-    # Disable gallery, and enable GalleryPlus
-    # sudo -u www-data php /var/www/owncloud/occ app:disable gallery
-    # sudo -u www-data php /var/www/owncloud/occ app:enable galleryplus
-
-    # Enable Mail
-    # sudo -u www-data php /var/www/owncloud/occ app:enable mail
-    # php /var/scripts/update-config.php $oc/config/config.php 'app.mail.server-side-cache.enabled' 'true'
-
-    # Enable Documents
-    # sudo -u www-data php /var/www/owncloud/occ app:enable documents
-    # php /var/scripts/update-config.php $oc/config/config.php 'preview_libreoffice_path' '/usr/bin/libreoffice'
+  bash /var/scripts/install-additional-apps.sh enable
 
 ## install memcache
 # check if a decent apt-get install php5-apcu was done at build time!
