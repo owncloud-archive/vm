@@ -41,16 +41,16 @@ fi
 
 # Enable the apps we want the user to have
     # Disable gallery, and enable GalleryPlus
-    sudo -u www-data php /var/www/owncloud/occ app:disable gallery
-    sudo -u www-data php /var/www/owncloud/occ app:enable galleryplus
+    # sudo -u www-data php /var/www/owncloud/occ app:disable gallery
+    # sudo -u www-data php /var/www/owncloud/occ app:enable galleryplus
 
     # Enable Mail
-    sudo -u www-data php /var/www/owncloud/occ app:enable mail
-    php /var/scripts/update-config.php $oc/config/config.php 'app.mail.server-side-cache.enabled' 'true'
+    # sudo -u www-data php /var/www/owncloud/occ app:enable mail
+    # php /var/scripts/update-config.php $oc/config/config.php 'app.mail.server-side-cache.enabled' 'true'
 
     # Enable Documents
-    sudo -u www-data php /var/www/owncloud/occ app:enable documents
-    php /var/scripts/update-config.php $oc/config/config.php 'preview_libreoffice_path' '/usr/bin/libreoffice'
+    # sudo -u www-data php /var/www/owncloud/occ app:enable documents
+    # php /var/scripts/update-config.php $oc/config/config.php 'preview_libreoffice_path' '/usr/bin/libreoffice'
 
 ## install memcache
 # check if a decent apt-get install php5-apcu was done at build time!
