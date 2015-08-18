@@ -1,7 +1,7 @@
 #! /bin/bash
 # install-additional-apps.sh
 
-test 0$NO_EXTRA_APPS -eq 1 && exit 0
+test 0$INSTALL_ADDITIONAL_APPS -eq 1 || exit 0
 
 test -z "$DEBUG" && DEBUG=true
 set -x
