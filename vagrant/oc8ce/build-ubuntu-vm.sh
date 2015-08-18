@@ -67,6 +67,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # forward ssh (needs the id attribute to not conflict with a default forwarding at build time)
   config.vm.network :forwarded_port, id: 'ssh', guest: 22, host: 2222
 
+
   config.vm.provider :virtualbox do |vb|
       vb.name = "$imageName"
       # speed up: Force the VM to use NAT'd DNS:
@@ -152,7 +153,7 @@ vagrant up
 
 vagrant halt
 
-## prepare for bridged network
+## prepare for bridged network, done after building, to avoid initial ssh issues.
 # VBoxManage modifyvm $imageName --nic1 bridged
 # VBoxManage modifyvm $imageName --bridgeadapter1 wlan0
 # VBoxManage modifyvm $imageName --macaddress1 auto
