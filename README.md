@@ -1,8 +1,10 @@
 # vm
 Scripts to build an ownCloud community production VM
 
-On a Linux system:
+On a Linux and a Mac OSX System:
 Make sure you have Virtualbox and vagrant installed.
+Please note that currently 8/18/2015 on Mac OSX 10.10.4 or 10.10.5 System the only virtualbox build that seems to work
+is Virtualbox 4.3.26 you can find it here: https://www.virtualbox.org/wiki/Download_Old_Builds_4_3
 Download or clone vm github repository then:
  
 <pre>
@@ -12,9 +14,9 @@ DEBUG=false sh run.sh        # production version, optimized compression (ca 20 
 ls -l oc8ce/*owncloud-8*
 </pre>
 
-Copy or download the *.zip file to a deplyoment system.
+After the build of the appliance you will find it in /path/to/the/cloned/owncloud/vm/vagrant/oc8e/
 
-Unzip there, then start VirtualBox.
+Then open Virtualbox
 <pre>
 VirtualBox
  -> New
@@ -48,12 +50,4 @@ The VM runs now in VirtualBox.
 Go to Network settings and change from NAT to Bridged.
 Reboot.
 Have Fun
-
-
-The Ubuntu Console appears in the Virtualbox Monitor.
-Your login credentials are
-<pre>
-  login: root
-  password: admin
-</pre>
 
