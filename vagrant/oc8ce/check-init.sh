@@ -82,6 +82,16 @@ bash /var/scripts/secure-permissions.sh
 # we want clean logs
 rm $oc/data/owncloud.log
 
+# Generate proper SSL-certification
+
+sudo /usr/bin/gensslcert -o 'ownCloud.com' -e 'jw@owncloud.com' -c DE -l Nuremberg -s Bavaria -n HOSTNAME.DOMAIN
+cd ...Tree/etc/apache2
+sudo cp /etc/apache2/ssl.key/{ca.key,README.KEY,server.key} ssl.key/
+sudo cp /etc/apache2/ssl.csr/* ssl.csr/
+sudo cp /etc/apache2/ssl.crt/* ssl.crt/
+sudo chown testy ssl.*/*
+cp ssl.crt/ca.crt ../../srv/www/htdocs/CA.crt
+
 # Prepare /etc/issue and /etc/motd with hints.
 # Hint: Disable this by erasing $cred_file after changing the password.
 if [ -f $cred_file ]; then 
