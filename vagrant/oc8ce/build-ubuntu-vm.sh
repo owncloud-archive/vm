@@ -133,8 +133,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		a2dissite default-ssl
 		bash /var/scripts/self-signed-ssl.sh
 
-		# Install apps we want
-		bash /var/scripts/install-additional-apps.sh
+		# Install apps we want # https://github.com/owncloud/vm/issues/9
+		# bash /var/scripts/install-additional-apps.sh
 
 		# Set RAMDISK for better performance
 		echo 'none /tmp tmpfs,size=6g defaults' >> /etc/fstab
