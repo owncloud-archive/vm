@@ -8,7 +8,7 @@
 # * initialize owncloud.
 # * set secure permissions
 # * rm owncloud.log for clean logs
-# * Enable GalleryPlus, Documents, and Mail
+# * set servername 'owncloud'
 
 exec 3>&1 1>>/var/log/check-init.log 2>&1
 
@@ -36,8 +36,8 @@ if (sudo -u www-data php $oc/occ status 2>&1 | grep -q ' is not installed '); th
 fi
 
 # set servername directive to avoid warning about fully qualified domain name when apache restarts
-# working fix, but https://github.com/owncloud/vm/issues/6#issuecomment-131079431
-    # sed -i 's/127.0.0.1 localhost/127.0.0.1 localhost.localdomain vagrant-ubuntu-trusty-64/g' /etc/hosts
+    sed -i 's/127.0.0.1 localhost/127.0.0.1 localhost.localdomain owncloud' /etc/hosts
+    sudo hostnamectl set-hostname owncloud # must be run as root
 
 # Enable the apps we want the user to have
   bash /var/scripts/install-additional-apps.sh enable
@@ -82,17 +82,17 @@ rm $oc/data/owncloud.log
               cat >> /etc/issue << ISSUE
               Ubuntu 14.04.2 LTS \n \l
 
-              +---------------------------------------------------------+
-              |                                                         |
-              | Welcome to ownCloud!                 $ocVersion   |
+              +-----------------------------------------------------------+
               |                                                           |
-              |  This server is reachable at https://$ADDRESS/owncloud |
-              |  Initial admin login:    $user                          |
-              |  Initial admin password: $password                     |
-              +---------------------------------------------------------+
-              You can now logon to your owncloud with by opening the ip-adress 
-              from above with your webbrowser. Please import the ssl cert to 
-              your browser to connect to your owncloud via https.
+              | Welcome to ownCloud!                 $ocVersion     |
+              |                                                             |
+              |  This server is reachable at https://$ADDRESS/owncloud  |
+              |  Initial admin login:    $user                            |
+              |  Initial admin password: $password                      |
+              +-----------------------------------------------------------+
+              You can now logon to your ownCloud by using the ip-adress 
+              from above with your web browser. Please import the ssl cert 
+              to your browser to connect to your ownCloud via https.
 
 ISSUE
 fi
