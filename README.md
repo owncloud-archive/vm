@@ -15,15 +15,13 @@ ls -l oc8ce/*owncloud-8*
 </pre>
 
 After the build of the appliance you will find it in /path/to/the/cloned/owncloud/vm/vagrant/oc8e/
-
+<pre>
+ -> Double click on the .ovf file
+  -> Import
+</pre>
 Then open Virtualbox
 <pre>
 VirtualBox
- -> New
-   -> Enter name [ubuntu14.04+oc8.1.0]
-     -> Next -> Next -> Next
-     (X) use existing disk image
-       box-disk1.vmdk
  -> Network
   -> Bridged Network
 </pre>
