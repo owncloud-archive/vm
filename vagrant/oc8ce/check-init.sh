@@ -36,7 +36,7 @@ if (sudo -u www-data php $oc/occ status 2>&1 | grep -q ' is not installed '); th
 fi
 
 # set servername directive to avoid warning about fully qualified domain name when apache restarts
-    sed -i 's/127.0.0.1 localhost/127.0.0.1 localhost.localdomain owncloud' /etc/hosts
+    sed -i 's/127.0.0.1 localhost/127.0.0.1 localhost.localdomain owncloud/g' /etc/hosts
     sudo hostnamectl set-hostname owncloud # must be run as root
 
 # Enable the apps we want the user to have
