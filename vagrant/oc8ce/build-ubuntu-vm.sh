@@ -87,6 +87,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		$DEBUG || rm -f /etc/sudoers.d/vagrant
 		echo 'admin ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/admin
 		echo 'owncloud ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/owncloud
+		
+		# set servername directive to avoid warning about fully qualified domain name when apache restarts
+    		sed -i 's/127.0.0.1 localhost/127.0.0.1 localhost.localdomain owncloud/g' /etc/hosts
+    		sudo hostnamectl set-hostname owncloud # must be run as root
 
 		# prepare repositories
 		wget -q $OBS_REPO/Release.key -O - | apt-key add -
