@@ -74,27 +74,25 @@ rm $oc/data/owncloud.log
 
 # Prepare /etc/issue and /etc/motd with hints.
 # Hint: Disable this by erasing $cred_file after changing the password.
-if [ -f $cred_file ]; then 
-  . $cred_file
-  ocVersion=$(head -n1 /var/www/owncloud/.htaccess)
-  test -f /etc/issue.orig || mv /etc/issue /etc/issue.orig
-  figlet -m2 "$ADDRESS" | sed -e 's@\\@\\\\@g' > /etc/issue
-  cat >> /etc/issue << ISSUE
-Ubuntu 14.04.2 LTS \n \l
+              if [ -f $cred_file ]; then 
+              . $cred_file
+              ocVersion=$(head -n1 /var/www/owncloud/.htaccess)
+              test -f /etc/issue.orig || mv /etc/issue /etc/issue.orig
+              figlet -m2 "$ADDRESS" | sed -e 's@\\@\\\\@g' > /etc/issue
+              cat >> /etc/issue << ISSUE
+              Ubuntu 14.04.2 LTS \n \l
 
-+---------------------------------------------------------+
-|                                                         |
-| Welcome to ownCloud!                 $ocVersion   |
-|                                                         |
-|  This server is reachable at https://$ADDRESS/owncloud |
-|  Initial admin login:    $user                          |
-|  Initial admin password: $password                     |
-+---------------------------------------------------------+
-
-Please log in here at the prompt as 'admin' 
-and follow the instructions to change the defaults.
-If something goes wrong, just log in as admin again
-and the script will be executed again.
+              +---------------------------------------------------------+
+              |                                                         |
+              | Welcome to ownCloud!                 $ocVersion   |
+              |                                                           |
+              |  This server is reachable at https://$ADDRESS/owncloud |
+              |  Initial admin login:    $user                          |
+              |  Initial admin password: $password                     |
+              +---------------------------------------------------------+
+              You can now logon to your owncloud with by opening the ip-adress 
+              from above with your webbrowser. Please import the ssl cert to 
+              your browser to connect to your owncloud via https.
 
 ISSUE
 fi
