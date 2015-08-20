@@ -77,14 +77,14 @@ rm $oc/data/owncloud.log
           cat >> /etc/issue << ISSUE
           Ubuntu 14.04.2 LTS \n \l
 
-          +-----------------------------------------------------------+
-          |                                                           |
-          | Welcome to ownCloud!          $ocVersion            |
-          |                                                           |
-          |  This server is reachable at https://$ADDRESS/owncloud   |
-          |  Initial admin login:    $user                            |
-          |  Initial admin password: $password                       |
-          +-----------------------------------------------------------+
+    +---------------------------------------------------------------------+
+    |                                                                     |
+    |           Welcome to ownCloud!          $ocVersion            |
+    |                                                                     |
+    |  This server is reachable at https://$ADDRESS/owncloud         |
+    |  Initial admin login:    $user                                      |
+    |  Initial admin password: $password                                 |
+    +---------------------------------------------------------------------+
           You can now logon to your ownCloud by using the ip-adress 
           from above with your web browser. Please import the ssl cert 
           to your browser to connect to your ownCloud via https.
