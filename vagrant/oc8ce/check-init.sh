@@ -70,28 +70,28 @@ rm $oc/data/owncloud.log
 
 # Prepare /etc/issue and /etc/motd with hints.
 # Hint: Disable this by erasing $cred_file after changing the password.
-              if [ -f $cred_file ]; then 
-              . $cred_file
-              ocVersion=$(head -n1 /var/www/owncloud/.htaccess)
-              test -f /etc/issue.orig || mv /etc/issue /etc/issue.orig
-              figlet -m2 "$ADDRESS" | sed -e 's@\\@\\\\@g' > /etc/issue
-              cat >> /etc/issue << ISSUE
-              Ubuntu 14.04.2 LTS \n \l
+          if [ -f $cred_file ]; then 
+          . $cred_file
+          ocVersion=$(head -n1 /var/www/owncloud/.htaccess)
+          test -f /etc/issue.orig || mv /etc/issue /etc/issue.orig
+          cat >> /etc/issue << ISSUE
+          Ubuntu 14.04.2 LTS \n \l
 
-              +-----------------------------------------------------------+
-              |                                                           |
-              | Welcome to ownCloud!                 $ocVersion     |
-              |                                                             |
-              |  This server is reachable at https://$ADDRESS/owncloud  |
-              |  Initial admin login:    $user                            |
-              |  Initial admin password: $password                      |
-              +-----------------------------------------------------------+
-              You can now logon to your ownCloud by using the ip-adress 
-              from above with your web browser. Please import the ssl cert 
-              to your browser to connect to your ownCloud via https.
-              OPTIONAL:
-              If you want to do the final setup of the system, please
-              log in as user 'admin' to run the setup-script. 
+          +-----------------------------------------------------------+
+          |                                                           |
+          | Welcome to ownCloud!          $ocVersion            |
+          |                                                           |
+          |  This server is reachable at https://$ADDRESS/owncloud   |
+          |  Initial admin login:    $user                            |
+          |  Initial admin password: $password                       |
+          +-----------------------------------------------------------+
+          You can now logon to your ownCloud by using the ip-adress 
+          from above with your web browser. Please import the ssl cert 
+          to your browser to connect to your ownCloud via https.
+
+          OPTIONAL:
+          If you want to do the final setup of the system, please
+          log in as user 'admin' to run the setup-script. 
 
 ISSUE
 fi
