@@ -34,6 +34,7 @@ vmBoxUrl=https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/14.04/providers
 
 OBS_REPO=$OBS_MIRRORS/$(echo $OBS_PROJECT | sed -e 's@:@:/@g')/$buildPlatform
 OBS_REPO_APCU=$OBS_MIRRORS/isv:ownCloud:devel/$buildPlatform
+OBS_REPO_PROXY=$OBS_MIRRORS/isv:ownCloud:8.1:testing:merged/$buildPlatform
 ocVersion=$(curl -s -L $OBS_REPO/Packages | grep -a1 'Package: owncloud$' | grep Version: | head -n 1 | sed -e 's/Version: /owncloud-/')
 # ocVersion=ownCloud-8.1.0-6
 test -z "$ocVersion" && { echo "ERROR: Cannot find owncloud version in $OBS_REPO/Packages -- Try again later"; exit 1; }
@@ -114,6 +115,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		debconf-set-selections <<< 'mysql-server mysql-server/root_password password $mysql_pass'
 		debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $mysql_pass'
 		apt-get install -q -y owncloud php5-libsmbclient
+
+		wget -q $OBS_REPO_PROXY/Release.key -O - | apt-key add -
+		sh -c "echo 'deb $OBS_REPO_PROXY /' >> /etc/apt/sources.list.d/owncloud.list"
+		apt-get -q -y update
+		apt-get install -q -y owncloud-app-proxy
+
 		curl -sL localhost/owncloud/ | grep login || { curl -sL localhost/owncloud; exit 1; } # did not start at all??
 
 		## FIXME: the lines below assume we are root. While most other parts of the
