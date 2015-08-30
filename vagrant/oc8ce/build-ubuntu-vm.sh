@@ -39,7 +39,9 @@ ocVersion=$(curl -s -L $OBS_REPO/Packages | grep -a1 'Package: owncloud$' | grep
 # ocVersion=ownCloud-8.1.0-6
 test -z "$ocVersion" && { echo "ERROR: Cannot find owncloud version in $OBS_REPO/Packages -- Try again later"; exit 1; }
 vmName=$(echo $ocVersion | sed -e 's/owncloud/oc8ce/')
-imageName=$buildPlatform+$ocVersion
+
+# don't use + with the image name, github messes up
+imageName=$buildPlatform.$ocVersion.$(date +%Y%m%d)
 test "$DEBUG" == "true" && imageName=$imageName-DEBUG
 
 cat > Vagrantfile << EOF
