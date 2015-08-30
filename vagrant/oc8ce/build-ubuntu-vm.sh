@@ -41,7 +41,7 @@ test -z "$ocVersion" && { echo "ERROR: Cannot find owncloud version in $OBS_REPO
 vmName=$(echo $ocVersion | sed -e 's/owncloud/oc8ce/')
 
 # don't use + with the image name, github messes up
-imageName=$buildPlatform.$ocVersion.$(date +%Y%m%d)
+imageName=$buildPlatform-$ocVersion-$(date +%Y%m%d)
 test "$DEBUG" == "true" && imageName=$imageName-DEBUG
 
 cat > Vagrantfile << EOF
@@ -173,9 +173,15 @@ vagrant halt
 #
 ## VBoxManage modifyvm $imageName --resize 40000	# also needs: resize2fs -p -F /dev/DEVICE
 
+## https://github.com/owncloud/vm/issues/13
+VBoxManage sharedfolder remove $imageName --name vagrant
+
 ## export is much better than copying the disk manually.
 rm -f $imageName.* $imageName-*	# or VBoxManage export fails with 'already exists'
 VBoxManage export $imageName -o $imageName.ovf
+
+
+## ---------------------
 # VBoxImagePath=$(VBoxManage list hdds | grep "/$imageName/")
 # #-->Location:       /home/$USER/VirtualBox VMs/ownCloud-8.1.1+xUbuntu_14.04/box-disk1.vmdk
 # VBoxImagePath=/${VBoxImagePath#*/}	# delete Location: prefix
