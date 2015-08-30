@@ -38,7 +38,10 @@ OBS_REPO_PROXY=$OBS_MIRRORS/isv:ownCloud:8.1:testing:merged/$buildPlatform
 ocVersion=$(curl -s -L $OBS_REPO/Packages | grep -a1 'Package: owncloud$' | grep Version: | head -n 1 | sed -e 's/Version: /owncloud-/')
 # ocVersion=ownCloud-8.1.0-6
 test -z "$ocVersion" && { echo "ERROR: Cannot find owncloud version in $OBS_REPO/Packages -- Try again later"; exit 1; }
-vmName=$(echo $ocVersion | sed -e 's/owncloud/oc8ce/')
+vmName=$(echo $ocVersion | tr '~' - | sed -e 's/owncloud/oc8ce/')
+
+echo $vmName
+sleep 10
 
 # don't use + with the image name, github messes up
 imageName=$buildPlatform-$ocVersion-$(date +%Y%m%d)
