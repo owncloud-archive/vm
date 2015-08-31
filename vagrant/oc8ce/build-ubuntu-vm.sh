@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# Requires: vagrant VBoxManage qemu-img
+# Requires: vagrant VBoxManage qemu-img ovftool
 #
 
 OBS_PROJECT=isv:ownCloud:community
@@ -223,6 +223,20 @@ for fmt in $formats_via_qemu_img_convert; do
  (cd img; zip $imageName.$fmt.zip $imageName.$fmt)
  rm img/$imageName.$fmt
 done
+
+if  [ -f /usr/bin/ovftool ]; then
+  cd img
+  mkdir -p vmx
+  ovftool --lax $imageName.ovf vmx/$imageName.vmx
+  # Line 25: Unsupported hardware family 'virtualbox-2.2'
+  # Line 48: OVF hardware element 'ResourceType' with instance ID '3': No support for the virtual hardware device type '20'.
+  zip $imageName.vmx.zip vmx/*
+  rm -rf vmx
+  cd ..
+else
+  echo "Warning: Cannot generate vmx. Please install VMware OVF Tool"
+fi
+
 ### sneak preview:
 # sudo mount -o loop,ro,offset=$(expr 512 \* 2048) img/$imageName.raw /mnt
 
