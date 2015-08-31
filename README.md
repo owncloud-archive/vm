@@ -13,16 +13,21 @@ sh run.sh                    # default DEBUG versions, optimized build time (ca 
 DEBUG=false sh run.sh        # production version, optimized compression (ca 20 Min build time)
 ls -l oc8ce/*owncloud-8*
 </pre>
-
 After the build of the appliance you will find it in /path/to/the/cloned/owncloud/vm/vagrant/oc8e/
+
+**VirtualBox**
 <pre>
  -> Double click on the .ovf file
   -> Import
-</pre>
-Then open Virtualbox
-<pre>
-VirtualBox
+Then open VirtualBox
  -> Network
+  -> Bridged Network
+</pre>
+**VMware**
+<pre>
+-> Double click on the .vmx file
+VMware
+ -> Network Adapter
   -> Bridged Network
 </pre>
 
