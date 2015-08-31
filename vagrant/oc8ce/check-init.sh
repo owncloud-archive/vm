@@ -70,11 +70,11 @@ rm $oc/data/owncloud.log
 
 # Prepare /etc/issue and /etc/motd with hints.
 # Hint: Disable this by erasing $cred_file after changing the password.
-          if [ -f $cred_file ]; then 
-          . $cred_file
-          ocVersion=$(head -n1 /var/www/owncloud/.htaccess)
-          test -f /etc/issue.orig || mv /etc/issue /etc/issue.orig
-          cat >> /etc/issue << ISSUE
+if [ -s $cred_file ]; then 
+  . $cred_file
+  ocVersion=$(head -n1 /var/www/owncloud/.htaccess)
+  test -f /etc/issue.orig || mv /etc/issue /etc/issue.orig
+  cat >> /etc/issue << ISSUE
           Ubuntu 14.04.2 LTS \n \l
 
     +---------------------------------------------------------------------+

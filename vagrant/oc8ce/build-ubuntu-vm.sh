@@ -6,7 +6,7 @@
 OBS_PROJECT=isv:ownCloud:community
 OBS_MIRRORS=http://download.opensuse.org/repositories
 
-#formats_via_qemu_img_convert="raw qcow2 vhdx"	# raw qcow2 vhdx supported.
+formats_via_qemu_img_convert="raw qcow2 vhdx"	# raw qcow2 vhdx supported.
 
 test -z "$DEBUG" && DEBUG=true	# true: skip system update, disk sanitation, ... for speedy development.
                         	# false: do everything for production, also disable vagrant user.
@@ -197,7 +197,8 @@ if [ -z "$(grep login test/seen-login-page.html)" ]; then
 fi
 
 ## export is much better than copying the disk manually.
-rm -f $imageName.* $imageName-*	# or VBoxManage export fails with 'already exists'
+# rm -f $imageName.* $imageName-*	# or VBoxManage export fails with 'already exists'
+rm -f *.vmdk *.ovf			# or VBoxManage export fails with 'already exists'
 VBoxManage export $imageName -o $imageName.ovf
 
 
@@ -207,7 +208,6 @@ VBoxManage export $imageName -o $imageName.ovf
 # VBoxImagePath=/${VBoxImagePath#*/}	# delete Location: prefix
 # cp "$VBoxImagePath" $imageName.vmdk
 vagrant destroy -f
-
 
 
 
