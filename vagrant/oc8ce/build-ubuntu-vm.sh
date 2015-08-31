@@ -21,6 +21,8 @@ fi
 test -n "$1" && OBS_PROJECT=$1
 
 cd $(dirname $0)
+mkdir -p test
+rm -f    test/seen-login-page.html	# will be created during build...
 
 ## An LTS operating system for production.
 buildPlatform=xUbuntu_14.04	# matches an OBS target.
@@ -43,10 +45,12 @@ ocVersion=$(echo $ocVersion | tr '~' -)
 vmName=$(echo $ocVersion | sed -e 's/owncloud/oc8ce/')
 
 echo $vmName
-sleep 10
+sleep 3
+sleep 2
+sleep 1
 
 # don't use + with the image name, github messes up
-imageName=$buildPlatform-$ocVersion-$(date +%Y%m%d)
+imageName=$buildPlatform-$ocVersion-$(date +%Y%m%d%H%M)
 test "$DEBUG" == "true" && imageName=$imageName-DEBUG
 
 cat > Vagrantfile << EOF
@@ -129,6 +133,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		apt-get install -q -y owncloud-app-proxy
 
 		curl -sL localhost/owncloud/ | grep login || { curl -sL localhost/owncloud; exit 1; } # did not start at all??
+		curl -sL localhost/owncloud/ > /vagrant/test/seen-login-page.html
 
 		## FIXME: the lines below assume we are root. While most other parts of the
 		## script assume, we are a regular user and need sudo.
@@ -180,6 +185,16 @@ vagrant halt
 
 ## https://github.com/owncloud/vm/issues/13
 VBoxManage sharedfolder remove $imageName --name vagrant
+
+## the seen-login-page.html should be here by now. 
+## Self-test: abort here, if it does not look sane.
+if [ -z "$(grep login test/seen-login-page.html)" ]; then
+  cat test/seen-login-page.html
+  echo "\n"
+  echo "ERROR: The word 'login' does not appear on the login page."
+  echo "Check for earlier errors."
+  exit 1;
+fi
 
 ## export is much better than copying the disk manually.
 rm -f $imageName.* $imageName-*	# or VBoxManage export fails with 'already exists'
