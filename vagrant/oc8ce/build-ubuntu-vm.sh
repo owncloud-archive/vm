@@ -235,6 +235,7 @@ if  [ -f /usr/bin/ovftool ]; then
   cd ..
 else
   echo "Warning: Cannot generate vmx. Please install VMware OVF Tool"
+  echo "See https://developercenter.vmware.com/tool/ovf/"
 fi
 
 ### sneak preview:
