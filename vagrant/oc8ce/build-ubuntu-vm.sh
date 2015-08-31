@@ -155,8 +155,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		# make things nice.
 		mv /var/scripts/index.php /var/www/html/index.php && rm -f /var/www/html/index.html
 
-		echo '<?php phpinfo(); ' > /var/www/owncloud/phpinfo.php
-		chmod a+x /var/www/owncloud/phpinfo.php
+		$DEBUG && echo '<?php phpinfo(); ' > /var/www/owncloud/phpinfo.php
+		$DEBUG && chmod a+x /var/www/owncloud/phpinfo.php
 
 		# prepare https
 		a2enmod ssl headers
@@ -226,12 +226,18 @@ done
 
 if  [ -f /usr/bin/ovftool ]; then
   cd img
+
   mkdir -p vmx
   ovftool --lax $imageName.ovf vmx/$imageName.vmx
   # Line 25: Unsupported hardware family 'virtualbox-2.2'
   # Line 48: OVF hardware element 'ResourceType' with instance ID '3': No support for the virtual hardware device type '20'.
   zip $imageName.vmx.zip vmx/*
   rm -rf vmx
+
+  ovftool --lax $imageName.ovf $imageName.ova
+  zip $imageName.ova.zip $imageName.ova
+  rm $imageName.ova
+
   cd ..
 else
   echo "Warning: Cannot generate vmx. Please install VMware OVF Tool"
