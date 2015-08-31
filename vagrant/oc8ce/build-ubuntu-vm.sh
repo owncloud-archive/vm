@@ -197,9 +197,9 @@ if [ -z "$(grep login test/seen-login-page.html)" ]; then
 fi
 
 ## export is much better than copying the disk manually.
-# rm -f $imageName.* $imageName-*	# or VBoxManage export fails with 'already exists'
-rm -f *.vmdk *.ovf			# or VBoxManage export fails with 'already exists'
-VBoxManage export $imageName -o $imageName.ovf
+rm -f img/*			# or VBoxManage export fails with 'already exists'
+mkdir -p img
+VBoxManage export $imageName -o img/$imageName.ovf || exit 0
 
 
 ## ---------------------
@@ -213,16 +213,17 @@ vagrant destroy -f
 
 ## convert to other formats...
 for fmt in $formats_via_qemu_img_convert; do
- qemu-img convert -p -f vmdk oc8ce/$imageName-disk1.vmdk -O $fmt oc8ce/$imageName.$fmt
- $DEBUG || zip $imageName.$fmt.zip $imageName.$fmt
- $DEBUG || rm $imageName.$fmt
+ qemu-img convert -p -f vmdk img/$imageName-disk1.vmdk -O $fmt img/$imageName.$fmt
+ $DEBUG || (cd img; zip $imageName.$fmt.zip $imageName.$fmt)
+ $DEBUG || rm img/$imageName.$fmt
 done
 ### sneak preview:
-# sudo mount -o loop,ro,offset=$(expr 512 \* 2048) oc8ce/$imageName.raw /mnt
+# sudo mount -o loop,ro,offset=$(expr 512 \* 2048) img/$imageName.raw /mnt
 
 ## FIXME: VBoxManage clonehd' looks into ~/.config/VirtualBox and fails with
 ##  UUID {2d168000-11b2-4f11-8ca2-8bb64c7fbffa} of the medium '...vmdk' does not match...
 ##  It should not look there at all!
 
-$DEBUG || zip $imageName.vmdk.zip $imageName.vmdk
-$DEBUG || rm $imageName.vmdk
+$DEBUG || (cd img; zip $imageName.vmdk.zip $imageName.vmdk)
+$DEBUG || rm img/$imageName.vmdk
+
