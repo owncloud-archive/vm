@@ -74,7 +74,7 @@ rm $oc/data/owncloud.log
           . $cred_file
           ocVersion=$(head -n1 /var/www/owncloud/.htaccess)
           test -f /etc/issue.orig || mv /etc/issue /etc/issue.orig
-          cat >> /etc/issue << ISSUE
+          cat > /etc/issue << ISSUE
           Ubuntu 14.04.2 LTS \n \l
 
     +---------------------------------------------------------------------+
