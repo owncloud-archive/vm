@@ -35,10 +35,7 @@ A plain Ubuntu console appears, showing you the IP-Address and initial credentia
 * Follow the instructions on screen, or 
 * direct your web browser to the IP-Address. There is also basic web-page there with instructions.
 
-
-!!!This does not yet work yet with Windows10!!!
-
-On a Windows system make sure you have virtualbox and vagrant installed.:
+On a Windows system make sure you have VirtualBox and vagrant installed.:
 Open Virtualbox
 
 Download or clone vm github repository then:
@@ -48,8 +45,9 @@ cd vagrant
 vagrant up
 </pre>
 
+**It does not work to build the appliance with Windows 10 and VirtualBox, but there is no problem with running it on Windows 10 and VMware**
 
-The VM runs now in VirtualBox.
+The VM runs now in VirtualBox or VMware
 Go to Network settings and change from NAT to Bridged.
 Reboot.
 Have Fun
