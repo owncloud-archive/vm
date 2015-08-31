@@ -10,18 +10,24 @@ pre  { background:rgb(222,222,222); padding:10pt; width: 50% }
 <H2 align='center'>Welcome to ownCloud</H1>
 
 This is the community production appliance. 
-Is publically developed on <a href="http://www.github.com/owncloud/vm">github.com</a>.
+Is developed on <a href="http://www.github.com/owncloud/vm">github.com</a>.
 <p>
 <?php
-if (is_file("/var/scripts/init-credentials.sh"))
+if (isset($_GET['zap']))
   {
-    $cred = file_get_contents("/var/scripts/init-credentials.sh");
+    # only works if /var/scripts/www is writable by www-run
+    unlink( "/var/scripts/www/init-credentials.sh");
+  }
+if (is_file("/var/scripts/www/init-credentials.sh"))
+  {
+    $cred = file_get_contents("/var/scripts/www/init-credentials.sh");
     print("We have initial credentials for you:\n");
-    print("<font size='+3'><pre>" . str_replace("=", ": ", $cred) . "</pre></font>");
+    print("<font size='+3'><pre>" . str_replace("=", ": ", $cred) . "</pre>");
+    print("<br><a href='?zap=1'>Hide login credentials</a></font><p>");
   }
 else
   {
-    print("The login credentials have been changed from the defaults. Please ask your administrator\n");
+    print("Login credentials protected.\n");
   }
 
 ?>
@@ -29,13 +35,14 @@ else
 <p>The ownCloud web interface is available via HTTP or HTTPS (preferred). Depending on the network configuration of your virtual machine manager, one of the following URLs (or similar) should work to access ownCloud:
 <font size='+1'>
 <ul>
- <li><a href="https://<?=$_SERVER['SERVER_NAME'];?>:4443/"        >https://<?=$_SERVER['SERVER_NAME'];?>:4443</a> (NAT'ed)
+ <li><a href="https://<?=$_SERVER['SERVER_NAME'];?>:4443/"        >https://<?=$_SERVER['SERVER_NAME'];?>:4443</a> (VirtualBox NAT port forwarding)
  <li><a href="https://<?=$_SERVER['SERVER_NAME'];?>/"             >https://<?=$_SERVER['SERVER_NAME'];?></a> (bridged)
  <p>
- <li><a href="http://<?=$_SERVER['SERVER_NAME'];?>:8888/owncloud/">http://<?=$_SERVER['SERVER_NAME'];?>:8888/owncloud</a> (NAT'ed)
+ <li><a href="http://<?=$_SERVER['SERVER_NAME'];?>:8888/owncloud/">http://<?=$_SERVER['SERVER_NAME'];?>:8888/owncloud</a> (VirtualBox NAT port forwarding)
  <li><a href="http://<?=$_SERVER['SERVER_NAME'];?>/"              >http://<?=$_SERVER['SERVER_NAME'];?></a> (bridged)
 </ul>
 </font>
 <p>
 To change passwords and other settings, log in at the system console as user 'admin' and follow the instructions.
+The new credentials will not be shown. (Or simply click above to permanently hide them from web and console.)
 

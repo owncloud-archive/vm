@@ -13,7 +13,8 @@
 exec 3>&1 1>>/var/log/check-init.log 2>&1
 
 mysql_pass=admin	# KEEP in sync with build-ubuntu-vm.sh
-cred_file=/var/scripts/init-credentials.sh
+cred_file_dir=/var/scripts/wwww
+cred_file=$cred_file_dir/init-credentials.sh
 oc=/var/www/owncloud
 
 # initialize owncloud and populate $cred_file (only on firstboot...)
@@ -24,6 +25,10 @@ if (sudo -u www-data php $oc/occ status 2>&1 | grep -q ' is not installed '); th
   # Do not use l, to avoid confusion with 1.
   password=$(shuf -e {a..x}{0..9} | tr l e | head -n 5 | tr -d '\n')
   instanceid=oc$(shuf -e {0..9}{a..z} | tr l e | head -n 5 | tr -d '\n')
+
+  mkdir -p $cred_file_dir
+  chown www-data $cred_file_dir
+  chmod 775 $cred_file_dir
 
   echo Your new admin password will be $password | tee /dev/fd/3
   echo -e "root:$password\nadmin:$password\nowncloud:$password" | chpasswd
