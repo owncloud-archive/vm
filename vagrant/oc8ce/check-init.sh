@@ -85,6 +85,9 @@ rm $oc/data/owncloud.log
     |  Initial admin login:    $user                                      |
     |  Initial admin password: $password                                 |
     +---------------------------------------------------------------------+
+    |  If the virtual machine is run with NAT, please review the port     |
+    |  forwarding of the network adapter, or try http://localhost:8888    |
+    +---------------------------------------------------------------------+
           You can now logon to your ownCloud by using the ip-adress 
           from above with your web browser. Please import the ssl cert 
           to your browser to connect to your ownCloud via https.
