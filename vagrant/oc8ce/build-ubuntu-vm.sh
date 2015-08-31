@@ -38,6 +38,12 @@ OBS_REPO=$OBS_MIRRORS/$(echo $OBS_PROJECT | sed -e 's@:@:/@g')/$buildPlatform
 OBS_REPO_APCU=$OBS_MIRRORS/isv:/ownCloud:/devel/$buildPlatform
 OBS_REPO_PROXY=$OBS_MIRRORS/isv:/ownCloud:/community:/8.1:/testing:/merged/$buildPlatform
 ocVersion=$(curl -s -L $OBS_REPO/Packages | grep -a1 'Package: owncloud$' | grep Version: | head -n 1 | sed -e 's/Version: /owncloud-/')
+if [ -z "$ocVersion" ]; then
+  curl -s -L $OBS_REPO/Packages
+  echo ""
+  echo "ERROR: failed to parse version number of owncloud from $OBS_REPO/Packages"
+  exit 1
+fi
 # ocVersion=owncloud-8.1.0-6
 # ocVersion=owncloud-8.1.2~RC1-6.1
 test -z "$ocVersion" && { echo "ERROR: Cannot find owncloud version in $OBS_REPO/Packages -- Try again later"; exit 1; }
@@ -214,8 +220,8 @@ vagrant destroy -f
 ## convert to other formats...
 for fmt in $formats_via_qemu_img_convert; do
  qemu-img convert -p -f vmdk img/$imageName-disk1.vmdk -O $fmt img/$imageName.$fmt
- $DEBUG || (cd img; zip $imageName.$fmt.zip $imageName.$fmt)
- $DEBUG || rm img/$imageName.$fmt
+ (cd img; zip $imageName.$fmt.zip $imageName.$fmt)
+ rm img/$imageName.$fmt
 done
 ### sneak preview:
 # sudo mount -o loop,ro,offset=$(expr 512 \* 2048) img/$imageName.raw /mnt
@@ -224,6 +230,6 @@ done
 ##  UUID {2d168000-11b2-4f11-8ca2-8bb64c7fbffa} of the medium '...vmdk' does not match...
 ##  It should not look there at all!
 
-$DEBUG || (cd img; zip $imageName.vmdk.zip $imageName.vmdk)
+(cd img; zip $imageName.vmdk.zip $imageName.vmdk)
 $DEBUG || rm img/$imageName.vmdk
 
