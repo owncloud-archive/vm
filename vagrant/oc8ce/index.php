@@ -91,8 +91,8 @@ a:active {
 </div>
 <br>
 
-This is the community production appliance. 
-Is publically developed on <a href="http://www.github.com/owncloud/vm">github.com</a>.
+This is the community production appliance.
+It's publically developed on <a href="http://www.github.com/owncloud/vm">github.com</a>. Feel free to contribute!
 
 <div class="information">
 <p>
