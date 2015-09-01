@@ -122,10 +122,10 @@ else
 One of the following URLs (or similar) should work to access ownCloud:
 <ul>
  <li><a href="https://<?=$_SERVER['SERVER_NAME'];?>:4443/"        >https://<?=$_SERVER['SERVER_NAME'];?>:4443</a> (VirtualBox NAT port forwarding)
- <li><a href="https://<?=$_SERVER['SERVER_NAME'];?>/"             >https://<?=$_SERVER['SERVER_NAME'];?></a> (bridged)
+ <li><a href="https://<?=$_SERVER['SERVER_NAME'];?>/"             >https://<?=$_SERVER['SERVER_NAME'];?></a> (Bridged Network)
  <p>
  <li><a href="http://<?=$_SERVER['SERVER_NAME'];?>:8888/owncloud/">http://<?=$_SERVER['SERVER_NAME'];?>:8888/owncloud</a> (VirtualBox NAT port forwarding)
- <li><a href="http://<?=$_SERVER['SERVER_NAME'];?>/owncloud/"     >http://<?=$_SERVER['SERVER_NAME'];?>/owncloud</a> (bridged)
+ <li><a href="http://<?=$_SERVER['SERVER_NAME'];?>/owncloud/"     >http://<?=$_SERVER['SERVER_NAME'];?>/owncloud</a> (Bridged Network)
 </ul>
 </div>
 
