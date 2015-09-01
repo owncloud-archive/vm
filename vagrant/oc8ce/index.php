@@ -23,7 +23,7 @@ if (is_file("/var/scripts/www/init-credentials.sh"))
     $cred = file_get_contents("/var/scripts/www/init-credentials.sh");
     print("We have initial credentials for you:\n");
     print("<font size='+3'><pre>" . str_replace("=", ": ", $cred) . "</pre>");
-    print("<br><a href='?zap=1'>Hide login credentials</a></font><p>");
+    print("<br><a href='?zap=1' rel='nofollow'>Hide login credentials</a></font><p>");
   }
 else
   {
