@@ -39,7 +39,7 @@ else
  <li><a href="https://<?=$_SERVER['SERVER_NAME'];?>/"             >https://<?=$_SERVER['SERVER_NAME'];?></a> (bridged)
  <p>
  <li><a href="http://<?=$_SERVER['SERVER_NAME'];?>:8888/owncloud/">http://<?=$_SERVER['SERVER_NAME'];?>:8888/owncloud</a> (VirtualBox NAT port forwarding)
- <li><a href="http://<?=$_SERVER['SERVER_NAME'];?>/"              >http://<?=$_SERVER['SERVER_NAME'];?></a> (bridged)
+ <li><a href="http://<?=$_SERVER['SERVER_NAME'];?>/owncloud/"     >http://<?=$_SERVER['SERVER_NAME'];?>/owncloud</a> (bridged)
 </ul>
 </font>
 <p>
