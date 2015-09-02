@@ -227,9 +227,12 @@ if  [ -f /usr/bin/ovftool ]; then
   zip $imageName.vmx.zip vmx/*
   rm -rf vmx
 
-  ovftool --lax $imageName.ovf $imageName.ova
-  zip $imageName.ova.zip $imageName.ova
-  rm $imageName.ova
+  ## Error: This generates ova's that do not load in VirtualBox.
+  ## Error message: Could not verify the contents of $imageName.mf against 
+  ## the available files (VERR_MANIFEST_UNSUPPORTED_DIGEST_TYPE)
+  # ovftool --lax $imageName.ovf $imageName.ova
+  # zip $imageName.ova.zip $imageName.ova
+  # rm $imageName.ova
 
   cd ..
 else
