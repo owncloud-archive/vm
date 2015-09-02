@@ -217,15 +217,6 @@ VBoxManage export $imageName -o img/$imageName.ovf || exit 0
 # cp "$VBoxImagePath" $imageName.vmdk
 vagrant destroy -f
 
-
-
-## convert to other formats...
-for fmt in $formats_via_qemu_img_convert; do
- qemu-img convert -p -f vmdk img/$imageName-disk1.vmdk -O $fmt img/$imageName.$fmt
- (cd img; zip $imageName.$fmt.zip $imageName.$fmt)
- rm img/$imageName.$fmt
-done
-
 if  [ -f /usr/bin/ovftool ]; then
   cd img
 
@@ -245,6 +236,13 @@ else
   echo "Warning: Cannot generate vmx. Please install VMware OVF Tool"
   echo "See https://developercenter.vmware.com/tool/ovf/"
 fi
+
+## convert to other formats...
+for fmt in $formats_via_qemu_img_convert; do
+ qemu-img convert -p -f vmdk img/$imageName-disk1.vmdk -O $fmt img/$imageName.$fmt
+ (cd img; zip $imageName.$fmt.zip $imageName.$fmt)
+ rm img/$imageName.$fmt
+done
 
 ### sneak preview:
 # sudo mount -o loop,ro,offset=$(expr 512 \* 2048) img/$imageName.raw /mnt
