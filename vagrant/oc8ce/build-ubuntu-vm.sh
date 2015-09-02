@@ -170,8 +170,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		echo 'none /tmp tmpfs,size=6g defaults' >> /etc/fstab
 
 		# "zero out" the drive...
-		$DEBUG || dd if=/dev/zero of=/EMPTY bs=1M
-		$DEBUG || rm -f /EMPTY
+		$DEBUG || dd if=/dev/zero of=/EMPTY bs=1M || true
+		$DEBUG || rm -f /EMPTY || true
   SCRIPT
 end
 EOF
@@ -180,7 +180,7 @@ EOF
 # vmID=$(vagrant global-status | grep $vmName | sed -e 's/ .*//')
 vagrant up
 
-vagrant halt
+vagrant halt || VBoxManage controlvm $imageName acpipowerbutton
 
 ## prepare for bridged network, done after building, to avoid initial ssh issues.
 # VBoxManage modifyvm $imageName --nic1 bridged
