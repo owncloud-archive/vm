@@ -13,7 +13,7 @@
 exec 3>&1 1>>/var/log/check-init.log 2>&1
 
 mysql_pass=admin	# KEEP in sync with build-ubuntu-vm.sh
-cred_file_dir=/var/scripts/wwww
+cred_file_dir=/var/scripts/www
 cred_file=$cred_file_dir/init-credentials.sh
 oc=/var/www/owncloud
 
