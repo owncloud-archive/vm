@@ -26,6 +26,8 @@ if (sudo -u www-data php $oc/occ status 2>&1 | grep -q ' is not installed '); th
   password=$(shuf -e {a..x}{0..9} | tr l e | head -n 5 | tr -d '\n')
   instanceid=oc$(shuf -e {0..9}{a..z} | tr l e | head -n 5 | tr -d '\n')
 
+  php /var/scripts/update-config.php $oc/config/config.php instanceid $instanceid
+
   mkdir -p $cred_file_dir
   chown www-data $cred_file_dir
   chmod 775 $cred_file_dir
@@ -67,7 +69,6 @@ ADDRESS=$(ip r | grep ${GATEWAY:-src} | grep src | head -n 1 | cut -d' ' -f12)
 ## set trusted domain
 php /var/scripts/update-config.php $oc/config/config.php 'trusted_domains[]' localhost ${ADDRESSES[@]} $(hostname) $(hostname --fqdn)
 php /var/scripts/update-config.php $oc/config/config.php overwrite.cli.url https://$ADDRESS/owncloud
-php /var/scripts/update-config.php $oc/config/config.php instanceid $instanceid
 
 # set secure permissions
 bash /var/scripts/secure-permissions.sh
