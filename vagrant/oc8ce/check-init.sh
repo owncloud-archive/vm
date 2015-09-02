@@ -96,13 +96,13 @@ if [ -s $cred_file ]; then
     |  If the virtual machine is run with NAT, please review the port     |
     |  forwarding of the network adapter, or try http://localhost:8888    |
     +---------------------------------------------------------------------+
-          You can now logon to your ownCloud by using the ip-adress 
-          from above with your web browser. Please import the ssl cert 
+          You can now logon to your ownCloud by using the ip-address
+          from above with your web browser. Please import the ssl cert
           to your browser to connect to your ownCloud via https.
 
           OPTIONAL:
-          If you want to do the final setup of the system, please
-          log in as user 'admin' to run the setup-script. 
+          If you want to do the final setup (e.g. change admin password),
+          please log in as user 'admin' to run the setup-script.
 
 ISSUE
 fi
