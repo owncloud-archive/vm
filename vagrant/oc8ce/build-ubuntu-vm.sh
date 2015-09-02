@@ -230,9 +230,15 @@ if  [ -f /usr/bin/ovftool ]; then
   ## Error: This generates ova's that do not load in VirtualBox.
   ## Error message: Could not verify the contents of $imageName.mf against 
   ## the available files (VERR_MANIFEST_UNSUPPORTED_DIGEST_TYPE)
-  # ovftool --lax $imageName.ovf $imageName.ova
-  # zip $imageName.ova.zip $imageName.ova
-  # rm $imageName.ova
+  # ovftool --shaAlgorithm=sha256 --lax $imageName.ovf $imageName.ova
+  # ovftool --shaAlgorithm=sha1 --lax $imageName.ovf $imageName.ova
+
+  ovftool --skipManifestGeneration --lax $imageName.ovf $imageName.ova
+  ## instead of let ovftool create a manifest, do it manually:
+  # echo "SHA1($imageName-disk1.vmdk)= $(sha1sum $imageName-disk1.vmdk|sed -e 's/ .*//')" > $imageName.mf
+  # echo "SHA1($imageName.ovf)= $(sha1sum $imageName.ovf|sed -e 's/ .*//')" >> $imageName.mf
+  zip $imageName.ova.zip $imageName.ova
+  rm $imageName.ova
 
   cd ..
 else
@@ -256,4 +262,5 @@ done
 
 (cd img; zip $imageName.vmdk.zip $imageName-*.vmdk)
 $DEBUG || rm img/$imageName-*.vmdk
+
 
