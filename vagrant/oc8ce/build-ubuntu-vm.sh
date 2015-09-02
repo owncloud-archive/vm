@@ -251,6 +251,6 @@ done
 ##  UUID {2d168000-11b2-4f11-8ca2-8bb64c7fbffa} of the medium '...vmdk' does not match...
 ##  It should not look there at all!
 
-(cd img; zip $imageName.vmdk.zip $imageName.vmdk)
-$DEBUG || rm img/$imageName.vmdk
+(cd img; zip $imageName.vmdk.zip $imageName-*.vmdk)
+$DEBUG || rm img/$imageName-*.vmdk
 
