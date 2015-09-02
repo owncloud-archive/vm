@@ -89,20 +89,21 @@ if [ -s $cred_file ]; then
     |                                                                     |
     |           Welcome to ownCloud!          $ocVersion            |
     |                                                                     |
-    |  This server is reachable at https://$ADDRESS/owncloud         |
+    |  This server is reachable at https://$ADDRESS/owncloud        |
     |  Initial admin login:    $user                                      |
     |  Initial admin password: $password                                 |
     +---------------------------------------------------------------------+
     |  If the virtual machine is run with NAT, please review the port     |
     |  forwarding of the network adapter, or try http://localhost:8888    |
     +---------------------------------------------------------------------+
-          You can now logon to your ownCloud by using the ip-address
-          from above with your web browser. Please import the ssl cert
-          to your browser to connect to your ownCloud via https.
-
-          OPTIONAL:
-          If you want to do the final setup (e.g. change admin password),
-          please log in as user 'admin' to run the setup-script.
-
+    |   You can now logon to your ownCloud by using the ip-address from   |
+    |   above with your web browser. Please import the SSL cert to your   |
+    |   browser, or accept the security warning to connect to your        |
+    |   ownCloud via HTTPS.                                               |
+    +---------------------------------------------------------------------+
+    |   OPTIONAL:                                                         |
+    |   If you want to do the final setup (e.g. change admin password),   |
+    |   please log in as user 'admin' to run the setup-script.            |
+    +---------------------------------------------------------------------+
 ISSUE
 fi
