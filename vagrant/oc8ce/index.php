@@ -1,4 +1,3 @@
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head><title>Welcome to ownCloud</title>
@@ -92,12 +91,12 @@ a:active {
 <br>
 
 This is the community production appliance.
-It's publically developed on <a href="http://www.github.com/owncloud/vm">github.com</a>. Feel free to contribute!
+It is developed on <a href="http://www.github.com/owncloud/vm">github.com</a>. Feel free to contribute!
 
 <div class="information">
 <p>
 <?php
-if (isset($_GET['zap']))
+if (isset($_GET['zap']) && $_GET['zap'] === "1")
   {
     # only works if /var/scripts/www is writable by www-run
     unlink( "/var/scripts/www/init-credentials.sh");
@@ -122,10 +121,10 @@ else
 One of the following URLs (or similar) should work to access ownCloud:
 <ul>
  <li><a href="https://<?=$_SERVER['SERVER_NAME'];?>:4443/"        >https://<?=$_SERVER['SERVER_NAME'];?>:4443</a> (VirtualBox NAT port forwarding)
- <li><a href="https://<?=$_SERVER['SERVER_NAME'];?>/"             >https://<?=$_SERVER['SERVER_NAME'];?></a> (Bridged Network)
+ <li><a href="https://<?=$_SERVER['SERVER_NAME'];?>/"             >https://<?=$_SERVER['SERVER_NAME'];?></a> (Bridged network)
  <p>
  <li><a href="http://<?=$_SERVER['SERVER_NAME'];?>:8888/owncloud/">http://<?=$_SERVER['SERVER_NAME'];?>:8888/owncloud</a> (VirtualBox NAT port forwarding)
- <li><a href="http://<?=$_SERVER['SERVER_NAME'];?>/owncloud/"     >http://<?=$_SERVER['SERVER_NAME'];?>/owncloud</a> (Bridged Network)
+ <li><a href="http://<?=$_SERVER['SERVER_NAME'];?>/owncloud/"     >http://<?=$_SERVER['SERVER_NAME'];?>/owncloud</a> (Bridged network)
 </ul>
 </div>
 
