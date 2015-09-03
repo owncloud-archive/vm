@@ -86,7 +86,7 @@ if [ -s $cred_file ]; then
   addr40=$(printf "%-40s" https://$ADDRESS/owncloud)
   user40=$(printf "%-40s" $user)
   pass40=$(printf "%-40s" $password)
-  cat > /tmp/etc,issue << ISSUE
+  cat > /etc/issue << ISSUE
           Ubuntu 14.04.2 LTS \n \l
 
     +----------------------------------------------------------------------+
