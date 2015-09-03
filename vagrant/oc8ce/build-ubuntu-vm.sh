@@ -219,4 +219,4 @@ VBoxManage export $imageName -o img/$imageName.ovf || exit 0
 vagrant destroy -f
 
 cd img
-env DEBUG=$DEBUG sh -x ../convert_from_ovf.sh $imageName.ovf
+env DEBUG=$DEBUG sh -x ../convert-from-ovf.sh $imageName.ovf
