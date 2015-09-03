@@ -35,7 +35,10 @@ else
 fi
 
 bin_dir=$(dirname $0)
-$bin_dir/patchvmdk.sh $imageName-disk1.vmdk 02
+
+# qemu-img 1.6.2 needs the patch, qemu-img 2.3.0 does not.
+qemu-img --help | grep -q 'qemu-img version 1' && needpatching=true || needpatching=false
+$needpatching && $bin_dir/patchvmdk.sh $imageName-disk1.vmdk 02
 
 ## convert to other formats...
 for fmt in $formats_via_qemu_img_convert; do
@@ -43,7 +46,7 @@ for fmt in $formats_via_qemu_img_convert; do
  zip $imageName.$fmt.zip $imageName.$fmt
  rm $imageName.$fmt
 done
-$bin_dir/patchvmdk.sh $imageName-disk1.vmdk 03
+$needpatching && $bin_dir/patchvmdk.sh $imageName-disk1.vmdk 03
 
 ### sneak preview:
 # sudo mount -o loop,ro,offset=$(expr 512 \* 2048) $imageName.raw /mnt
