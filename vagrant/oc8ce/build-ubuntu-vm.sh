@@ -33,6 +33,11 @@ vmBoxUrl=https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/14.04/providers
 # vmBoxName=ubuntu/vivid64
 # vmBoxUrl=https://vagrantcloud.com/ubuntu/boxes/vivid64/versions/20150722.0.0/providers/virtualbox.box
 
+## recent debian
+# buildPlatform=Debian_8.0	# matches an OBS target.
+# vmBoxName=deb/jessie-amd64	# starts with 396 MB.
+# vmBoxUrl=https://atlas.hashicorp.com/debian/boxes/jessie64/versions/8.1.1/providers/virtualbox.box
+
 OBS_REPO=$OBS_MIRRORS/$(echo $OBS_PROJECT | sed -e 's@:@:/@g')/$buildPlatform
 OBS_REPO_APCU=$OBS_MIRRORS/isv:/ownCloud:/devel/$buildPlatform
 OBS_REPO_PROXY=$OBS_MIRRORS/isv:/ownCloud:/community:/8.1:/testing:/merged/$buildPlatform
