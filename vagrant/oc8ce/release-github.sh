@@ -5,6 +5,7 @@
 #
 # see also: git clone git@github.com:j0057/github-release.git
 # see also: https://developer.github.com/v3/repos/releases/#create-a-release
+# see also: http://help.appveyor.com/discussions/kb/2-guide-how-to-release-automatically-your-artifact-to-github
 #
 # Requires: sudo pip install githubrelease
 # Requires: https://github.com/settings/tokens/new
@@ -33,6 +34,7 @@ if [ -n "$tag" ]; then
       echo uploading $file
       github-asset $repo upload v$tag $file
       ## https://github.com/j0057/github-release/issues/1
+      # echo curl -XPOST -H "Authorization:token $TOK" -H "Content-Type:application/octet-stream" --data-binary @$file https://uploads.github.com/repos/$repo/releases/v$tag/assets?name=$(basename $file)
       echo - done
     fi
   done
