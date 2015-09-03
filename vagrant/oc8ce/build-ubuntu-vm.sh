@@ -1,12 +1,11 @@
 #! /bin/sh
 #
-# Requires: vagrant VBoxManage qemu-img ovftool
-#
+# Host: Requires: vagrant VBoxManage qemu-img ovftool
+# Guest: Requires: systemd-services (for hostnamectl)
+
 
 OBS_PROJECT=isv:ownCloud:community
 OBS_MIRRORS=http://download.opensuse.org/repositories
-
-formats_via_qemu_img_convert="raw qcow2 vhdx"	# raw qcow2 vhdx supported.
 
 test -z "$DEBUG" && DEBUG=true	# true: skip system update, disk sanitation, ... for speedy development.
                         	# false: do everything for production, also disable vagrant user.
@@ -106,9 +105,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		echo 'admin ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/admin
 		echo 'owncloud ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/owncloud
 		
-		# set servername directive to avoid warning about fully qualified domain name when apache restarts
     		sed -i 's/127.0.0.1 localhost/127.0.0.1 localhost localhost.localdomain owncloud/g' /etc/hosts
-    		sudo hostnamectl set-hostname owncloud # must be run as root
+		hostnamectl set-hostname owncloud
+
+		# set servername directive to avoid warning about fully qualified domain name when apache restarts
+		## TODO..
 
 		# prepare repositories
 		wget -q $OBS_REPO/Release.key -O - | apt-key add -
@@ -217,50 +218,5 @@ VBoxManage export $imageName -o img/$imageName.ovf || exit 0
 # cp "$VBoxImagePath" $imageName.vmdk
 vagrant destroy -f
 
-if  [ -f /usr/bin/ovftool ]; then
-  cd img
-
-  mkdir -p vmx
-  ovftool --lax $imageName.ovf vmx/$imageName.vmx
-  # Line 25: Unsupported hardware family 'virtualbox-2.2'
-  # Line 48: OVF hardware element 'ResourceType' with instance ID '3': No support for the virtual hardware device type '20'.
-  zip $imageName.vmx.zip vmx/*
-  rm -rf vmx
-
-  ## Error: This generates ova's that do not load in VirtualBox.
-  ## Error message: Could not verify the contents of $imageName.mf against 
-  ## the available files (VERR_MANIFEST_UNSUPPORTED_DIGEST_TYPE)
-  # ovftool --shaAlgorithm=sha256 --lax $imageName.ovf $imageName.ova
-  # ovftool --shaAlgorithm=sha1 --lax $imageName.ovf $imageName.ova
-
-  ovftool --skipManifestGeneration --lax $imageName.ovf $imageName.ova
-  ## instead of let ovftool create a manifest, do it manually:
-  # echo "SHA1($imageName-disk1.vmdk)= $(sha1sum $imageName-disk1.vmdk|sed -e 's/ .*//')" > $imageName.mf
-  # echo "SHA1($imageName.ovf)= $(sha1sum $imageName.ovf|sed -e 's/ .*//')" >> $imageName.mf
-  zip $imageName.ova.zip $imageName.ova
-  rm $imageName.ova
-
-  cd ..
-else
-  echo "Warning: Cannot generate vmx. Please install VMware OVF Tool"
-  echo "See https://developercenter.vmware.com/tool/ovf/"
-fi
-
-## convert to other formats...
-for fmt in $formats_via_qemu_img_convert; do
- qemu-img convert -p -f vmdk img/$imageName-disk1.vmdk -O $fmt img/$imageName.$fmt
- (cd img; zip $imageName.$fmt.zip $imageName.$fmt)
- rm img/$imageName.$fmt
-done
-
-### sneak preview:
-# sudo mount -o loop,ro,offset=$(expr 512 \* 2048) img/$imageName.raw /mnt
-
-## FIXME: VBoxManage clonehd' looks into ~/.config/VirtualBox and fails with
-##  UUID {2d168000-11b2-4f11-8ca2-8bb64c7fbffa} of the medium '...vmdk' does not match...
-##  It should not look there at all!
-
-(cd img; zip $imageName.vmdk.zip $imageName-*.vmdk)
-$DEBUG || rm img/$imageName-*.vmdk
-
-
+cd img
+env DEBUG=$DEBUG sh -x ../convert_from_ovf.sh $imageName.ovf
