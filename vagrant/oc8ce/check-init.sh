@@ -73,10 +73,6 @@ php /var/scripts/update-config.php $oc/config/config.php overwrite.cli.url https
 # set secure permissions
 bash /var/scripts/secure-permissions.sh
 
-# Prepare cron.php to be run every 15 minutes
-# The user still has to activate it in the settings GUI
-sudo crontab -u www-data -l | { cat; echo "*/15  *  *  *  * php -f /var/www/owncloud/cron.php > /dev/null 2>&1"; } | crontab -u www-data -
-
 # we want clean logs
 rm $oc/data/owncloud.log
 
