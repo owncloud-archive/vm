@@ -115,10 +115,11 @@ else
 ?>
 </pre></font></div>
 
-<p>The ownCloud web interface is available via HTTP or HTTPS (preferred). Depending on the network configuration of your virtual machine manager.
+<p>The ownCloud web interface is available via HTTP or HTTPS (preferred).
 
 <div class="information">
-One of the following URLs (or similar) should work to access ownCloud:
+Depending on the network configuration of your virtual machine manager, one of the 
+<br>following URLs (or similar) should work to access ownCloud:
 <ul>
  <li><a href="https://<?=$_SERVER['SERVER_NAME'];?>:4443/"        >https://<?=$_SERVER['SERVER_NAME'];?>:4443</a> (VirtualBox NAT port forwarding)
  <li><a href="https://<?=$_SERVER['SERVER_NAME'];?>/"             >https://<?=$_SERVER['SERVER_NAME'];?></a> (Bridged network)
@@ -126,8 +127,12 @@ One of the following URLs (or similar) should work to access ownCloud:
  <li><a href="http://<?=$_SERVER['SERVER_NAME'];?>:8888/owncloud/">http://<?=$_SERVER['SERVER_NAME'];?>:8888/owncloud</a> (VirtualBox NAT port forwarding)
  <li><a href="http://<?=$_SERVER['SERVER_NAME'];?>/owncloud/"     >http://<?=$_SERVER['SERVER_NAME'];?>/owncloud</a> (Bridged network)
 </ul>
+<p>Note: Please accept the warning in the browser if you connect via HTTPS. It is recomended
+<br> to buy your own certificate and replace the self-signed certificate to your own.
+<br><a href="https://www.en0ch.se/publish-your-server-online">Here is a guide on how your publish your server online and change the certs.</a>
 </div>
 
-<p>
-To change passwords and other settings, log in at the system console as user 'admin' and follow the instructions.
-The new credentials will not be shown. (Or simply click above to permanently hide them from web and console.)
+<p> To change passwords and other settings, log in at the system console as user 'admin' and follow the instructions. <br>The new credentials
+will not be shown. (Or simply click above to permanently hide them from web and console.) <br> <p> To enable cron.php to run every 15 minutes by
+the system, please go to the ownCloud admin settings GUI<br>(...index.php/settings/admin), and change the setting from 'AJAX' to 'Cron'.
+</p>
