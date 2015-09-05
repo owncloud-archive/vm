@@ -130,7 +130,7 @@ Depending on the network configuration of your virtual machine manager, one of t
 <p>Note: Please accept the warning in the browser if you connect via HTTPS. It is recomended
 <br> to buy your own certificate and replace the self-signed certificate to your own.
 <br>
-<br><a href="https://www.en0ch.se/publish-your-server-online">Here is a guide on how your publish your server online and change the certs.</a>
+<br><a href="https://www.en0ch.se/publish-your-server-online" target="_blank">Here is a guide on how your publish your server online and change the certs.</a>
 </div>
 
 <p> To change passwords and other settings, log in at the system console as user 'admin' and follow the instructions. <br>The new credentials
