@@ -129,6 +129,7 @@ Depending on the network configuration of your virtual machine manager, one of t
 </ul>
 <p>Note: Please accept the warning in the browser if you connect via HTTPS. It is recomended
 <br> to buy your own certificate and replace the self-signed certificate to your own.
+<br>
 <br><a href="https://www.en0ch.se/publish-your-server-online">Here is a guide on how your publish your server online and change the certs.</a>
 </div>
 
