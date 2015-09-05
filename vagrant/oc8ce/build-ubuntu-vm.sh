@@ -110,11 +110,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		echo 'admin ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/admin
 		echo 'owncloud ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/owncloud
 		
-    		sed -i 's/127.0.0.1 localhost/127.0.0.1 localhost localhost.localdomain owncloud/g' /etc/hosts
+    		# set servername directive to avoid warning about fully qualified domain name when apache restarts
+    		sed -i 's/127.0.0.1 localhost/127.0.0.1 localhost.localdomain owncloud/g' /etc/hosts
 		hostnamectl set-hostname owncloud
-
-		# set servername directive to avoid warning about fully qualified domain name when apache restarts
-		## TODO..
 
 		# prepare repositories
 		wget -q $OBS_REPO/Release.key -O - | apt-key add -
@@ -178,6 +176,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		# Prepare cron.php to be run every 15 minutes
 		# The user still has to activate it in the settings GUI
 		sudo crontab -u www-data -l | { cat; echo "*/15  *  *  *  * php -f /var/www/owncloud/cron.php > /dev/null 2>&1"; } | crontab -u www-data -
+		
 		# "zero out" the drive...
 		$DEBUG || dd if=/dev/zero of=/EMPTY bs=1M || true
 		$DEBUG || rm -f /EMPTY || true
