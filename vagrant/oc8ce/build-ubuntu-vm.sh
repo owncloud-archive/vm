@@ -174,7 +174,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 		# Set RAMDISK for better performance
 		echo 'none /tmp tmpfs,size=6g defaults' >> /etc/fstab
-
+		
+		# Prepare cron.php to be run every 15 minutes
+		# The user still has to activate it in the settings GUI
+		sudo crontab -u www-data -l | { cat; echo "*/15  *  *  *  * php -f /var/www/owncloud/cron.php > /dev/null 2>&1"; } | crontab -u www-data -
 		# "zero out" the drive...
 		$DEBUG || dd if=/dev/zero of=/EMPTY bs=1M || true
 		$DEBUG || rm -f /EMPTY || true
