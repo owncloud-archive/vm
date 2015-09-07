@@ -113,8 +113,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     		# set servername directive to avoid warning about fully qualified domain name when apache restarts
     		sed -i 's/127.0.0.1 localhost/127.0.0.1 localhost owncloud/g' /etc/hosts
 		hostnamectl set-hostname owncloud
-		echo "ServerName owncloud" >> /etc/apache2/apache2.conf 
-
+		# Code below dosen't work:
+		#############################
+		if grep -q "ServerName owncloud" /etc/apache2/apache2.conf
+		then
+    			exit 0
+		else
+    			sudo sh -c "echo 'ServerName owncloud' >> /etc/apache2/apache2.conf"
+		fi
+		#############################
 		# prepare repositories
 		wget -q $OBS_REPO/Release.key -O - | apt-key add -
 		sh -c "echo 'deb $OBS_REPO /' >> /etc/apt/sources.list.d/owncloud.list"
