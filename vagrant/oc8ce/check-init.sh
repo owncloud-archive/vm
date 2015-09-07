@@ -82,10 +82,10 @@ if [ -s $cred_file ]; then
   . $cred_file
   ocVersion=$(head -n1 /var/www/owncloud/.htaccess)
   test -f /etc/issue.orig || mv /etc/issue /etc/issue.orig
-  vers20=$(printf "%-20s" $ocVersion)
-  addr40=$(printf "%-40s" https://$ADDRESS/owncloud)
-  user40=$(printf "%-40s" $user)
-  pass40=$(printf "%-40s" $password)
+  vers20=$(printf "%-20s" "$ocVersion")
+  addr40=$(printf "%-40s" "https://$ADDRESS/owncloud")
+  user40=$(printf "%-40s" "$user")
+  pass40=$(printf "%-40s" "$password")
   cat > /etc/issue << ISSUE
           Ubuntu 14.04.2 LTS \n \l
 
