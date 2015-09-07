@@ -10,6 +10,14 @@
 # * rm owncloud.log for clean logs
 # * set servername 'owncloud'
 
+# set ServerName in apache.conf
+if grep -q "ServerName owncloud" /etc/apache2/apache2.conf
+then
+    exit 0
+else
+    sudo sh -c "echo 'ServerName owncloud' >> /etc/apache2/apache2.conf"
+fi
+
 exec 3>&1 1>>/var/log/check-init.log 2>&1
 
 mysql_pass=admin	# KEEP in sync with build-ubuntu-vm.sh
