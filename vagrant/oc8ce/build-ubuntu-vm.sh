@@ -110,18 +110,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		echo 'admin ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/admin
 		echo 'owncloud ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/owncloud
 		
-    		# set servername directive to avoid warning about fully qualified domain name when apache restarts
-    		sed -i 's/127.0.0.1 localhost/127.0.0.1 localhost owncloud/g' /etc/hosts
-		hostnamectl set-hostname owncloud
-		# Code below dosen't work:
-		#############################
-		if grep -q "ServerName owncloud" /etc/apache2/apache2.conf
-		then
-    			exit 0
-		else
-    			sudo sh -c "echo 'ServerName owncloud' >> /etc/apache2/apache2.conf"
-		fi
-		#############################
 		# prepare repositories
 		wget -q $OBS_REPO/Release.key -O - | apt-key add -
 		sh -c "echo 'deb $OBS_REPO /' >> /etc/apt/sources.list.d/owncloud.list"
@@ -140,6 +128,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 		## Install APCU 4.0.6, using the 14.04 package from isv:ownCloud:devel
 		apt-get install -q -y php5-apcu
+
+		# set hostname 'owncloud' and localhost
+		sed -i 's/127.0.0.1 localhost/127.0.0.1 localhost owncloud/g' /etc/hosts
+		hostnamectl set-hostname owncloud
+
+		# set servername directive to avoid warning about fully qualified domain name when apache restarts
+		# it must be set after apache2 is setup, that is why we install apache here as well.
+		apt-get install apache2 -q -y
+		sudo sh -c "echo 'ServerName owncloud' >> /etc/apache2/apache2.conf"
 
 		debconf-set-selections <<< 'mysql-server mysql-server/root_password password $mysql_pass'
 		debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $mysql_pass'
