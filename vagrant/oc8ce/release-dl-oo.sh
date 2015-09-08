@@ -5,9 +5,12 @@
 #
 
 ## testing releases go here:
-dest=upload@dl-oo.owncloud.org:w/testing/vm/
+destdir=testing/vm
 ## production releases go here:
-# dest=upload@dl-oo.owncloud.org:w/production/vm/
+##destdir=production/vm
+
+uploadurl=upload@dl-oo.owncloud.org:w/$destdir
+downloadurl=download.owncloud.org/community/$destdir
 
 echo uploading to $dest ...
 set -x
@@ -18,6 +21,8 @@ sleep 1
 imgdir=$(dirname $0)/img
 for file in $imgdir/*.zip; do
   chmod 0644 $file
-  rsync --progress --append-verify $file $dest/
+  rsync --progress --append-verify $file $uploadurl/
 done
+
+echo Download URL: $downloadurl
 
