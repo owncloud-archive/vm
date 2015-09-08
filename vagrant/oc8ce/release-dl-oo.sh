@@ -12,7 +12,7 @@ destdir=testing/vm
 uploadurl=upload@dl-oo.owncloud.org:w/$destdir
 downloadurl=download.owncloud.org/community/$destdir
 
-echo uploading to $dest ...
+echo uploading to $uploadurl ...
 set -x
 sleep 3
 sleep 2
