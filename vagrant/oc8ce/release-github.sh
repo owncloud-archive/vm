@@ -3,43 +3,64 @@
 # release-github.sh -- push released files into github.
 # (c) copyright 2015 jw@owncloud.com
 #
-# see also: git clone git@github.com:j0057/github-release.git
+# see also: git clone git@github.com:aktau/github-release.git
 # see also: https://developer.github.com/v3/repos/releases/#create-a-release
 # see also: http://help.appveyor.com/discussions/kb/2-guide-how-to-release-automatically-your-artifact-to-github
 #
-# Requires: sudo pip install githubrelease
-# Requires: https://github.com/settings/tokens/new
+# Requires: go get https://github.com/aktau/github-release
+# Recommends: https://github.com/jnweiger/showspeed/ or https://github.com/aktau/github-release/issues/33
+# Requires: https://github.com/settings/tokens
 # -> name: githubrelease-script
 # -> scope: [x] repo, [x] public_repo
 
-repo=owncloud/vm
+user=owncloud
+repo=vm
 imgdir=$(dirname $0)/img
 for file in $imgdir/*.zip; do
   newtag=$(echo $file | sed -e 's@.*owncloud-@@' -e 's@\(2015[0-9]*\).*@\1@')
 done
 
-taglist=$(github-release $repo list | grep 'Tag name' | sed -e 's@.*: *@@')
+if [ -z "$GITHUB_TOKEN" ]; then
+  echo "Environment variable GITHUB_TOKEN not set."
+  echo "Please study https://github.com/settings/tokens"
+  exit 0;
+fi
+
+taglist=$(github-release info -u $user -r $repo | grep ", name: '" | sed -e 's@, name.*@@' -e 's@^- @@')
 for oldtag in $taglist; do
-  echo - known release tags: $oldtag
-  test "$oldtag" == "v$newtag" && tag=$newtag
+  echo -n "- known release tags: $oldtag"
+  if [ "$oldtag" == "v$newtag" -o "$oldtag" == "$newtag" ]; then
+    echo " <= <= <= <= <= "
+    tag=$newtag
+  else
+    echo ""
+  fi
 done;
 
-if [ -n "$tag" ]; then 
-  echo adding to v$tag
-  known_assets=$(github-release $repo info v$tag | grep 'Asset #' | grep ' name ')
-  for file in $imgdir/*$tag*.zip; do 
-    if echo $known_assets | grep -q $(basename $file) ; then
-      echo - $file already uploaded
-    else
-      echo uploading $file
-      github-asset $repo upload v$tag $file
-      ## https://github.com/j0057/github-release/issues/1
-      # echo curl -XPOST -H "Authorization:token $TOK" -H "Content-Type:application/octet-stream" --data-binary @$file https://uploads.github.com/repos/$repo/releases/v$tag/assets?name=$(basename $file)
-      echo - done
-    fi
-  done
-else
+if [ -z "$tag" ]; then
   echo creating new tag v$newtag
-  github-release $repo create v$newtag
-  echo FIXME: unfinsihed.
+  github-release release -u $user -r $repo -t v$newtag --draft --pre-release
+  tag=$newtag
 fi
+
+
+echo adding to v$tag
+showspeed=env
+## showspeed produces extremly long output lines. Make it more compact?
+test -f /usr/bin/showspeed && showspeed='/usr/bin/showspeed --read --interval 10 --cmd'
+
+# tag=8.1.2-rc1-14.1-201509010612
+
+known_assets=$(github-release info -u $user -r $repo -t v$tag | grep ' - artifact: ' | sed -e 's@, downloads:.*@@' -e 's@^ *- artifact: *@@')
+
+for file in $imgdir/*$tag*.zip; do 
+  name=$(basename $file)
+  if echo $known_assets | grep -q $name ; then
+    ## FIXME: does not reliably trigger??
+    echo - $file already uploaded
+  else
+    echo uploading $file ...
+    $showspeed github-release upload -u $user -r $repo -t v$tag -f $file -n $name
+  fi
+done
+
