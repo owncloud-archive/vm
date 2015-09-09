@@ -186,6 +186,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		$DEBUG || dd if=/dev/zero of=/EMPTY bs=1M || true
 		$DEBUG || rm -f /EMPTY || true
 		sync
+		shutdown -h now
   SCRIPT
 end
 EOF
@@ -195,7 +196,8 @@ EOF
 vagrant up
 
 sleep 10
-vagrant halt || VBoxManage controlvm $imageName acpipowerbutton
+## cannot do vagrant halt here, if the vagrant user was deleted.
+VBoxManage controlvm $imageName acpipowerbutton || true
 
 ## prepare for bridged network, done after building, to avoid initial ssh issues.
 # VBoxManage modifyvm $imageName --nic1 bridged
