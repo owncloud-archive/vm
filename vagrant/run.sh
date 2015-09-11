@@ -5,7 +5,7 @@
 # time sh -x oc8ce/build-ubuntu-vm.sh isv:ownCloud:community:8.1:testing $1
 
 #### use this for production:
-time DEBUG=false sh oc8ce/build-ubuntu-vm.sh isv:ownCloud:community:8.1:testing $1
+DEBUG=false time sh oc8ce/build-ubuntu-vm.sh isv:ownCloud:community:8.1:testing $1
 
 # use this variable to run the install-additional-apps.sh script.
 # INSTALL_ADDITIONAL_APPS=1 sh ...  
