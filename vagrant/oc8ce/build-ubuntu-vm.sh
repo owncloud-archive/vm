@@ -1,6 +1,7 @@
 #! /bin/sh
 #
 # Host: Requires: vagrant VBoxManage qemu-img ovftool
+#       ovftool from https://developercenter.vmware.com/tool/ovf/3.5.2
 # Guest: Requires: systemd-services (for hostnamectl)
 
 
