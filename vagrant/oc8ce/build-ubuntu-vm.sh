@@ -203,6 +203,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 end
 EOF
 
+# make sure it is not running. Normally, this prints "VM not created. Moving on..."
+vagrant destroy -f
+
 # do all vagrant calls from within the working directory, or retrive
 # vmID=$(vagrant global-status | grep $vmName | sed -e 's/ .*//')
 vagrant up
