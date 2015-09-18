@@ -11,7 +11,7 @@ DEBUG=false time sh oc8ce/build-ubuntu-vm.sh isv:ownCloud:community:8.1 $1
 # INSTALL_ADDITIONAL_APPS=1 sh ...  
 
 
-#### upload stuff. First github, which is fast, then our own serrver.
+#### upload stuff. First github, which is fast, then our own server.
 oc8ce/release-github.sh
 oc8ce/release-dl-oo.sh
 
