@@ -155,6 +155,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $mysql_pass'
 		apt-get install -q -y owncloud php5-libsmbclient
 
+		# Workaround for https://github.com/owncloud/core/issues/19479
+		# This silences a bogus check in apps/files_external/lib/smb.php#L297-L303
+		apt-get install -q -y smbclient
+
 		wget -q $OBS_REPO_PROXY/Release.key -O - | apt-key add -
 		sh -c "echo 'deb $OBS_REPO_PROXY /' >> /etc/apt/sources.list.d/owncloud.list"
 		apt-get -q -y update
