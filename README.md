@@ -13,10 +13,11 @@ sh run.sh                    # default DEBUG versions, optimized build time (ca 
 DEBUG=false sh run.sh        # production version, optimized compression (ca 20 Min build time)
 ls -l oc8ce/*owncloud-8*
 </pre>
-After the build of the appliance you will find it in /path/to/the/cloned/owncloud/vm/vagrant/oc8e/
+After the build of the appliance you will find it in /path/to/the/cloned/github/vm/vagrant/oc8ce/img
 
 **VirtualBox**
 <pre>
+->unzip xubuntu.....vdmk.zip
  -> Double click on the .ovf file
   -> Import
 Then open VirtualBox

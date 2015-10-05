@@ -138,6 +138,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 		# install packages.
 		apt-get install -q -y language-pack-de figlet
+		
+
+		#install additional software
+		apt-get update
+		apt-get -q -y install git
 
 		## Install APCU 4.0.6, using the 14.04 package from isv:ownCloud:devel
 		apt-get install -q -y php5-apcu
