@@ -1,6 +1,13 @@
 # call this with a version number you want to build. 
 # it will wait until that version number appears in the repo.
 #
+
+if [ -z "$GITHUB_TOKEN" ]; then
+  echo "Environment variable GITHUB_TOKEN not set. See https://github.com/settings/tokens"
+  echo "You will have to call oc8ce/release-github.sh later manually. Press ENTER to continue"
+  read a
+fi
+
 #### use this for testing:
 time sh -x oc8ce/build-ubuntu-vm.sh isv:ownCloud:community:8.2:testing $1
 
