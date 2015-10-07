@@ -42,7 +42,7 @@ vmBoxUrl=https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/14.04/providers
 
 OBS_REPO=$OBS_MIRRORS/$(echo $OBS_PROJECT | sed -e 's@:@:/@g')/$buildPlatform
 OBS_REPO_APCU=$OBS_MIRRORS/isv:/ownCloud:/devel/$buildPlatform
-OBS_REPO_PROXY=$OBS_MIRRORS/isv:/ownCloud:/community:/8.1:/testing:/merged/$buildPlatform
+OBS_REPO_PROXY=$OBS_MIRRORS/isv:/ownCloud:/community:/8.2:/testing:/$buildPlatform
 
 while true; do
   ocVersion=$(curl -s -L $OBS_REPO/Packages | grep -a1 'Package: owncloud$' | grep Version: | head -n 1 | sed -e 's/Version: /owncloud-/')
@@ -223,6 +223,11 @@ vagrant up
 sleep 10
 ## cannot do vagrant halt here, if the vagrant user was deleted.
 VBoxManage controlvm $imageName acpipowerbutton || true
+while ! ( VBoxManage controlvm $imageName acpipowerbutton 2>&1 | grep 'state: PoweredOff' ); do
+  VBoxManage controlvm $imageName acpipowerbutton 2>&1 | grep 'state: PoweredOff'
+  echo waiting for PoweredOff ...
+  sleep 10
+done
 
 ## prepare for bridged network, done after building, to avoid initial ssh issues.
 # VBoxManage modifyvm $imageName --nic1 bridged
