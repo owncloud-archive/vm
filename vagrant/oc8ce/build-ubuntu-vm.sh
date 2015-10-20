@@ -5,8 +5,9 @@
 # Guest: Requires: systemd-services (for hostnamectl)
 
 
-OBS_PROJECT=isv:ownCloud:community
+OBS_PROJECT=isv:ownCloud:community	# default...
 OBS_MIRRORS=http://download.opensuse.org/repositories
+DOO_MIRRORS=http://download.owncloud.org/download/repositories
 
 test -z "$DEBUG" && DEBUG=true	# true: skip system update, disk sanitation, ... for speedy development.
                         	# false: do everything for production, also disable vagrant user.
@@ -40,7 +41,8 @@ vmBoxUrl=https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/14.04/providers
 # vmBoxName=deb/jessie-amd64	# starts with 396 MB.
 # vmBoxUrl=https://atlas.hashicorp.com/debian/boxes/jessie64/versions/8.1.1/providers/virtualbox.box
 
-OBS_REPO=$OBS_MIRRORS/$(echo $OBS_PROJECT | sed -e 's@:@:/@g')/$buildPlatform
+# OBS_REPO=$OBS_MIRRORS/$(echo $OBS_PROJECT | sed -e 's@:@:/@g')/$buildPlatform
+OBS_REPO=$DOO_MIRRORS/$(echo $OBS_PROJECT | sed -e 's@:@:/@g')/$buildPlatform
 OBS_REPO_APCU=$OBS_MIRRORS/isv:/ownCloud:/devel/$buildPlatform
 OBS_REPO_PROXY=$OBS_MIRRORS/isv:/ownCloud:/community:/8.2:/testing:/$buildPlatform
 
