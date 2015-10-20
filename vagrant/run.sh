@@ -25,4 +25,4 @@ oc8ce/release-dl-oo.sh
 oc8ce/release-github.sh
 
 echo "If this is an official release, update the version number in"
-echo "https://github.com/owncloud/owncloud.org/blob/officialvm/strings.php"
+echo "https://github.com/jnweiger/owncloud.org/blob/master/strings.php"
