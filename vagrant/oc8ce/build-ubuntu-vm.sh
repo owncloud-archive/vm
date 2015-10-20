@@ -222,7 +222,7 @@ vagrant up
 
 sleep 10
 ## cannot do vagrant halt here, if the vagrant user was deleted.
-VBoxManage controlvm $imageName acpipowerbutton || true
+# VBoxManage controlvm $imageName acpipowerbutton || true
 while ! ( VBoxManage controlvm $imageName acpipowerbutton 2>&1 | grep 'state: PoweredOff' ); do
   VBoxManage controlvm $imageName acpipowerbutton 2>&1 | grep 'state: PoweredOff'
   echo waiting for PoweredOff ...

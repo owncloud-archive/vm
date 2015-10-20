@@ -18,9 +18,11 @@ time sh -x oc8ce/build-ubuntu-vm.sh isv:ownCloud:community:8.2:testing $1
 # INSTALL_ADDITIONAL_APPS=1 sh ...  
 
 
-#### upload stuff. First github, which is fast, then our own server.
-oc8ce/release-github.sh
+#### upload stuff. 
+## first our own server, even if slower, this is what people are waiting for.
 oc8ce/release-dl-oo.sh
+## second github. This is likely to error out with 502 bad gateway.
+oc8ce/release-github.sh
 
 echo "If this is an official release, update the version number in"
 echo "https://github.com/owncloud/owncloud.org/blob/officialvm/strings.php"
