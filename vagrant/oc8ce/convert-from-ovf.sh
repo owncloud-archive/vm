@@ -6,10 +6,20 @@ formats_via_qemu_img_convert="raw qcow2 vhdx"	# raw qcow2 vhdx supported.
 test -z "$DEBUG" && DEBUG=true
 imageName=$(basename $1 .ovf)
 
-if [ -z "$(qemu-img info /dev/null)" ]; then
+if [ -z "$(qemu-img --help | grep 'qemu-img version')" ]; then
   echo "ERROR: qemu-img is required!"
   exit 0
 fi
+qemu-img --help | grep 'qemu-img version'
+
+if  [ ! -f /usr/bin/ovftool ]; then
+  echo "Warning: Cannot generate vmx. Please install VMware OVF Tool"
+  echo "See https://developercenter.vmware.com/tool/ovf/"
+  echo ""
+  echo "Press ENTER to continue without VMX or OVA support, CTRL-C to stop."
+  read a
+fi
+ovftool --version
 
 $DEBUG && set -x
 
@@ -35,10 +45,6 @@ if  [ -f /usr/bin/ovftool ]; then
   # echo "SHA1($imageName.ovf)= $(sha1sum $imageName.ovf|sed -e 's/ .*//')" >> $imageName.mf
   zip $imageName.ova.zip $imageName.ova
   rm $imageName.ova
-
-else
-  echo "Warning: Cannot generate vmx. Please install VMware OVF Tool"
-  echo "See https://developercenter.vmware.com/tool/ovf/"
 fi
 
 bin_dir=$(dirname $0)
