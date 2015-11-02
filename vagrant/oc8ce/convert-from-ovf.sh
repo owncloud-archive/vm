@@ -6,6 +6,11 @@ formats_via_qemu_img_convert="raw qcow2 vhdx"	# raw qcow2 vhdx supported.
 test -z "$DEBUG" && DEBUG=true
 imageName=$(basename $1 .ovf)
 
+if [ -z "$(qemu-img info /dev/null)" ]; then
+  echo "ERROR: qemu-img is required!"
+  exit 0
+fi
+
 $DEBUG && set -x
 
 if  [ -f /usr/bin/ovftool ]; then
