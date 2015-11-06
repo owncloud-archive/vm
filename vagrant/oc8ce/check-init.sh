@@ -65,9 +65,9 @@ declare -a ADDRESSES=($(ip r | grep src | cut -d' ' -f12))
 GATEWAY=$(ip r | grep default | sed -e 's@.* dev \(\S\S*\) .*@\1@')
 ADDRESS=$(ip r | grep ${GATEWAY:-src} | grep src | head -n 1 | cut -d' ' -f12)
 
-## set trusted domain
-php /var/scripts/update-config.php $oc/config/config.php 'trusted_domains[]' localhost ${ADDRESSES[@]} $(hostname) $(hostname --fqdn)
-php /var/scripts/update-config.php $oc/config/config.php overwrite.cli.url https://$ADDRESS/owncloud
+## set trusted domain on first boot, then delete the script.
+bash /var/scripts/set-trusted-domain.sh
+rm /var/scripts/set-trusted-domain.sh
 
 # set secure permissions
 bash /var/scripts/secure-permissions.sh
