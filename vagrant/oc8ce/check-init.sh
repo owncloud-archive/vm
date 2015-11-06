@@ -66,8 +66,14 @@ GATEWAY=$(ip r | grep default | sed -e 's@.* dev \(\S\S*\) .*@\1@')
 ADDRESS=$(ip r | grep ${GATEWAY:-src} | grep src | head -n 1 | cut -d' ' -f12)
 
 ## set trusted domain on first boot, then delete the script.
-bash /var/scripts/set-trusted-domain.sh
-rm /var/scripts/set-trusted-domain.sh
+FILE="/var/scripts/set-trusted-domain.sh"
+if [ -f $FILE ];
+then
+        echo "Trusted domain is already set"
+else
+        bash /var/scripts/set-trusted-domain.sh
+        rm /var/scripts/set-trusted-domain.sh
+fi
 
 # set secure permissions
 bash /var/scripts/secure-permissions.sh
