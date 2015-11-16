@@ -8,7 +8,7 @@
 OBS_PROJECT=isv:ownCloud:community	# default...
 OBS_MIRRORS=http://download.opensuse.org/repositories
 DOO_MIRRORS=http://download.owncloud.org/download/repositories
-DOO_PROJECT=8.2
+DOO_PROJECT=8.2				# default
 
 test -z "$DEBUG" && DEBUG=true	# true: skip system update, disk sanitation, ... for speedy development.
                         	# false: do everything for production, also disable vagrant user.
@@ -17,10 +17,14 @@ mysql_pass=admin		# KEEP in sync with check-init.sh
 
 if [ "$1" = "-h" ]; then
   echo "Usage: $0 [OBS_PROJECT]"
-  echo "default OBS_PROJECT is '$OBS_PROJECT'"
+  echo "default OBS_PROJECT is '$DOO_PROJECT'"
   exit 1
 fi
-test -n "$1" && OBS_PROJECT=$1
+if [ -n "$1" ]; then
+  OBS_PROJECT=$1
+  DOO_PROJECT=$1
+fi
+
 EXPECTED_VERSION="-$2"
 
 cd $(dirname $0)
@@ -48,6 +52,7 @@ OBS_REPO_APCU=$OBS_MIRRORS/isv:/ownCloud:/devel/$buildPlatform
 OBS_REPO_PROXY=$OBS_MIRRORS/isv:/ownCloud:/community:/8.2:/testing:/$buildPlatform
 
 while true; do
+  echo "fetching $OBS_REPO/Packages ..."
   ocVersion=$(curl -s -L $OBS_REPO/Packages | grep -a1 'Package: owncloud$' | grep Version: | head -n 1 | sed -e 's/Version: /owncloud-/')
   if [ -z "$ocVersion" ]; then
     curl -s -L $OBS_REPO/Packages
