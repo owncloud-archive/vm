@@ -233,7 +233,8 @@ sleep 10
 # VBoxManage controlvm $imageName acpipowerbutton || true
 while ! ( VBoxManage controlvm $imageName acpipowerbutton 2>&1 | grep 'state: PoweredOff' ); do
   VBoxManage controlvm $imageName acpipowerbutton 2>&1 | grep 'state: PoweredOff'
-  echo waiting for PoweredOff ...
+  echo VBoxManage controlvm $imageName acpipowerbutton
+  echo ... waiting for PoweredOff ...
   sleep 10
 done
 
