@@ -231,10 +231,14 @@ vagrant up
 sleep 10
 ## cannot do vagrant halt here, if the vagrant user was deleted.
 # VBoxManage controlvm $imageName acpipowerbutton || true
-while ! ( VBoxManage controlvm $imageName acpipowerbutton 2>&1 | grep 'state: PoweredOff' ); do
+#
+# FIXME: VirtualBox 5.x says
+# VBoxManage: error: Machine 'xUbuntu_14.04-owncloud-8.2.0-4.1-201511161821-DEBUG' is not currently running
+#
+echo + VBoxManage controlvm $imageName acpipowerbutton
+while ! ( VBoxManage controlvm $imageName acpipowerbutton 2>&1 | egrep '(is not currently running|state: PoweredOff)' ); do
   VBoxManage controlvm $imageName acpipowerbutton 2>&1 | grep 'state: PoweredOff'
-  echo VBoxManage controlvm $imageName acpipowerbutton
-  echo ... waiting for PoweredOff ...
+  echo waiting for PoweredOff ...
   sleep 10
 done
 
