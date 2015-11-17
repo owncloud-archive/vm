@@ -5,6 +5,9 @@ On a Linux and a Mac OSX System:
 Make sure you have Virtualbox and vagrant installed.
 Please note that currently 8/18/2015 on Mac OSX 10.10.4 or 10.10.5 System the only virtualbox build that seems to work
 is Virtualbox 4.3.26 you can find it here: https://www.virtualbox.org/wiki/Download_Old_Builds_4_3
+
+You can find VMware Player here: https://my.vmware.com/web/vmware/free#desktop_end_user_computing/vmware_workstation_player/12_0
+
 Download or clone vm github repository then:
  
 <pre>
