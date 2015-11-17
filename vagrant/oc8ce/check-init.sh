@@ -9,7 +9,7 @@
 # * set secure permissions
 # * rm owncloud.log for clean logs
 
-exec 3>&1 1>>/var/log/check-init.log 2>&1
+#exec 3>&1 1>>/var/log/check-init.log 2>&1
 
 mysql_pass=admin	# KEEP in sync with build-ubuntu-vm.sh
 cred_file_dir=/var/scripts/www
