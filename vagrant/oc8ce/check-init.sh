@@ -9,7 +9,7 @@
 # * set secure permissions
 # * rm owncloud.log for clean logs
 
-exec 3>&1 1>>/var/log/check-init.log 2>&1
+#exec 3>&1 1>>/var/log/check-init.log 2>&1
 
 mysql_pass=admin	# KEEP in sync with build-ubuntu-vm.sh
 cred_file_dir=/var/scripts/www
@@ -65,9 +65,15 @@ declare -a ADDRESSES=($(ip r | grep src | cut -d' ' -f12))
 GATEWAY=$(ip r | grep default | sed -e 's@.* dev \(\S\S*\) .*@\1@')
 ADDRESS=$(ip r | grep ${GATEWAY:-src} | grep src | head -n 1 | cut -d' ' -f12)
 
-## set trusted domain
-php /var/scripts/update-config.php $oc/config/config.php 'trusted_domains[]' localhost ${ADDRESSES[@]} $(hostname) $(hostname --fqdn)
-php /var/scripts/update-config.php $oc/config/config.php overwrite.cli.url https://$ADDRESS/owncloud
+## set trusted domain on first boot, then delete the script.
+FILE="/var/scripts/set-trusted-domain.sh"
+if [ -f $FILE ];
+then
+        bash /var/scripts/set-trusted-domain.sh
+        rm /var/scripts/set-trusted-domain.sh
+else
+        echo "Trusted domain is already set"
+fi
 
 # set secure permissions
 bash /var/scripts/secure-permissions.sh
