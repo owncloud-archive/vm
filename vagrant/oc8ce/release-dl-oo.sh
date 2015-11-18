@@ -5,9 +5,9 @@
 #
 
 ## testing releases go here:
-destdir=testing/vm
+# destdir=testing/vm
 ## production releases go here:
-##destdir=production/vm
+destdir=production/vm
 
 uploadurl=upload@dl-oo.owncloud.org:w/$destdir
 downloadurl=download.owncloud.org/community/$destdir
