@@ -69,8 +69,8 @@ ADDRESS=$(ip r | grep ${GATEWAY:-src} | grep src | head -n 1 | cut -d' ' -f12)
 FILE="/var/scripts/set-trusted-domain.sh"
 if [ -f $FILE ];
 then
-        bash /var/scripts/set-trusted-domain.sh
-        rm /var/scripts/set-trusted-domain.sh
+        bash $FILE
+        rm $FILE
 else
         echo "Trusted domain is already set"
 fi
