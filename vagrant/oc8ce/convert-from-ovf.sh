@@ -2,7 +2,7 @@
 #
 # Requires: qemu-img ovftool
 
-formats_via_qemu_img_convert="raw qcow2 vhdx"	# raw qcow2 vhdx supported.
+formats_via_qemu_img_convert="vhdx raw qcow2"	# raw qcow2 vhdx supported.
 test -z "$DEBUG" && DEBUG=true
 imageName=$(basename $1 .ovf)
 
@@ -27,7 +27,7 @@ if  [ -f /usr/bin/ovftool ]; then
   mkdir -p vmx
   echo "Error messages expected from ovftool. 'Unsupported hardware family virtualbox-2.2', 'No support for the virtual hardware device type 20'."
   echo "You can ignore them. They do apparently no harm."
-  ovftool --lax $imageName.ovf vmx/$imageName.vmx
+  ovftool --lax $imageName.ovf vmx/$imageName.vmx || exit 1
   # Line 25: Unsupported hardware family 'virtualbox-2.2'
   # Line 48: OVF hardware element 'ResourceType' with instance ID '3': No support for the virtual hardware device type '20'.
   zip $imageName.vmx.zip vmx/*
