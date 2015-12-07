@@ -154,6 +154,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		## Install APCU 4.0.6, using the 14.04 package from isv:ownCloud:devel
 		apt-get install -q -y php5-apcu
 
+		## Install Redis. The upstream php5-redis is too old. We try pecl.
+		## https://github.com/owncloud/enterprise/issues/946
+		apt-get install -q -y redis-server
+		apt-get install -q -y php-pear php5-dev
+		pecl install redis
+
 		# set hostname 'owncloud' and localhost
 		sed -i 's/127.0.0.1 localhost/127.0.0.1 localhost owncloud/g' /etc/hosts
 		hostnamectl set-hostname owncloud
