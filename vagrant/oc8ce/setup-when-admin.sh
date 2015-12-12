@@ -1,16 +1,14 @@
 #!/bin/bash
 clear
 
-
- 
 cat << EOMSTART
 +---------------------------------------------------------------+
 |   This script will do the final setup for you                 |
-|                                                               |                                                                    
-|   - Change keyboard setup (current is US)                     |                                                                 
-|   - Change timezone                                           |                                                                 
+|                                                               |
+|   - Change keyboard setup (current is US)                     |
+|   - Change timezone                                           |
 |   - Set new passwords to Ubuntu and ownCloud (user: admin)    |
-|   								|
+|                                                               |
 | +++ To access the shell immediately, please press crtl+c +++  |
 +---------------------------------------------------------------+
 
