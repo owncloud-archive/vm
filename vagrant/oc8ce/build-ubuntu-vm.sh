@@ -31,7 +31,8 @@ mkdir -p test
 rm -f    test/seen-login-page.html	# will be created during build...
 
 ## An LTS operating system for production.
-buildPlatform=xUbuntu_14.04	# matches an OBS target.
+#buildPlatform=xUbuntu_14.04	# matches an OBS target.	at download.opensuse.org
+buildPlatform=Ubuntu_14.04	# matches an OBS target.	at download.owncloud.org
 vmBoxName=ubuntu/trusty64
 vmBoxUrl=https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/14.04/providers/virtualbox.box
 
