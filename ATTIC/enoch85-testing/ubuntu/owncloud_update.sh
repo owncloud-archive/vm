@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-## Tech and Me ## - 2015, https://www.en0ch.se/
+## Tech and Me ## - 2015, https://www.techandme.se/
 #
 
 # System Upgrade
