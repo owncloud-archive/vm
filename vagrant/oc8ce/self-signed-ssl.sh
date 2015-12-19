@@ -12,7 +12,7 @@ cat << SSL_CREATE > "$ssl_conf"
     SSLEngine on
 
     ## MORE INFO CAN BE FOUND @		
-    ## https://www.en0ch.se/virtualhost-443/ # Or some links to the docs...
+    ## https://www.techandme.se/virtualhost-443/ # Or some links to the docs...
 
 
     # The ServerName directive sets the request scheme, hostname and port that
