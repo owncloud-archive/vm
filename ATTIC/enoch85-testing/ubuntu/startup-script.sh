@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-## Tech and Me ## - 2015, https://www.en0ch.se/about-me
+## Tech and Me ## - 2015, https://www.techandme.se/about-me
 #
 
 # Check if root
@@ -24,7 +24,7 @@ echo "| - Set new keyboard layout                                          |"
 echo "| - Change timezone                                                  |"
 echo "| - Install SMB-client to be able to mount external storages         |"
 echo "| - Set static IP to the system (you have to set the same IP in      |"
-echo "|   your router) https://www.en0ch.se/open-port-80-443/              |"
+echo "|   your router) https://www.techandme.se/open-port-80-443/              |"
 echo "|                                                                    |"
 echo "|   The script will take about 5 minutes to finish                   |"
 echo "|   depending on your internet connection                            |"
@@ -88,7 +88,7 @@ echo "Your internal IP is: $ADDRESS"
 echo -e "\e[0m"
 echo -e "Write this down, you will need it to set static IP"
 echo -e "in your router later. It's included in this guide:"
-echo -e "https://www.en0ch.se/open-port-80-443/ (step 1 - 5)"
+echo -e "https://www.techandme.se/open-port-80-443/ (step 1 - 5)"
 echo -e "\e[32m"
 read -p "Press any key to set static IP..." -n1 -s
 clear
