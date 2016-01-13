@@ -9,7 +9,7 @@ if [ -z "$GITHUB_TOKEN" ]; then
 fi
 
 #### use this for testing:
-# time sh -x oc8ce/build-ubuntu-vm.sh isv:ownCloud:community:8.2:testing $1
+# time sh -x oc8ce/build-ubuntu-vm.sh ce:8.2:testing $1
 
 #### use this for production:
 DEBUG=false time sh oc8ce/build-ubuntu-vm.sh ce:8.2 $1
