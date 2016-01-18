@@ -23,7 +23,7 @@ if (sudo -u www-data php $oc/occ status 2>&1 | grep -q ' is not installed '); th
   # Do not use y or z, to help with keyboard mismatch.
   # Do not use l, to avoid confusion with 1.
   password=$(shuf -e {a..x}{1..9} | tr l e | head -n 5 | tr -d '\n')
-  instanceid=oc$(shuf -e {1..9}{a..x} | tr l e | head -n 5 | tr -d '\n')
+  instanceid=oc$(shuf -e {0..9}{a..z} | tr l e | head -n 5 | tr -d '\n')
 
   php /var/scripts/update-config.php $oc/config/config.php instanceid $instanceid
 
