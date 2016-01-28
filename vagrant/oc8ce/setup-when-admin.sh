@@ -42,7 +42,7 @@ sleep 3
 clear
 
 # Change password
-bash /var/scripts/change_pass_admin.sh
+sudo bash /var/scripts/change_pass_admin.sh
 
 echo -e "\e[0m"
 echo "For better security, change the ownCloud password for [admin]"
