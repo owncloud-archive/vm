@@ -49,6 +49,12 @@ read -p "Press any key to change system password ... " -n1 -s
 echo -e "\e[0m"
 sudo passwd admin
 echo
+if [[ $? > 0 ]]
+then
+    sudo passwd admin
+else
+    sleep 2
+fi
 sleep 2
 clear 
 # stop advertising the initial credentials.
@@ -62,6 +68,12 @@ read -p "Press any key to change ownCloud password ... " -n1 -s
 echo -e "\e[0m"
 sudo -u www-data php /var/www/owncloud/occ user:resetpassword admin
 echo
+if [[ $? > 0 ]]
+then
+    sudo -u www-data php /var/www/html/owncloud/occ user:resetpassword admin
+else
+    sleep 2
+fi
 sleep 2
 clear
 
@@ -73,7 +85,6 @@ cat << EOMFINISH
 +-------------------------------------------------+
 
 EOMFINISH
-sleep 4
 
 echo -e "\e[32m"
 read -p $'\x0aPress any key to return to the shell prompt.\x0aType "exit" there, to go back to the login prompt. \x0aIf you want to become root, type "sudo -i" ...\x0a' -n1 -s
