@@ -42,24 +42,7 @@ sleep 3
 clear
 
 # Change password
-echo -e "\e[0m"
-echo "For better security, change the Ubuntu password for [admin]"
-echo -e "\e[32m"
-read -p "Press any key to change system password ... " -n1 -s
-echo -e "\e[0m"
-sudo passwd admin
-echo
-if [[ $? > 0 ]]
-then
-    sudo passwd admin
-else
-    sleep 2
-fi
-sleep 2
-clear 
-# stop advertising the initial credentials.
-rm -f /var/scripts/init-credentials
-test -f /etc/issue.orig && mv /etc/issue.orig /etc/issue
+bash /var/scripts/change_pass_admin.sh
 
 echo -e "\e[0m"
 echo "For better security, change the ownCloud password for [admin]"
