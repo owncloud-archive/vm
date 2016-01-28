@@ -3,6 +3,7 @@
 cred_file_dir=/var/scripts/www
 cred_file=$cred_file_dir/init-credentials.sh
 
+echo "For better security, change the Ubuntu password for [admin]"
 echo -n "Enter your new password for admin here:"; stty -echo; read passwd1; stty echo; echo
 echo
 echo -e "Your new password is:\e[32m$passwd1\e[0m"
