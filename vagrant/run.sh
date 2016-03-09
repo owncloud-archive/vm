@@ -4,7 +4,7 @@
 
 if [ -z "$GITHUB_TOKEN" ]; then
   echo "Environment variable GITHUB_TOKEN not set. See https://github.com/settings/tokens"
-  echo "You will have to call oc8ce/release-github.sh later manually. Press ENTER to continue"
+  echo "You will have to call oc9ce/release-github.sh later manually. Press ENTER to continue"
   read a
 fi
 

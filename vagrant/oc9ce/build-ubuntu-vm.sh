@@ -74,7 +74,7 @@ while true; do
   fi
 done
 ocVersion=$(echo $ocVersion | tr '~' -)
-vmName=$(echo $ocVersion | sed -e 's/owncloud/$oc_ce/')
+vmName=$(echo $ocVersion | sed -e "s/owncloud/$oc_ce/")
 
 echo $vmName
 sleep 3
