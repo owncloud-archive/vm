@@ -14,9 +14,9 @@ Download or clone vm github repository then:
 cd vagrant
 sh run.sh                    # default DEBUG versions, optimized build time (ca 10 Min, no zip)
 DEBUG=false sh run.sh        # production version, optimized compression (ca 20 Min build time)
-ls -l oc8ce/*owncloud-8*
+ls -l oc9ce/*owncloud-9*
 </pre>
-After the build of the appliance you will find it in /path/to/the/cloned/github/vm/vagrant/oc8ce/img
+After the build of the appliance you will find it in /path/to/the/cloned/github/vm/vagrant/oc9ce/img
 
 **VirtualBox**
 <pre>
