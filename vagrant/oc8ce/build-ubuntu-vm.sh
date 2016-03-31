@@ -200,9 +200,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		# make things nice.
 		mv /var/scripts/index.php /var/www/html/index.php && rm -f /var/www/html/index.html
 
-		$DEBUG && echo '<?php phpinfo(); ' > /var/www/owncloud/phpinfo.php
-		$DEBUG && chmod a+x /var/www/owncloud/phpinfo.php
-
 		# prepare https
 		a2enmod ssl headers
 		a2dissite default-ssl
