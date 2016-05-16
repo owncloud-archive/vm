@@ -33,9 +33,9 @@ rm -f    test/seen-login-page.html	# will be created during build...
 
 ## An LTS operating system for production.
 #buildPlatform=xUbuntu_14.04	# matches an OBS target.	at download.opensuse.org
-buildPlatform=Ubuntu_14.04	# matches an OBS target.	at download.owncloud.org
+buildPlatform=Ubuntu_16.04	# matches an OBS target.	at download.owncloud.org
 vmBoxName=ubuntu/trusty64
-vmBoxUrl=https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/14.04/providers/virtualbox.box
+vmBoxUrl=https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/16.04/providers/virtualbox.box
 
 ## An alternate operating system for testing portability ...
 # buildPlatform=xUbuntu_15.04	# matches an OBS target.
@@ -50,7 +50,7 @@ vmBoxUrl=https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/14.04/providers
 # OBS_REPO=$OBS_MIRRORS/$(echo $OBS_PROJECT | sed -e 's@:@:/@g')/$buildPlatform
 OBS_REPO=$DOO_MIRRORS/$(echo $DOO_PROJECT | sed -e 's@:@:/@g')/$buildPlatform
 OBS_REPO_APCU=$OBS_MIRRORS/isv:/ownCloud:/devel/$buildPlatform
-OBS_REPO_PROXY=$OBS_MIRRORS/isv:/ownCloud:/community:/8.2:/testing:/$buildPlatform
+OBS_REPO_PROXY=$OBS_MIRRORS/isv:/ownCloud:/community:/9.0.2:/testing:/$buildPlatform
 
 while true; do
   echo "fetching $OBS_REPO/Packages ..."
@@ -131,7 +131,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		$DEBUG || rm -f /etc/sudoers.d/vagrant
 		echo 'admin ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/admin
 		echo 'owncloud ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/owncloud
-		
+
 		# prepare repositories
 		wget -q $OBS_REPO/Release.key -O - | apt-key add -
 		sh -c "echo 'deb $OBS_REPO /' >> /etc/apt/sources.list.d/owncloud.list"
@@ -147,20 +147,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 		# install packages.
 		apt-get install -q -y language-pack-de figlet
-		
+
 
 		#install additional software
 		apt-get update
 		apt-get -q -y install git
 
 		## Install APCU 4.0.6, using the 14.04 package from isv:ownCloud:devel
-		apt-get install -q -y php5-apcu
-
-		## Install Redis. The upstream php5-redis is too old. We try pecl.
-		## https://github.com/owncloud/enterprise/issues/946
-		apt-get install -q -y redis-server
-		apt-get install -q -y php-pear php5-dev
-		pecl install redis
+		# apt-get install -q -y php7-apcu
 
 		# set hostname 'owncloud' and localhost
 		sed -i 's/127.0.0.1 localhost/127.0.0.1 localhost owncloud/g' /etc/hosts
@@ -173,7 +167,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 		debconf-set-selections <<< 'mysql-server mysql-server/root_password password $mysql_pass'
 		debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $mysql_pass'
-		apt-get install -q -y owncloud php5-libsmbclient
+		apt-get install -q -y owncloud php-libsmbclient
 
 		# Workaround for https://github.com/owncloud/core/issues/19479
 		# This silences a bogus check in apps/files_external/lib/smb.php#L297-L303
@@ -206,16 +200,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		a2dissite default-ssl
 		bash /var/scripts/self-signed-ssl.sh
 
+		## Install Redis. from Tech and Me's script
+                wget https://raw.githubusercontent.com/enoch85/ownCloud-VM/master/static/redis-server-ubuntu16.sh
+                sudo bash redis-server-ubuntu16.sh
+                rm redis-server-ubuntu16.sh
+
 		# Install apps we want # https://github.com/owncloud/vm/issues/9
 		# bash /var/scripts/install-additional-apps.sh
 
 		# Set RAMDISK for better performance
 		echo 'none /tmp tmpfs,size=6g defaults' >> /etc/fstab
-		
+
 		# Prepare cron.php to be run every 15 minutes
 		# The user still has to activate it in the settings GUI
 		sudo crontab -u www-data -l | { cat; echo "*/15  *  *  *  * php -f /var/www/owncloud/cron.php > /dev/null 2>&1"; } | crontab -u www-data -
-		
+
 		# "zero out" the drive...
 		$DEBUG || dd if=/dev/zero of=/EMPTY bs=1M || true
 		$DEBUG || rm -f /EMPTY || true
