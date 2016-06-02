@@ -170,6 +170,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		debconf-set-selections <<< 'mysql-server mysql-server/root_password password $mysql_pass'
 		debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password $mysql_pass'
 		apt-get install -q -y owncloud php-libsmbclient
+		# make ini file better visible
+		test -f /etc/php/mods-available/smbclient.ini && ln -s /etc/php/mods-available/smbclient.ini /etc/php/7.0/mods-available/smbclient.ini || true
+		# assert that a Recommended database server gets installed:
+		apt-get install -q -y mariadb-server
 
 		# Workaround for https://github.com/owncloud/core/issues/19479
 		# This silences a bogus check in apps/files_external/lib/smb.php#L297-L303
@@ -177,8 +181,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 		# wget -q $OBS_REPO_PROXY/Release.key -O - | apt-key add -
 		# sh -c "echo 'deb $OBS_REPO_PROXY /' >> /etc/apt/sources.list.d/owncloud.list"
-		apt-get -q -y update
-		apt-get install -q -y owncloud-app-proxy
+		# apt-get -q -y update
+		# apt-get install -q -y owncloud-app-proxy
 
 		curl -sL localhost/owncloud/ | grep login || { curl -sL localhost/owncloud; exit 1; } # did not start at all??
 		curl -sL localhost/owncloud/ > /vagrant/test/seen-login-page.html
