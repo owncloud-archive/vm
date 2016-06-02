@@ -5,7 +5,7 @@
 
 
 OBS_PROJECT=isv:ownCloud:community	# default...
-OBS_MIRRORS=http://download.opensuse.org/repositories
+# OBS_MIRRORS=http://download.opensuse.org/repositories
 DOO_MIRRORS=http://download.owncloud.org/download/repositories
 DOO_PROJECT=9.0				# default
 oc_ce=oc9ce				# keep in sync with directory name here.
@@ -31,11 +31,14 @@ cd $(dirname $0)
 mkdir -p test
 rm -f    test/seen-login-page.html	# will be created during build...
 
+# update existing box
+vagrant box update
+
 ## An LTS operating system for production.
 #buildPlatform=xUbuntu_14.04	# matches an OBS target.	at download.opensuse.org
 buildPlatform=Ubuntu_16.04	# matches an OBS target.	at download.owncloud.org
-vmBoxName=ubuntu/trusty64
-vmBoxUrl=https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/16.04/providers/virtualbox.box
+vmBoxName=ubuntu/xenial64
+vmBoxUrl=https://atlas.hashicorp.com/ubuntu/boxes/xenial64
 
 ## An alternate operating system for testing portability ...
 # buildPlatform=xUbuntu_15.04	# matches an OBS target.
@@ -47,28 +50,27 @@ vmBoxUrl=https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/16.04/providers
 # vmBoxName=deb/jessie-amd64	# starts with 396 MB.
 # vmBoxUrl=https://atlas.hashicorp.com/debian/boxes/jessie64/versions/8.1.1/providers/virtualbox.box
 
-# OBS_REPO=$OBS_MIRRORS/$(echo $OBS_PROJECT | sed -e 's@:@:/@g')/$buildPlatform
-OBS_REPO=$DOO_MIRRORS/$(echo $DOO_PROJECT | sed -e 's@:@:/@g')/$buildPlatform
-OBS_REPO_APCU=$OBS_MIRRORS/isv:/ownCloud:/devel/$buildPlatform
-OBS_REPO_PROXY=$OBS_MIRRORS/isv:/ownCloud:/community:/9.0.2:/testing:/$buildPlatform
+DOO_REPO=$DOO_MIRRORS/$(echo $DOO_PROJECT | sed -e 's@:@:/@g')/$buildPlatform
+# OBS_REPO_APCU=$OBS_MIRRORS/isv:/ownCloud:/devel/$buildPlatform
+# OBS_REPO_PROXY=$OBS_MIRRORS/isv:/ownCloud:/community:/9.0.2:/testing:/$buildPlatform
 
 while true; do
-  echo "fetching $OBS_REPO/Packages ..."
-  ocVersion=$(curl -s -L $OBS_REPO/Packages | grep -a1 'Package: owncloud$' | grep Version: | head -n 1 | sed -e 's/Version: /owncloud-/')
+  echo "fetching $DOO_REPO/Packages ..."
+  ocVersion=$(curl -s -L $DOO_REPO/Packages | grep -a1 'Package: owncloud$' | grep Version: | head -n 1 | sed -e 's/Version: /owncloud-/')
   if [ -z "$ocVersion" ]; then
-    curl -s -L $OBS_REPO/Packages
+    curl -s -L $DOO_REPO/Packages
     echo ""
-    echo "ERROR: failed to parse version number of owncloud from $OBS_REPO/Packages"
+    echo "ERROR: failed to parse version number of owncloud from $DOO_REPO/Packages"
     exit 1
   fi
   # ocVersion=owncloud-8.1.0-6
   # ocVersion=owncloud-8.1.2~RC1-6.1
-  test -z "$ocVersion" && { echo "ERROR: Cannot find owncloud version in $OBS_REPO/Packages -- Try again later"; exit 1; }
+  test -z "$ocVersion" && { echo "ERROR: Cannot find owncloud version in $DOO_REPO/Packages -- Try again later"; exit 1; }
   echo $ocVersion
   if [ "${ocVersion#*$EXPECTED_VERSION}" != "$ocVersion" ]; then
     break
   else
-    echo expected version $EXPECTED_VERSION not seen in project $OBS_REPO
+    echo expected version $EXPECTED_VERSION not seen in project $DOO_REPO
     echo waiting 10 min ....
     sleep 600
   fi
@@ -132,11 +134,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		echo 'admin ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/admin
 		echo 'owncloud ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/owncloud
 
-		# prepare repositories
-		wget -q $OBS_REPO/Release.key -O - | apt-key add -
-		sh -c "echo 'deb $OBS_REPO /' >> /etc/apt/sources.list.d/owncloud.list"
-		wget -q $OBS_REPO_APCU/Release.key -O - | apt-key add -
-		sh -c "echo 'deb $OBS_REPO_APCU /' >> /etc/apt/sources.list.d/owncloud.list"
+		# # prepare repositories
+		wget -q $DOO_REPO/Release.key -O - | apt-key add -
+		sh -c "echo 'deb $DOO_REPO /' >> /etc/apt/sources.list.d/owncloud.list"
+		# wget -q $OBS_REPO_APCU/Release.key -O - | apt-key add -
+		# sh -c "echo 'deb $OBS_REPO_APCU /' >> /etc/apt/sources.list.d/owncloud.list"
 
 		# attention: apt-get update is horribly slow when not connected to a tty.
 		export DEBIAN_FRONTEND=noninteractive TERM=ansi LC_ALL=C
@@ -173,8 +175,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		# This silences a bogus check in apps/files_external/lib/smb.php#L297-L303
 		# apt-get install -q -y smbclient
 
-		wget -q $OBS_REPO_PROXY/Release.key -O - | apt-key add -
-		sh -c "echo 'deb $OBS_REPO_PROXY /' >> /etc/apt/sources.list.d/owncloud.list"
+		# wget -q $OBS_REPO_PROXY/Release.key -O - | apt-key add -
+		# sh -c "echo 'deb $OBS_REPO_PROXY /' >> /etc/apt/sources.list.d/owncloud.list"
 		apt-get -q -y update
 		apt-get install -q -y owncloud-app-proxy
 
