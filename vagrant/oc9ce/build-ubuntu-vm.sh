@@ -153,8 +153,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		apt-get update
 		apt-get -q -y install git
 
-		## Install APCU 4.0.6, using the 14.04 package from isv:ownCloud:devel
-		apt-get install -q -y php5-apcu
+		## Install APCU 4.0.7 from the already registered backports repo.
+		## Main trusty only has 4.0.2 which is not good enough.
+		apt-get install -q -y php5-apcu/trusty-backports
 
 		## Install Redis. The upstream php5-redis is too old. We try pecl.
 		## https://github.com/owncloud/enterprise/issues/946
