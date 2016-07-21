@@ -15,7 +15,7 @@ fi
 # DEBUG=false time sh oc8ce/build-ubuntu-vm.sh ce:8.2 $1
 
 #### use this for production:
-DEBUG=false time sh oc9ce/build-ubuntu-vm.sh ce:9.0 $1
+DEBUG=false time sh oc9ce/build-ubuntu-vm.sh ce:9.1 $1
 
 # use this variable to run the install-additional-apps.sh script.
 # INSTALL_ADDITIONAL_APPS=1 sh ...  
