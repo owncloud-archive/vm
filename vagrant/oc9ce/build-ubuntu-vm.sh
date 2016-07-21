@@ -50,7 +50,7 @@ vmBoxUrl=https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/14.04/providers
 # OBS_REPO=$OBS_MIRRORS/$(echo $OBS_PROJECT | sed -e 's@:@:/@g')/$buildPlatform
 OBS_REPO=$DOO_MIRRORS/$(echo $DOO_PROJECT | sed -e 's@:@:/@g')/$buildPlatform
 OBS_REPO_APCU=$OBS_MIRRORS/isv:/ownCloud:/devel/$buildPlatform
-OBS_REPO_PROXY=$OBS_MIRRORS/isv:/ownCloud:/community:/8.2:/testing:/$buildPlatform
+# OBS_REPO_PROXY=$OBS_MIRRORS/isv:/ownCloud:/community:/8.2:/testing:/$buildPlatform
 
 while true; do
   echo "fetching $OBS_REPO/Packages ..."
@@ -180,10 +180,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		# This silences a bogus check in apps/files_external/lib/smb.php#L297-L303
 		# apt-get install -q -y smbclient
 
-		wget -q $OBS_REPO_PROXY/Release.key -O - | apt-key add -
-		sh -c "echo 'deb $OBS_REPO_PROXY /' >> /etc/apt/sources.list.d/owncloud.list"
-		apt-get -q -y update
-		apt-get install -q -y owncloud-app-proxy
+		#### 
+		# wget -q $OBS_REPO_PROXY/Release.key -O - | apt-key add -
+		# sh -c "echo 'deb $OBS_REPO_PROXY /' >> /etc/apt/sources.list.d/owncloud.list"
+		# apt-get -q -y update
+		# apt-get install -q -y owncloud-app-proxy
+		#### 
 
 		curl -sL localhost/owncloud/ | grep login || { curl -sL localhost/owncloud; exit 1; } # did not start at all??
 		curl -sL localhost/owncloud/ > /vagrant/test/seen-login-page.html
