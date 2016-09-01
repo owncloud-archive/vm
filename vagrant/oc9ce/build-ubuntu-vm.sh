@@ -160,7 +160,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		## Install Redis. The upstream php5-redis is too old. We try pecl.
 		## https://github.com/owncloud/enterprise/issues/946
 		apt-get install -q -y redis-server
-		apt-get install -q -y php-pear php5-dev php-ldap
+		apt-get install -q -y php-pear php5-dev php5-ldap
 		pecl install redis
 
 		# set hostname 'owncloud' and localhost
