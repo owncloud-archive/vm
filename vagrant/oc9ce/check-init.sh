@@ -85,7 +85,8 @@ rm $oc/data/owncloud.log
 # Hint: Disable this by erasing $cred_file after changing the password.
 if [ -s $cred_file ]; then 
   . $cred_file
-  ocVersion=$(head -n1 /var/www/owncloud/.htaccess)
+  ocVersion=$((cat /var/www/owncloud/version.php; echo 'print $OC_Ve
+  rsionString;') | php )
   test -f /etc/issue.orig || mv /etc/issue /etc/issue.orig
   vers20=$(printf "%-20s" "$ocVersion")
   addr40=$(printf "%-40s" "https://$ADDRESS/owncloud")
@@ -94,25 +95,24 @@ if [ -s $cred_file ]; then
   cat > /etc/issue << ISSUE
           Ubuntu 14.04.2 LTS \n \l
 
-    +----------------------------------------------------------------------+
-    |                                                                      |
-    |           Welcome to ownCloud!          $vers20         |
-    |                                                                      |
-    |  This server is reachable at $addr40|
-    |  Initial admin login:    $user40    |
-    |  Initial admin password: $pass40    |
-    +----------------------------------------------------------------------+
-    |  If the virtual machine is run with NAT, please review the port      |
-    |  forwarding of the network adapter, or try http://localhost:8888     |
-    +----------------------------------------------------------------------+
-    |   You can now logon to your ownCloud by using the ip-address from    |
-    |   above with your web browser. Please import the SSL cert to your    |
-    |   browser, or accept the security warning to connect to your         |
-    |   ownCloud via HTTPS.                                                |
-    +----------------------------------------------------------------------+
-    |   OPTIONAL:                                                          |
-    |   If you want to do the final setup (e.g. change admin password),    |
-    |   please log in as user 'admin' to run the setup-script.             |
-    +----------------------------------------------------------------------+
+  +-----------------------------------------------------------------------+
+  |                                                                       |
+  |           Welcome to ownCloud!          $vers20          |
+  |                                                                       |
+  |  This server is reachable at $addr40 |
+  |  Initial admin login:    $user40     |
+  |  Initial admin password: $pass40     |
+  +-----------------------------------------------------------------------+
+  | If the virtual machine runs with NAT, the above address may not work. |
+  | Try http://localhost:8888/owncloud or adjust bridging/port forwarding.|
+  +-----------------------------------------------------------------------+
+  | You can now logon to your ownCloud by using one of the above URLs     |
+  | with your web browser. Please import the SSL cert to your browser, or |
+  | accept the security warning to connect to your ownCloud via HTTPS.    |
+  +-----------------------------------------------------------------------+
+  |   OPTIONAL:                                                           |
+  |   If you want to do the final setup (e.g. change admin password),     |
+  |   please log in as user 'admin' to run the setup-script.              |
+  +-----------------------------------------------------------------------+
 ISSUE
 fi
