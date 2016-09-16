@@ -9,6 +9,8 @@ if [ -z "$GITHUB_TOKEN" ]; then
 fi
 
 #### use this for testing:
+# override DOO_MIRRORS in build-ubuntu-vm.sh
+export OC_REPO_URL=http://owncloud:*PASSWORD*@obs.int.owncloud.com:83/
 # time sh -x oc8ce/build-ubuntu-vm.sh ce:8.2:testing $1
 
 #### use this for production:

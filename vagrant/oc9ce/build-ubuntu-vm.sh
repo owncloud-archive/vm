@@ -10,6 +10,8 @@ DOO_MIRRORS=http://download.owncloud.org/download/repositories
 DOO_PROJECT=9.0				# default
 oc_ce=oc9ce				# keep in sync with directory name here.
 
+test -z "$OC_REPO_URL" && DOO_MIRRORS=$OC_REPO_URL
+
 test -z "$DEBUG" && DEBUG=true	# true: skip system update, disk sanitation, ... for speedy development.
                         	# false: do everything for production, also disable vagrant user.
 
