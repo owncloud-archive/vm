@@ -27,6 +27,9 @@ if (sudo -u www-data php $oc/occ status 2>&1 | grep -q ' is not installed '); th
 
   php /var/scripts/update-config.php $oc/config/config.php instanceid $instanceid
 
+  # https://github.com/owncloud/core/issues/21922
+  cp  /var/scripts/wildcard-trusted-domain.config.php $oc/config/
+
   mkdir -p $cred_file_dir
   chown www-data $cred_file_dir
   chmod 775 $cred_file_dir
@@ -85,8 +88,7 @@ rm $oc/data/owncloud.log
 # Hint: Disable this by erasing $cred_file after changing the password.
 if [ -s $cred_file ]; then 
   . $cred_file
-  ocVersion=$((cat /var/www/owncloud/version.php; echo 'print $OC_Ve
-  rsionString;') | php )
+  ocVersion=$((cat /var/www/owncloud/version.php; echo 'print $OC_VersionString;') | php )
   test -f /etc/issue.orig || mv /etc/issue /etc/issue.orig
   vers20=$(printf "%-20s" "$ocVersion")
   addr40=$(printf "%-40s" "https://$ADDRESS/owncloud")
