@@ -28,7 +28,7 @@ if (sudo -u www-data php $oc/occ status 2>&1 | grep -q ' is not installed '); th
   php /var/scripts/update-config.php $oc/config/config.php instanceid $instanceid
 
   # https://github.com/owncloud/core/issues/21922
-  cp  /var/scripts/wildcard-trusted-domain.config.php $oc/config/
+  cp  /var/scripts/wildcard-trusted-domains.config.php $oc/config/
 
   mkdir -p $cred_file_dir
   chown www-data $cred_file_dir
