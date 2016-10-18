@@ -5,10 +5,10 @@
 #### use this for testing:
 # override DOO_MIRRORS in build-ubuntu-vm.sh
 #export OC_REPO_URL=http://owncloud:*PASSWORD*@obs.int.owncloud.com:83/
-#
+
 ## can be a comma separated list...
-export OC_APP_URLS=https://apps.owncloud.com/CONTENT/content-files/155100-appvncsafe.zip
-export OC_NAME_SUFFIX=appvncsafe
+# export OC_APP_URLS=https://apps.owncloud.com/CONTENT/content-files/155100-appvncsafe.zip
+# export OC_NAME_SUFFIX=appvncsafe
 
 #### use this for production:
 DEBUG=false time sh oc9ce/build-ubuntu-vm.sh ce:9.1 $1 || exit
