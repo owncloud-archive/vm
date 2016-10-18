@@ -10,7 +10,7 @@ DOO_MIRRORS=http://download.owncloud.org/download/repositories
 DOO_PROJECT=9.0				# default
 oc_ce=oc9ce				# keep in sync with directory name here.
 
-test -z "$OC_REPO_URL" && DOO_MIRRORS=$OC_REPO_URL
+test -n "$OC_REPO_URL" && DOO_MIRRORS=$OC_REPO_URL
 
 test -z "$DEBUG" && DEBUG=true	# true: skip system update, disk sanitation, ... for speedy development.
                         	# false: do everything for production, also disable vagrant user.
@@ -32,6 +32,8 @@ EXPECTED_VERSION="-$2"
 cd $(dirname $0)
 mkdir -p test
 rm -f    test/seen-login-page.html	# will be created during build...
+
+sh ./pull_extra_apps.sh $OC_APP_URLS || exit 1
 
 ## An LTS operating system for production.
 #buildPlatform=xUbuntu_14.04	# matches an OBS target.	at download.opensuse.org
@@ -77,6 +79,7 @@ while true; do
 done
 ocVersion=$(echo $ocVersion | tr '~' -)
 vmName=$(echo $ocVersion | sed -e "s/owncloud/$oc_ce/")
+test -n "$OC_NAME_SUFFIX" && vmName="$vmName-$OC_NAME_SUFFIX"
 
 echo $vmName
 sleep 3
@@ -194,6 +197,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 		## FIXME: the lines below assume we are root. While most other parts of the
 		## script assume, we are a regular user and need sudo.
+
+		# add extra apps, if any
+		test -d /vagrant/apps && cp -a /vagrant/apps/* /var/www/owncloud/apps/
+		test -d /vagrant/apps && chown -R www-data:www-data /var/www/owncloud/apps/*
 
 		# hook our scripts. Specifically the check-init.sh upon boot.
 		mkdir -p /var/scripts
