@@ -78,8 +78,8 @@ while true; do
   fi
 done
 ocVersion=$(echo $ocVersion | tr '~' -)
+test -n "$OC_NAME_SUFFIX" && ocVersion="$ocVersion-$OC_NAME_SUFFIX"
 vmName=$(echo $ocVersion | sed -e "s/owncloud/$oc_ce/")
-test -n "$OC_NAME_SUFFIX" && vmName="$vmName-$OC_NAME_SUFFIX"
 
 echo $vmName
 sleep 3
