@@ -3,7 +3,11 @@
 cred_file_dir=/var/scripts/www
 cred_file=$cred_file_dir/init-credentials.sh
 
-echo "For better security, change the Ubuntu password for [admin]"
+cat << EOF
+There are two different [admin] account settings. One in the Ubuntu system, one in ownCloud.
+For better security, you now have the option to change both passwords.
+First, change the Ubuntu password for [admin]
+EOF
 echo -n "Enter your new password for admin here:"; stty -echo; read passwd1; stty echo; echo
 echo -n "Enter password again:                  "; stty -echo; read passwd2; stty echo; echo
 echo
@@ -17,6 +21,10 @@ else
     echo -e "\e[41mPassword not changed...\e[0m"
 sleep 3
 fi
+
+##### Someone please expain to me what the code below is supposed to do. jw 2016-12-16
+##### https://github.com/owncloud/enterprise/issues/1719
+exit 0
 
 if grep --quiet password=$passwd1 $cred_file; then
 sleep 1

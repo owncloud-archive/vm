@@ -12,6 +12,8 @@
 
 #### use this for production:
 DEBUG=false time sh oc9ce/build-ubuntu-vm.sh ce:9.1 $1 || exit
+#### use this, if you know what you are doing.
+#DEBUG=false time sh oc9ce/build-ubuntu-vm.sh ce:9.1:testing $1 || exit
 
 #### upload stuff. 
 ## use this for testing
