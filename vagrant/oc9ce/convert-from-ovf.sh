@@ -55,8 +55,11 @@ $needpatching && $bin_dir/patchvmdk.sh $imageName-disk1.vmdk 02
 
 ## convert to other formats...
 for fmt in $formats_via_qemu_img_convert; do
- qemu-img convert -p -f vmdk $imageName-disk1.vmdk -O $fmt $imageName.$fmt
- zip $imageName.$fmt.zip $imageName.$fmt
+ # vhdx needs 40GB space, qemu-img exits with code 1, if out of space.
+ qemu-img convert -p -f vmdk $imageName-disk1.vmdk -O $fmt $imageName.$fmt || exit 1
+
+ # Zip if you want but the difference is not so big (except for vmdx):
+ zip $imageName.$fmt.zip $imageName.$fmt || exit 1
  rm $imageName.$fmt
 done
 $needpatching && $bin_dir/patchvmdk.sh $imageName-disk1.vmdk 03
