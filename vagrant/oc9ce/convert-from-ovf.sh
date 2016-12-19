@@ -30,7 +30,7 @@ if  [ -f /usr/bin/ovftool ]; then
   ovftool --lax $imageName.ovf vmx/$imageName.vmx || exit 1
   # Line 25: Unsupported hardware family 'virtualbox-2.2'
   # Line 48: OVF hardware element 'ResourceType' with instance ID '3': No support for the virtual hardware device type '20'.
-  zip $imageName.vmx.zip vmx/*
+  zip -1 $imageName.vmx.zip vmx/*
   rm -rf vmx
 
   ## Error: This generates ova's that do not load in VirtualBox.
@@ -43,7 +43,7 @@ if  [ -f /usr/bin/ovftool ]; then
   ## instead of let ovftool create a manifest, do it manually:
   # echo "SHA1($imageName-disk1.vmdk)= $(sha1sum $imageName-disk1.vmdk|sed -e 's/ .*//')" > $imageName.mf
   # echo "SHA1($imageName.ovf)= $(sha1sum $imageName.ovf|sed -e 's/ .*//')" >> $imageName.mf
-  zip $imageName.ova.zip $imageName.ova
+  zip -1 $imageName.ova.zip $imageName.ova
   rm $imageName.ova
 fi
 
@@ -59,7 +59,8 @@ for fmt in $formats_via_qemu_img_convert; do
  qemu-img convert -p -f vmdk $imageName-disk1.vmdk -O $fmt $imageName.$fmt || exit 1
 
  # Zip if you want but the difference is not so big (except for vmdx):
- zip $imageName.$fmt.zip $imageName.$fmt || exit 1
+ # Use zip -1, or windows 10 native unzip explodes to 800 Petabytes while unpacking.
+ zip -1 $imageName.$fmt.zip $imageName.$fmt || exit 1
  rm $imageName.$fmt
 done
 $needpatching && $bin_dir/patchvmdk.sh $imageName-disk1.vmdk 03
@@ -68,7 +69,7 @@ $needpatching && $bin_dir/patchvmdk.sh $imageName-disk1.vmdk 03
 # sudo mount -o loop,ro,offset=$(expr 512 \* 2048) $imageName.raw /mnt
 
 
-zip $imageName.vmdk.zip $imageName-*.vmdk
+zip -1 $imageName.vmdk.zip $imageName-*.vmdk
 $DEBUG || rm $imageName-*.vmdk
 
 
