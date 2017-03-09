@@ -185,6 +185,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		# This silences a bogus check in apps/files_external/lib/smb.php#L297-L303
 		# apt-get install -q -y smbclient
 
+		# https://central.owncloud.org/t/owncloud-ubuntu-appliance-has-broken-php5-libsmbclient/6256/11
+		# indicates that package smbclient is also needed:
+		apt-get install -q -y smbclient
+
 		#### 
 		# wget -q $OBS_REPO_PROXY/Release.key -O - | apt-key add -
 		# sh -c "echo 'deb $OBS_REPO_PROXY /' >> /etc/apt/sources.list.d/owncloud.list"
