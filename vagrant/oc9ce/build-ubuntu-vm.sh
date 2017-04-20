@@ -247,6 +247,7 @@ vagrant destroy -f
 # do all vagrant calls from within the working directory, or retrive
 # vmID=$(vagrant global-status | grep $vmName | sed -e 's/ .*//')
 vagrant up
+vagrant vbguest --status
 
 sleep 10
 ## cannot do vagrant halt here, if the vagrant user was deleted.
