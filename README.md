@@ -1,3 +1,6 @@
+# NOTICE
+This code is outdated. Since 10.0.1 we build appliances with Univention https://www.univention.de/produkte/univention-app-center/app-katalog/owncloud/
+
 # vm
 Scripts to build an ownCloud community production VM
 
